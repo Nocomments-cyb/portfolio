@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Mail, MessageSquare, Send, MapPin, CheckCircle, ArrowUpRight, Clock } from 'lucide-react';
-import { GithubIcon } from './Icons';
+import { Mail, MessageSquare, Send, MapPin, CheckCircle, Clock, Copy, Check, AlertCircle, Sparkles } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from './Icons';
+import { profileData } from '../data/profileData';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -9,16 +10,53 @@ export default function Contact() {
     subject: '',
     message: '',
   });
+  const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const validate = () => {
+    const errs = {};
+    if (!formData.name.trim() || formData.name.trim().length < 2) {
+      errs.name = 'Please provide your name (at least 2 characters).';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
+      errs.email = 'Please provide a valid email address.';
+    }
+    if (!formData.message.trim() || formData.message.trim().length < 10) {
+      errs.message = 'Message must be at least 10 characters long.';
+    }
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: null });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+    if (!validate()) return;
+
+    // Honest handling: Format message for clipboard / direct dispatch
+    const formattedSummary = `Sender: ${formData.name} <${formData.email}>\nSubject: ${formData.subject || 'Portfolio Inquiry'}\n\nMessage:\n${formData.message}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(formattedSummary).catch(() => {});
+    }
     setSubmitted(true);
+  };
+
+  const handleCopy = () => {
+    const formattedSummary = `Sender: ${formData.name} <${formData.email}>\nSubject: ${formData.subject || 'Portfolio Inquiry'}\n\nMessage:\n${formData.message}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(formattedSummary).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      });
+    }
   };
 
   return (
@@ -34,10 +72,10 @@ export default function Contact() {
             <span>04 // Communications Hub</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Get In Touch
+            Let's build something.
           </h2>
           <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            Have an idea to build, a team looking for an engineer, or a project that needs technical direction? Let's connect.
+            Inviting inquiries from employers, clients, and technical teams looking for a dedicated frontend and product engineer.
           </p>
         </div>
 
@@ -52,61 +90,87 @@ export default function Contact() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono bg-emerald-950/60 border border-emerald-500/40 text-emerald-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Available for Hire
+                  {profileData.status}
                 </span>
               </div>
 
               <h3 className="text-xl font-bold text-white">
-                Ready to engineer your next flagship product.
+                Ready to contribute to your engineering goals.
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Whether you need full-stack development, modern web architecture with React & Supabase, or turning a vision into a shipped product—reach out anytime.
+                Whether you are hiring for a frontend engineering role, building an interactive web application, or need a developer who turns ideas into working software—feel free to reach out.
               </p>
 
-              {/* Location & Timezone specs */}
+              {/* Location & Timezone */}
               <div className="pt-2 border-t border-slate-800/80 space-y-2 text-xs font-mono text-slate-400">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Dubai, United Arab Emirates (Open to Global Remote)</span>
+                  <span>{profileData.location} ({profileData.locationDetail})</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Gulf Standard Time • UTC+4</span>
+                  <span>{profileData.timezone}</span>
                 </div>
               </div>
             </div>
 
-            {/* Quick Links */}
+            {/* Professional Channels Area */}
             <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 space-y-4">
-              <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400">
+              <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
                 Direct Channels & Profiles
               </h4>
 
               <div className="space-y-3">
-                <a
-                  href="mailto:contact@nocomment.dev"
-                  className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all group"
-                >
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-cyan-400" />
-                    <span className="text-xs font-mono">contact@nocomment.dev</span>
+                {profileData.socials.email ? (
+                  <a
+                    href={`mailto:${profileData.socials.email}`}
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Mail className="w-4 h-4 text-cyan-400" />
+                      <span className="text-xs font-mono">{profileData.socials.email}</span>
+                    </div>
+                  </a>
+                ) : (
+                  <div className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 text-xs text-slate-400 font-mono flex items-center gap-2.5">
+                    <Mail className="w-4 h-4 text-cyan-400 shrink-0" />
+                    <span>Direct Inquiries: Use the transmission form</span>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
+                )}
 
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all group"
-                >
-                  <div className="flex items-center gap-3">
-                    <GithubIcon className="w-4 h-4 text-slate-400" />
-                    <span className="text-xs font-mono">github.com/nocomment</span>
+                {profileData.socials.github ? (
+                  <a
+                    href={profileData.socials.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <GithubIcon className="w-4 h-4 text-slate-400" />
+                      <span className="text-xs font-mono">GitHub Profile</span>
+                    </div>
+                  </a>
+                ) : (
+                  <div className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 text-xs text-slate-400 font-mono flex items-center gap-2.5">
+                    <GithubIcon className="w-4 h-4 text-slate-400 shrink-0" />
+                    <span>GitHub: Configured via profileData.js</span>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
+                )}
+
+                {profileData.socials.linkedin ? (
+                  <a
+                    href={profileData.socials.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <LinkedinIcon className="w-4 h-4 text-slate-400" />
+                      <span className="text-xs font-mono">LinkedIn Profile</span>
+                    </div>
+                  </a>
+                ) : null}
               </div>
             </div>
           </div>
@@ -115,26 +179,46 @@ export default function Contact() {
           <div className="lg:col-span-7">
             <div className="rounded-2xl border border-slate-700/80 bg-[#0c1220]/95 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
               {submitted ? (
-                <div className="text-center py-12 space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mx-auto text-emerald-400">
-                    <CheckCircle className="w-8 h-8" />
+                <div className="py-8 space-y-5">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                    <CheckCircle className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Transmission Received</h3>
-                  <p className="text-slate-400 text-sm max-w-md mx-auto">
-                    Thank you, <span className="text-white font-medium">{formData.name}</span>. Your message has been logged. I'll get back to you promptly.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setFormData({ name: '', email: '', subject: '', message: '' });
-                    }}
-                    className="mt-4 px-5 py-2.5 rounded-xl text-xs font-semibold text-cyan-300 bg-cyan-950/50 border border-cyan-500/30 hover:bg-cyan-500/10 transition-colors cursor-pointer"
-                  >
-                    Send Another Message
-                  </button>
+
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">Message Prepared</h3>
+                    <p className="text-slate-300 text-xs sm:text-sm mt-2 leading-relaxed">
+                      Thank you, <span className="text-white font-semibold">{formData.name}</span>. Your message text has been formatted and copied to your clipboard.
+                    </p>
+                  </div>
+
+                  {/* Message Preview Quote */}
+                  <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 font-mono text-xs text-slate-400 space-y-1">
+                    <div className="text-slate-500">Subject: {formData.subject || 'Portfolio Inquiry'}</div>
+                    <div className="text-slate-300 pt-1">"{formData.message}"</div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <button
+                      onClick={handleCopy}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-cyan-300 bg-cyan-950/60 border border-cyan-500/40 hover:bg-cyan-500/10 transition-colors cursor-pointer"
+                    >
+                      {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                      <span>{copied ? 'Copied Again' : 'Copy Message'}</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setSubmitted(false);
+                        setFormData({ name: '', email: '', subject: '', message: '' });
+                      }}
+                      className="px-4 py-2.5 rounded-xl text-xs font-mono text-slate-400 hover:text-white transition-colors cursor-pointer"
+                    >
+                      Compose Another
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label htmlFor="name" className="block text-xs font-mono text-slate-300">
@@ -148,8 +232,15 @@ export default function Contact() {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Alex Mercer"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors"
+                        className={`w-full px-4 py-3 rounded-xl bg-slate-900/90 border ${
+                          errors.name ? 'border-rose-500 focus:border-rose-500' : 'border-slate-800 focus:border-cyan-500'
+                        } text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-colors`}
                       />
+                      {errors.name && (
+                        <p className="text-[11px] font-mono text-rose-400 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" /> {errors.name}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-1.5">
@@ -164,8 +255,15 @@ export default function Contact() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="alex@company.com"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors"
+                        className={`w-full px-4 py-3 rounded-xl bg-slate-900/90 border ${
+                          errors.email ? 'border-rose-500 focus:border-rose-500' : 'border-slate-800 focus:border-cyan-500'
+                        } text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-colors`}
                       />
+                      {errors.email && (
+                        <p className="text-[11px] font-mono text-rose-400 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" /> {errors.email}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -179,7 +277,7 @@ export default function Contact() {
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="Project collaboration / Engineering role"
+                      placeholder="Project collaboration / Engineering opportunity"
                       className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors"
                     />
                   </div>
@@ -196,8 +294,15 @@ export default function Contact() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Tell me about your product vision, timeline, or engineering goals..."
-                      className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors resize-none"
+                      className={`w-full px-4 py-3 rounded-xl bg-slate-900/90 border ${
+                        errors.message ? 'border-rose-500 focus:border-rose-500' : 'border-slate-800 focus:border-cyan-500'
+                      } text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-colors resize-none`}
                     />
+                    {errors.message && (
+                      <p className="text-[11px] font-mono text-rose-400 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> {errors.message}
+                      </p>
+                    )}
                   </div>
 
                   <button

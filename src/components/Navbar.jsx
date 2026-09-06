@@ -1,31 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Terminal, Sparkles, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { profileData } from '../data/profileData';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+
+      // Simple active section detection without heavy libraries
+      const sections = ['hero', 'projects', 'about', 'skills', 'contact'];
+      const scrollPosition = window.scrollY + 120;
+
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { label: 'Workspace', href: '#hero' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'About', href: '#about' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Home', href: '#hero', id: 'hero' },
+    { label: 'Projects', href: '#projects', id: 'projects' },
+    { label: 'About', href: '#about', id: 'about' },
+    { label: 'Skills', href: '#skills', id: 'skills' },
+    { label: 'Contact', href: '#contact', id: 'contact' },
   ];
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#070a12]/85 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/30'
+          ? 'bg-[#070a12]/90 backdrop-blur-md border-b border-slate-800/80 shadow-lg shadow-black/40'
           : 'bg-transparent border-b border-white/5'
       }`}
     >
@@ -43,7 +62,7 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-base font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
-                No Comment
+                {profileData.alias}
               </span>
               <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -53,16 +72,23 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-900/60 p-1.5 rounded-full border border-slate-800/90 backdrop-blur-md">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 text-xs font-medium text-slate-300 hover:text-white rounded-full hover:bg-white/5 transition-all duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
+          <nav className="hidden md:flex items-center gap-1 bg-slate-900/70 p-1.5 rounded-full border border-slate-800/90 backdrop-blur-md">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`px-4 py-2 text-xs font-medium rounded-full transition-all duration-200 ${
+                    isActive
+                      ? 'text-cyan-300 bg-cyan-950/60 border border-cyan-500/30'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Action CTA & Status */}
@@ -82,6 +108,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-300 hover:text-white hover:border-cyan-500/50 transition-colors"
               aria-label="Toggle navigation menu"
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -91,7 +118,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {isOpen && (
-        <div className="md:hidden bg-[#0a0f1d]/95 border-b border-slate-800 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2">
+        <div className="md:hidden bg-[#0a0f1d]/98 border-b border-slate-800 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2">
           {navLinks.map((link) => (
             <a
               key={link.href}

@@ -1,6 +1,7 @@
 import React from 'react';
-import { ArrowRight, Mail, Sparkles, Code, Layers, Compass } from 'lucide-react';
+import { ArrowRight, Mail, Compass } from 'lucide-react';
 import WorkspaceVisual from './WorkspaceVisual';
+import { profileData } from '../data/profileData';
 
 export default function Hero() {
   return (
@@ -11,33 +12,35 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Introduction Text Block */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-6">
-          {/* Status Tag */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs text-slate-300 font-mono shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span>Interactive Developer Sanctuary</span>
+          {/* Subtle Professional Status Tag */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs text-slate-300 font-mono shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-400 font-semibold tracking-wider uppercase">AVAILABLE FOR OPPORTUNITIES</span>
             <span className="text-slate-600">•</span>
-            <span className="text-cyan-300">Dubai, UAE</span>
+            <span className="text-slate-300">{profileData.location}</span>
           </div>
 
-          {/* Main Title & Catchphrase */}
+          {/* Primary Headline & Catchphrase */}
           <div className="space-y-3">
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white">
               Hi, I'm{' '}
               <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent glow-text-cyan">
-                No Comment
+                {profileData.alias}
               </span>
             </h1>
             <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-200 tracking-tight">
-              I build ideas into{' '}
-              <span className="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
-                products.
-              </span>
+              {profileData.tagline}
             </p>
           </div>
 
-          {/* Narrative Supporting Paragraph */}
-          <p className="text-base sm:text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto">
-            Welcome to my digital workspace. I design and engineer modern, fast, and scalable web experiences—blending cinematic visual aesthetics with resilient full-stack architecture.
+          {/* Concise Professional Descriptor */}
+          <p className="text-base sm:text-lg text-cyan-300/90 font-medium max-w-xl mx-auto">
+            {profileData.roleDescriptor}
+          </p>
+
+          {/* Supporting Narrative */}
+          <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl mx-auto">
+            Welcome to my digital workspace. I design and engineer modern web interfaces—translating product concepts into responsive, functional, and visually engaging software.
           </p>
 
           {/* Action Buttons */}
@@ -52,7 +55,7 @@ export default function Hero() {
 
             <a
               href="#contact"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-slate-200 bg-slate-900/80 hover:bg-slate-800/80 border border-slate-700/80 hover:border-slate-600 hover:text-white transition-all duration-200 shadow-md"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-slate-200 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 hover:text-white transition-all duration-200 shadow-md"
             >
               <Mail className="w-4 h-4 text-cyan-400" />
               <span>Get In Touch</span>
