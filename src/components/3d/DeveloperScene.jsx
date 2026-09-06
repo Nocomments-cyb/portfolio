@@ -7,8 +7,10 @@ import DubaiWindow from './DubaiWindow';
 import Desk from './Desk';
 import Monitors from './Monitors';
 import DeveloperCharacter from './DeveloperCharacter';
+import CoffeeInteraction from './CoffeeInteraction';
 import Peripherals from './Peripherals';
 import SceneHUD from './SceneHUD';
+import { DeveloperInteractionProvider } from './DeveloperInteractionController';
 import fallbackImage from '../../assets/developer_workspace.jpg';
 
 // Simple WebGL availability detection helper
@@ -119,80 +121,87 @@ export default function DeveloperScene() {
   }
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-slate-700/80 bg-[#070a12] shadow-2xl ${
-        hoveredObject ? 'cursor-pointer' : 'cursor-default'
-      }`}
-    >
-      {/* 3D Canvas Viewport */}
-      <Canvas
-        shadows
-        dpr={[1, 1.5]}
-        gl={{
-          antialias: true,
-          powerPreference: 'high-performance',
-          alpha: false,
-        }}
-        camera={{
-          position: [0.25, 0.85, 2.3],
-          fov: 48,
-          near: 0.1,
-          far: 30,
-        }}
-        onError={() => setHasError(true)}
+    <DeveloperInteractionProvider lightsOn={lightsOn}>
+      <div
+        ref={containerRef}
+        className={`relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-slate-700/80 bg-[#070a12] shadow-2xl ${
+          hoveredObject ? 'cursor-pointer' : 'cursor-default'
+        }`}
       >
-        <Suspense fallback={null}>
-          <CameraRig scrollProgress={scrollProgress} />
-          <Lighting lightsOn={lightsOn} lightMode={lightMode} />
-          <Room lightsOn={lightsOn} lightMode={lightMode} />
-          <DubaiWindow
-            onSelect={setSelectedObject}
-            isHovered={hoveredObject === 'window'}
-            setHovered={setHoveredObject}
-          />
-          <Desk
-            onSelect={setSelectedObject}
-            isHovered={hoveredObject === 'desk'}
-            setHovered={setHoveredObject}
-          />
-          <Monitors
-            onSelect={setSelectedObject}
-            isHovered={hoveredObject === 'monitor'}
-            setHovered={setHoveredObject}
-            lightsOn={lightsOn}
-            lightMode={lightMode}
-          />
-          <DeveloperCharacter
-            onSelect={setSelectedObject}
-            isHovered={hoveredObject === 'developer' || hoveredObject === 'headphones'}
-            setHovered={setHoveredObject}
-            lightsOn={lightsOn}
-            lightMode={lightMode}
-          />
-          <Peripherals
-            onSelect={setSelectedObject}
-            isHovered={hoveredObject}
-            setHovered={setHoveredObject}
-            lightsOn={lightsOn}
-          />
-        </Suspense>
-      </Canvas>
+        {/* 3D Canvas Viewport */}
+        <Canvas
+          shadows
+          dpr={[1, 1.5]}
+          gl={{
+            antialias: true,
+            powerPreference: 'high-performance',
+            alpha: false,
+          }}
+          camera={{
+            position: [0.25, 0.85, 2.3],
+            fov: 48,
+            near: 0.1,
+            far: 30,
+          }}
+          onError={() => setHasError(true)}
+        >
+          <Suspense fallback={null}>
+            <CameraRig scrollProgress={scrollProgress} />
+            <Lighting lightsOn={lightsOn} lightMode={lightMode} />
+            <Room lightsOn={lightsOn} lightMode={lightMode} />
+            <DubaiWindow
+              onSelect={setSelectedObject}
+              isHovered={hoveredObject === 'window'}
+              setHovered={setHoveredObject}
+            />
+            <Desk
+              onSelect={setSelectedObject}
+              isHovered={hoveredObject === 'desk'}
+              setHovered={setHoveredObject}
+            />
+            <CoffeeInteraction
+              onSelect={setSelectedObject}
+              isHovered={hoveredObject === 'coffee'}
+              setHovered={setHoveredObject}
+            />
+            <Monitors
+              onSelect={setSelectedObject}
+              isHovered={hoveredObject === 'monitor'}
+              setHovered={setHoveredObject}
+              lightsOn={lightsOn}
+              lightMode={lightMode}
+            />
+            <DeveloperCharacter
+              onSelect={setSelectedObject}
+              isHovered={hoveredObject === 'developer' || hoveredObject === 'headphones'}
+              setHovered={setHoveredObject}
+              lightsOn={lightsOn}
+              lightMode={lightMode}
+            />
+            <Peripherals
+              onSelect={setSelectedObject}
+              isHovered={hoveredObject}
+              setHovered={setHoveredObject}
+              lightsOn={lightsOn}
+            />
+          </Suspense>
+        </Canvas>
 
-      {/* Futuristic HUD Overlay with Light Controls and Feedback */}
-      <SceneHUD
-        selectedObject={selectedObject}
-        setSelectedObject={setSelectedObject}
-        hoveredObject={hoveredObject}
-        onNavigateToProjects={handleNavigateToProjects}
-        onNavigateToAbout={handleNavigateToAbout}
-        onNavigateToContact={handleNavigateToContact}
-        lightsOn={lightsOn}
-        onToggleLights={toggleLights}
-        lightMode={lightMode}
-        onSelectLightMode={setLightMode}
-        hudNotification={hudNotification}
-      />
-    </div>
+        {/* Futuristic HUD Overlay with Light Controls, Event Banners, and Object Controls */}
+        <SceneHUD
+          selectedObject={selectedObject}
+          setSelectedObject={setSelectedObject}
+          hoveredObject={hoveredObject}
+          onNavigateToProjects={handleNavigateToProjects}
+          onNavigateToAbout={handleNavigateToAbout}
+          onNavigateToContact={handleNavigateToContact}
+          lightsOn={lightsOn}
+          onToggleLights={toggleLights}
+          lightMode={lightMode}
+          onSelectLightMode={setLightMode}
+          hudNotification={hudNotification}
+        />
+      </div>
+    </DeveloperInteractionProvider>
   );
 }

@@ -1,21 +1,17 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useDeveloperInteraction } from './DeveloperInteractionController';
 
-export default function Peripherals({ onSelect, isHovered, setHovered }) {
+export default function Peripherals({ onSelect, isHovered, setHovered, lightsOn = true }) {
+  const { phoneActive, triggerPhone, triggerKeyboard, activityState } = useDeveloperInteraction();
   const fanRef = useRef();
-  const steamRef = useRef();
   const hddLedRef = useRef();
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (fanRef.current) {
       fanRef.current.rotation.z = t * 3.5;
-    }
-    if (steamRef.current) {
-      steamRef.current.position.y = 0.12 + (t % 1.6) * 0.07;
-      steamRef.current.scale.setScalar(0.75 + (t % 1.6) * 0.5);
-      steamRef.current.material.opacity = Math.max(0, 0.35 - (t % 1.6) * 0.22);
     }
     if (hddLedRef.current) {
       // Intermittent hard drive activity blink
@@ -26,20 +22,21 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
 
   return (
     <group position={[0, 0, 0]}>
-      {/* --- CUSTOM 75% MECHANICAL KEYBOARD --- */}
+      {/* --- CUSTOM 75% MECHANICAL KEYBOARD (Clickable Boost) --- */}
       <group
         position={[-0.1, 0.075, -0.62]}
         onClick={(e) => {
           e.stopPropagation();
+          triggerKeyboard();
           onSelect && onSelect('keyboard');
         }}
         onPointerOver={(e) => {
           e.stopPropagation();
-          setHovered('keyboard');
+          setHovered && setHovered('keyboard');
         }}
         onPointerOut={(e) => {
           e.stopPropagation();
-          setHovered(null);
+          setHovered && setHovered(null);
         }}
       >
         {/* Keyboard Chassis */}
@@ -49,8 +46,8 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
             color="#0f172a"
             roughness={0.35}
             metalness={0.7}
-            emissive={isHovered === 'keyboard' ? '#38bdf8' : '#000000'}
-            emissiveIntensity={isHovered === 'keyboard' ? 0.3 : 0}
+            emissive={isHovered === 'keyboard' || activityState === 'boost' ? '#38bdf8' : '#000000'}
+            emissiveIntensity={activityState === 'boost' ? 0.4 : isHovered === 'keyboard' ? 0.3 : 0}
           />
         </mesh>
 
@@ -69,13 +66,13 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
         {/* RGB Underglow Light Strip */}
         <mesh position={[0, -0.01, 0]}>
           <boxGeometry args={[0.6, 0.005, 0.22]} />
-          <meshBasicMaterial color="#38bdf8" />
+          <meshBasicMaterial color={activityState === 'boost' ? '#38bdf8' : '#0284c7'} />
         </mesh>
         <pointLight
           position={[0, 0.03, 0]}
           color="#38bdf8"
-          intensity={isHovered === 'keyboard' ? 0.6 : 0.35}
-          distance={0.7}
+          intensity={activityState === 'boost' ? 0.85 : (isHovered === 'keyboard' ? 0.6 : 0.38)}
+          distance={0.8}
         />
       </group>
 
@@ -92,27 +89,59 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
         </mesh>
       </group>
 
-      {/* --- SMARTPHONE LYING FLAT ON DESK --- */}
-      <group position={[-0.48, 0.074, -0.46]} rotation={[0, 0.12, 0]}>
+      {/* --- SMARTPHONE LYING FLAT ON DESK (Clickable Notification) --- */}
+      <group
+        position={[-0.48, 0.074, -0.46]}
+        rotation={[0, 0.12, 0]}
+        onClick={(e) => {
+          e.stopPropagation();
+          triggerPhone();
+          onSelect && onSelect('phone');
+        }}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered && setHovered('phone');
+        }}
+        onPointerOut={(e) => {
+          e.stopPropagation();
+          setHovered && setHovered(null);
+        }}
+      >
         {/* Phone Body */}
         <mesh castShadow>
           <boxGeometry args={[0.12, 0.01, 0.22]} />
-          <meshStandardMaterial color="#0b0f19" metalness={0.9} roughness={0.2} />
+          <meshStandardMaterial
+            color="#0b0f19"
+            metalness={0.9}
+            roughness={0.2}
+            emissive={isHovered === 'phone' ? '#10b981' : '#000000'}
+            emissiveIntensity={isHovered === 'phone' ? 0.2 : 0}
+          />
         </mesh>
-        {/* Screen Glass */}
+        {/* Screen Glass (Wakes with vivid notification when active) */}
         <mesh position={[0, 0.006, 0]}>
           <planeGeometry args={[0.11, 0.21]} rotation={[-Math.PI / 2, 0, 0]} />
           <meshPhysicalMaterial
-            color="#040711"
+            color={phoneActive ? '#0284c7' : '#040711'}
+            emissive={phoneActive ? '#38bdf8' : '#000000'}
+            emissiveIntensity={phoneActive ? 0.6 : 0}
             roughness={0.1}
             metalness={0.1}
           />
         </mesh>
-        {/* Notification Status Dot */}
+        {/* Notification Status Indicator */}
         <mesh position={[0.04, 0.007, -0.09]}>
           <sphereGeometry args={[0.003, 6, 6]} />
-          <meshBasicMaterial color="#10b981" />
+          <meshBasicMaterial color={phoneActive ? '#38bdf8' : '#10b981'} />
         </mesh>
+        {phoneActive && (
+          <pointLight
+            position={[0, 0.06, 0]}
+            color="#38bdf8"
+            intensity={0.6}
+            distance={0.8}
+          />
+        )}
       </group>
 
       {/* --- MINIMALIST LINEN NOTEBOOK & PEN --- */}
@@ -126,30 +155,6 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
         <mesh position={[0.16, 0.01, 0]} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.004, 0.004, 0.28, 8]} />
           <meshStandardMaterial color="#cbd5e1" metalness={0.9} roughness={0.2} />
-        </mesh>
-      </group>
-
-      {/* --- CERAMIC COFFEE MUG ON COASTER --- */}
-      <group position={[-0.8, 0.065, -0.55]}>
-        {/* Cork Coaster */}
-        <mesh position={[0, 0.003, 0]}>
-          <cylinderGeometry args={[0.08, 0.08, 0.006, 16]} />
-          <meshStandardMaterial color="#78350f" roughness={0.9} />
-        </mesh>
-        {/* Ceramic Mug Body */}
-        <mesh position={[0, 0.06, 0]} castShadow>
-          <cylinderGeometry args={[0.065, 0.055, 0.11, 16]} />
-          <meshStandardMaterial color="#1e293b" roughness={0.5} />
-        </mesh>
-        {/* Coffee Liquid Surface */}
-        <mesh position={[0, 0.1, 0]}>
-          <cylinderGeometry args={[0.06, 0.06, 0.005, 16]} />
-          <meshStandardMaterial color="#1c120c" roughness={0.2} />
-        </mesh>
-        {/* Steam Particle */}
-        <mesh ref={steamRef} position={[0, 0.14, 0]}>
-          <sphereGeometry args={[0.03, 8, 8]} />
-          <meshBasicMaterial color="#cbd5e1" transparent opacity={0.3} />
         </mesh>
       </group>
 
@@ -197,7 +202,7 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
             <meshBasicMaterial color="#a855f7" />
           </mesh>
         </group>
-        {/* Power LED (White) & HDD Activity LED (Amber) */}
+        {/* Power LED & HDD Activity LED */}
         <mesh position={[0.1, 0.27, 0.292]}>
           <sphereGeometry args={[0.006, 6, 6]} />
           <meshBasicMaterial color="#ffffff" />
@@ -210,15 +215,15 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
           ref={hddLedRef}
           position={[0.06, 0.27, 0.32]}
           color="#f59e0b"
-          distance={0.4}
+          distance={0.5}
           intensity={0.5}
         />
         {/* Internal GPU / RAM Glow */}
         <pointLight
           position={[-0.08, 0.05, 0]}
           color="#818cf8"
-          intensity={0.5}
-          distance={1.2}
+          intensity={lightsOn ? 0.75 : 0.35}
+          distance={1.4}
         />
       </group>
     </group>

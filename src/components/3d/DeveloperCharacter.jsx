@@ -1,47 +1,160 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useDeveloperInteraction } from './DeveloperInteractionController';
 
 export default function DeveloperCharacter({ onSelect, isHovered, setHovered, lightsOn = true }) {
+  const {
+    activityState,
+    coffeeProgress,
+    phoneActive,
+    headphonesActive,
+    triggerHeadphones,
+    triggerCoffee,
+  } = useDeveloperInteraction();
+
   const characterGroupRef = useRef();
   const chestRef = useRef();
   const headRef = useRef();
   const leftHandRef = useRef();
+  const rightArmGroupRef = useRef();
   const rightHandRef = useRef();
 
-  // Lifelike breathing, posture adjustment, typing, and music head nod
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
 
-    // Posture and breathing transition
+    // --- 1. POSTURE & BREATHING ---
     if (chestRef.current) {
-      // When lights are on, character leans slightly forward in focused coding posture
-      const targetPosture = lightsOn ? -0.07 : 0.03;
+      // In active coding, character leans slightly forward into work (-0.08)
+      // When standby, leans back gently (0.04)
+      const baseLean = lightsOn ? (activityState === 'coffee' ? -0.03 : -0.08) : 0.04;
       const breathing = Math.sin(t * (lightsOn ? 1.6 : 1.1)) * (lightsOn ? 0.003 : 0.002);
       chestRef.current.position.y = 0.55 + breathing;
       chestRef.current.rotation.x = THREE.MathUtils.lerp(
         chestRef.current.rotation.x,
-        targetPosture + breathing,
+        baseLean + breathing,
         0.05
       );
     }
 
-    // Subtle head nod to music / focus rhythm when lights on
+    // --- 2. HEAD ORIENTATION & READING DYNAMICS ---
     if (headRef.current && lightsOn) {
-      headRef.current.rotation.x = Math.sin(t * 2.2) * 0.012;
-      headRef.current.rotation.y = Math.sin(t * 0.9) * 0.015;
+      let targetHeadX = 0;
+      let targetHeadY = 0;
+
+      if (activityState === 'coffee' && coffeeProgress > 0.35 && coffeeProgress < 0.7) {
+        // Tilt head slightly back during coffee sip
+        const sipP = Math.sin(((coffeeProgress - 0.35) / 0.35) * Math.PI);
+        targetHeadX = -0.14 * sipP;
+        targetHeadY = 0.06 * sipP;
+      } else if (phoneActive) {
+        // Glance down-left toward desk smartphone
+        targetHeadX = 0.12;
+        targetHeadY = -0.26;
+      } else if (activityState === 'paused') {
+        // Glancing over to secondary vertical terminal monitor on the right
+        targetHeadX = 0.02 + Math.sin(t * 1.5) * 0.01;
+        targetHeadY = 0.18;
+      } else {
+        // Active coding: subtle eye line reading scanning on ultrawide display
+        targetHeadX = Math.sin(t * 1.8) * 0.012;
+        targetHeadY = Math.sin(t * 0.8) * 0.035;
+      }
+
+      headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, targetHeadX, 0.08);
+      headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetHeadY, 0.08);
     }
 
-    // Active mechanical keyboard typing micro-movements on left hand
+    // --- 3. LEFT HAND TYPING CADENCE ---
     if (leftHandRef.current && lightsOn) {
-      leftHandRef.current.position.y = -0.27 + Math.sin(t * 12.0) * 0.003;
-      leftHandRef.current.position.z = -0.52 + Math.cos(t * 9.0) * 0.002;
+      if (activityState === 'typing' || activityState === 'boost') {
+        const speed = activityState === 'boost' ? 18.0 : 13.0;
+        // Nuanced finger / wrist keystroke micro-movements
+        const keyTapY = Math.sin(t * speed + 0.4) * 0.0035;
+        const keyTapZ = Math.cos(t * (speed * 0.8)) * 0.002;
+        leftHandRef.current.position.y = -0.27 + keyTapY;
+        leftHandRef.current.position.z = -0.52 + keyTapZ;
+      } else {
+        // Rest gently on left keys
+        leftHandRef.current.position.y = THREE.MathUtils.lerp(leftHandRef.current.position.y, -0.27, 0.1);
+        leftHandRef.current.position.z = THREE.MathUtils.lerp(leftHandRef.current.position.z, -0.52, 0.1);
+      }
     }
 
-    // Subtle mouse micro-movement on right hand
-    if (rightHandRef.current && lightsOn) {
-      rightHandRef.current.position.x = 0.22 + Math.sin(t * 1.8) * 0.004;
-      rightHandRef.current.position.z = -0.5 + Math.cos(t * 1.5) * 0.003;
+    // --- 4. RIGHT ARM & HAND COORDINATION (TYPING, MOUSE, COFFEE, HEADPHONES) ---
+    if (rightArmGroupRef.current && rightHandRef.current && lightsOn) {
+      if (activityState === 'coffee' && coffeeProgress > 0) {
+        // Coordinated arm kinematics to follow mug to lips and back
+        let armX = 0.28;
+        let armY = 0.18;
+        let armRotX = 0;
+        let armRotY = 0;
+        let handY = -0.27;
+        let handZ = -0.5;
+
+        if (coffeeProgress <= 0.18) {
+          // Reach toward coffee coaster at [0.52, 0.065, -0.52]
+          const p = coffeeProgress / 0.18;
+          armRotX = THREE.MathUtils.lerp(0, 0.25, p);
+          armRotY = THREE.MathUtils.lerp(0, 0.35, p);
+        } else if (coffeeProgress <= 0.42) {
+          // Lift mug toward chin
+          const p = (coffeeProgress - 0.18) / 0.24;
+          armRotX = THREE.MathUtils.lerp(0.25, -0.45, p);
+          armRotY = THREE.MathUtils.lerp(0.35, -0.15, p);
+          handY = THREE.MathUtils.lerp(-0.27, 0.15, p);
+          handZ = THREE.MathUtils.lerp(-0.5, -0.22, p);
+        } else if (coffeeProgress <= 0.65) {
+          // Holding mug at lips during sip
+          armRotX = -0.45;
+          armRotY = -0.15;
+          handY = 0.15;
+          handZ = -0.22;
+        } else if (coffeeProgress <= 0.88) {
+          // Lowering mug back toward coaster
+          const p = (coffeeProgress - 0.65) / 0.23;
+          armRotX = THREE.MathUtils.lerp(-0.45, 0.25, p);
+          armRotY = THREE.MathUtils.lerp(-0.15, 0.35, p);
+          handY = THREE.MathUtils.lerp(0.15, -0.27, p);
+          handZ = THREE.MathUtils.lerp(-0.22, -0.5, p);
+        } else {
+          // Returning arm from coaster back to desk
+          const p = (coffeeProgress - 0.88) / 0.12;
+          armRotX = THREE.MathUtils.lerp(0.25, 0, p);
+          armRotY = THREE.MathUtils.lerp(0.35, 0, p);
+        }
+
+        rightArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.x, armRotX, 0.12);
+        rightArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.y, armRotY, 0.12);
+        rightHandRef.current.position.y = THREE.MathUtils.lerp(rightHandRef.current.position.y, handY, 0.12);
+        rightHandRef.current.position.z = THREE.MathUtils.lerp(rightHandRef.current.position.z, handZ, 0.12);
+      } else if (headphonesActive) {
+        // Reach up toward right ear cup
+        rightArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.x, -0.75, 0.1);
+        rightArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.y, 0.45, 0.1);
+        rightHandRef.current.position.y = THREE.MathUtils.lerp(rightHandRef.current.position.y, 0.32, 0.1);
+        rightHandRef.current.position.z = THREE.MathUtils.lerp(rightHandRef.current.position.z, -0.12, 0.1);
+      } else if (activityState === 'typing' || activityState === 'boost') {
+        // Return arm to typing posture over keyboard
+        rightArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.x, 0, 0.1);
+        rightArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.y, -0.22, 0.1);
+
+        const speed = activityState === 'boost' ? 20.0 : 14.5;
+        const keyTapY = Math.sin(t * speed + 1.8) * 0.0035;
+        const keyTapZ = Math.cos(t * (speed * 0.85) + 0.5) * 0.002;
+
+        rightHandRef.current.position.x = THREE.MathUtils.lerp(rightHandRef.current.position.x, 0.06, 0.1);
+        rightHandRef.current.position.y = -0.27 + keyTapY;
+        rightHandRef.current.position.z = -0.52 + keyTapZ;
+      } else {
+        // Resting arm on precision mouse
+        rightArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.x, 0, 0.1);
+        rightArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(rightArmGroupRef.current.rotation.y, 0, 0.1);
+
+        rightHandRef.current.position.x = THREE.MathUtils.lerp(rightHandRef.current.position.x, 0.22, 0.08);
+        rightHandRef.current.position.y = THREE.MathUtils.lerp(rightHandRef.current.position.y, -0.27, 0.08);
+        rightHandRef.current.position.z = THREE.MathUtils.lerp(rightHandRef.current.position.z, -0.5, 0.08);
+      }
     }
   });
 
@@ -52,11 +165,11 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
         position={[0, 0.6, 0]}
         onPointerOver={(e) => {
           e.stopPropagation();
-          setHovered('developer');
+          setHovered && setHovered('developer');
         }}
         onPointerOut={(e) => {
           e.stopPropagation();
-          setHovered(null);
+          setHovered && setHovered(null);
         }}
         onClick={(e) => {
           e.stopPropagation();
@@ -148,7 +261,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
         </mesh>
       </group>
 
-      {/* Torso & Upper Body (Subtle breathing oscillation) */}
+      {/* Torso & Upper Body */}
       <group ref={chestRef} position={[0, 0.55, 0]}>
         {/* Core Hoodie Torso */}
         <mesh castShadow>
@@ -157,11 +270,11 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
             color={isHovered === 'developer' ? '#1e293b' : '#0d1322'}
             roughness={0.7}
             emissive={isHovered === 'developer' ? '#38bdf8' : '#000000'}
-            emissiveIntensity={isHovered === 'developer' ? 0.12 : 0}
+            emissiveIntensity={isHovered === 'developer' ? 0.15 : 0}
           />
         </mesh>
 
-        {/* Left Arm & Hand (Reaching to mechanical keyboard) */}
+        {/* Left Arm & Hand (Keyboard typing) */}
         <group position={[-0.28, 0.18, 0]}>
           <mesh position={[-0.04, -0.15, -0.12]} rotation={[0.65, 0.2, -0.15]} castShadow>
             <cylinderGeometry args={[0.065, 0.055, 0.38, 12]} />
@@ -177,8 +290,8 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
           </mesh>
         </group>
 
-        {/* Right Arm & Hand (Resting on mouse) */}
-        <group position={[0.28, 0.18, 0]}>
+        {/* Right Arm & Hand (Coordinated Typing, Mouse, Coffee, and Headphones) */}
+        <group ref={rightArmGroupRef} position={[0.28, 0.18, 0]}>
           <mesh position={[0.04, -0.15, -0.12]} rotation={[0.65, -0.2, 0.15]} castShadow>
             <cylinderGeometry args={[0.065, 0.055, 0.38, 12]} />
             <meshStandardMaterial color="#0d1322" roughness={0.7} />
@@ -217,19 +330,20 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
             <meshStandardMaterial color="#08090d" roughness={0.9} />
           </mesh>
 
-          {/* STUDIO OVER-EAR HEADPHONES */}
+          {/* STUDIO OVER-EAR HEADPHONES (Clickable Interactive Flow State) */}
           <group
             onClick={(e) => {
               e.stopPropagation();
+              triggerHeadphones();
               onSelect && onSelect('headphones');
             }}
             onPointerOver={(e) => {
               e.stopPropagation();
-              setHovered('headphones');
+              setHovered && setHovered('headphones');
             }}
             onPointerOut={(e) => {
               e.stopPropagation();
-              setHovered(null);
+              setHovered && setHovered(null);
             }}
           >
             {/* Headband */}
@@ -247,7 +361,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
               {/* Cyan LED Ring */}
               <mesh position={[0, 0.021, 0]}>
                 <ringGeometry args={[0.032, 0.042, 16]} />
-                <meshBasicMaterial color={lightsOn ? '#38bdf8' : '#0e3a52'} />
+                <meshBasicMaterial color={lightsOn ? (headphonesActive ? '#38bdf8' : '#0284c7') : '#0e3a52'} />
               </mesh>
             </group>
 
@@ -260,7 +374,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
               {/* Purple LED Ring */}
               <mesh position={[0, 0.021, 0]}>
                 <ringGeometry args={[0.032, 0.042, 16]} />
-                <meshBasicMaterial color={lightsOn ? '#a855f7' : '#3b1763'} />
+                <meshBasicMaterial color={lightsOn ? (headphonesActive ? '#c084fc' : '#a855f7') : '#3b1763'} />
               </mesh>
             </group>
           </group>

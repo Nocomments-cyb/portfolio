@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react';
 import * as THREE from 'three';
-import { createIDETexture, createTerminalTexture } from './screenTextures';
+import { createTerminalTexture } from './screenTextures';
+import { useCodingScreenTexture } from './CodingScreen';
+import { useDeveloperInteraction } from './DeveloperInteractionController';
 
 export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = true }) {
-  const ideTexture = useMemo(() => createIDETexture(), []);
+  const codingTexture = useCodingScreenTexture(lightsOn);
   const terminalTexture = useMemo(() => createTerminalTexture(), []);
+  const { activityState } = useDeveloperInteraction();
 
   return (
     <group position={[0, 0.45, -1.2]}>
@@ -40,11 +43,11 @@ export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = t
           <meshStandardMaterial color="#080c14" roughness={0.3} metalness={0.85} />
         </mesh>
 
-        {/* Screen Display Surface */}
+        {/* Dynamic Screen Display Surface (Living Animated Coding Environment) */}
         <mesh position={[0, 0, 0.021]}>
           <planeGeometry args={[2.2, 1.0]} />
           <meshBasicMaterial
-            map={ideTexture}
+            map={codingTexture}
             toneMapped={false}
           />
         </mesh>
@@ -75,7 +78,7 @@ export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = t
           <pointLight
             position={[0, -0.12, 0.1]}
             color="#f8fafc"
-            intensity={lightsOn ? 0.5 : 0.02}
+            intensity={lightsOn ? (activityState === 'coffee' ? 0.28 : 0.55) : 0.02}
             distance={1.4}
           />
         </group>
@@ -84,7 +87,7 @@ export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = t
         <pointLight
           position={[0, 0, 0.38]}
           color="#38bdf8"
-          intensity={lightsOn ? (isHovered ? 0.9 : 0.65) : 0.2}
+          intensity={lightsOn ? (activityState === 'coffee' ? 0.42 : (isHovered ? 0.95 : 0.72)) : 0.2}
           distance={2.0}
         />
       </group>
