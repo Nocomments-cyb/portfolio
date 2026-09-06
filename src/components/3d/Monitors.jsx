@@ -18,34 +18,19 @@ function useSecondaryScreenTexture(lightsOn = true) {
     cursorBlink: true,
   });
 
-  const texture = useMemo(() => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 600;
-    canvas.height = 960;
-    canvasRef.current = canvas;
-
-    const tex = new THREE.CanvasTexture(canvas);
-    tex.generateMipmaps = true;
-    tex.minFilter = THREE.LinearMipmapLinearFilter;
-    tex.magFilter = THREE.LinearFilter;
-    tex.colorSpace = THREE.SRGBColorSpace;
-    textureRef.current = tex;
-    return tex;
-  }, []);
-
   const terminalLogs = useMemo(() => [
     { text: '$ vite build --profile', color: '#38bdf8' },
-    { text: 'vite v6.4.3 building for production...', color: '#64748b' },
-    { text: '✓ 1889 modules transformed.', color: '#34d399' },
-    { text: 'dist/index.html               1.19 kB', color: '#94a3b8' },
-    { text: 'dist/assets/index.css        63.34 kB', color: '#94a3b8' },
-    { text: 'dist/assets/three-vendor.js  906.14 kB', color: '#94a3b8' },
-    { text: '✓ built in 1m 15s', color: '#34d399' },
-    { text: '----------------------------------------', color: '#334155' },
+    { text: 'vite v6.4.3 building for production...', color: '#94a3b8' },
+    { text: '✓ 1895 modules transformed.', color: '#34d399' },
+    { text: 'dist/index.html               1.30 kB', color: '#cbd5e1' },
+    { text: 'dist/assets/index.css        70.26 kB', color: '#cbd5e1' },
+    { text: 'dist/assets/three-vendor.js  906.17 kB', color: '#cbd5e1' },
+    { text: '✓ built in 59.45s', color: '#34d399' },
+    { text: '----------------------------------------', color: '#475569' },
     { text: '[OK] Host: WORKSTATION-ALPHA', color: '#34d399' },
     { text: '[OK] Location: Dubai, United Arab Emirates', color: '#38bdf8' },
     { text: '[OK] Timezone: GST (UTC+4)', color: '#94a3b8' },
-    { text: '[OK] Ambient Flow: ANC Active', color: '#a855f7' },
+    { text: '[OK] Ambient Flow: ANC Active', color: '#c084fc' },
     { text: '[GPU] RTX 4090: 42°C | 24GB VRAM | 145W', color: '#38bdf8' },
     { text: '[MEM] 64GB DDR5-6000: 22% utilized', color: '#34d399' },
     { text: '[NET] 10 Gbps fiber uplink: optimal', color: '#38bdf8' },
@@ -53,14 +38,184 @@ function useSecondaryScreenTexture(lightsOn = true) {
     { text: '● ALL SYSTEMS 100% OPERATIONAL', color: '#10b981' },
     { text: '✓ Edge cluster ping: 11.4ms (Direct)', color: '#34d399' },
     { text: '✓ Real-time telemetry synchronized', color: '#38bdf8' },
-    { text: '----------------------------------------', color: '#334155' },
+    { text: '----------------------------------------', color: '#475569' },
   ], []);
+
+  // Reusable terminal render function
+  const drawTerminal = (canvas, anim) => {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // --- 1. LUMINOUS CONSOLE BACKGROUND (Radiant Deep Navy Slate) ---
+    ctx.fillStyle = '#141f32';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // --- 2. TOP HEADER BAR ---
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(0, 0, canvas.width, 52);
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+    ctx.fillRect(0, 52, canvas.width, 1.5);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 15px "JetBrains Mono", monospace';
+    ctx.fillText('SYSTEM TELEMETRY // WORKSTATION', 24, 33);
+
+    // Flashing green power indicator
+    ctx.fillStyle = '#10b981';
+    ctx.beginPath();
+    ctx.arc(canvas.width - 28, 26, 5.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // --- 3. TELEMETRY STATUS MATRIX (4 Vivid Cards) ---
+    const telemetryItems = [
+      { label: 'BUILD', status: 'PASSING', color: '#34d399' },
+      { label: 'WEBGL', status: 'ACTIVE', color: '#38bdf8' },
+      { label: 'DATABASE', status: 'READY', color: '#10b981' },
+      { label: 'NETWORK', status: 'ONLINE', color: '#38bdf8' }
+    ];
+
+    ctx.fillStyle = '#17253d';
+    ctx.fillRect(16, 72, canvas.width - 32, 116);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(16, 72, canvas.width - 32, 116);
+
+    telemetryItems.forEach((item, idx) => {
+      const col = idx % 2;
+      const row = Math.floor(idx / 2);
+      const x = 32 + col * 230;
+      const y = 110 + row * 46;
+
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      ctx.fillText(item.label.padEnd(10, ' '), x, y);
+
+      ctx.fillStyle = item.color;
+      ctx.font = 'bold 13px "JetBrains Mono", monospace';
+      ctx.fillText(item.status, x + 95, y);
+
+      ctx.beginPath();
+      ctx.arc(x + 85, y - 4, 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // --- 4. PIPELINE / PROJECTS OVERVIEW ---
+    ctx.fillStyle = '#17253d';
+    ctx.fillRect(16, 208, canvas.width - 32, 185);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.strokeRect(16, 208, canvas.width - 32, 185);
+
+    ctx.fillStyle = '#c084fc';
+    ctx.font = 'bold 13px "JetBrains Mono", monospace';
+    ctx.fillText('PROJECTS PIPELINE', 32, 238);
+
+    const projects = [
+      { name: 'VYBE', role: 'Flagship Web App', status: 'ONLINE', color: '#34d399' },
+      { name: 'LOST & FOUND', role: 'Community Network', status: 'BETA', color: '#f59e0b' },
+      { name: 'R&D LAB', role: '3D WebGL Workstation', status: 'ACTIVE', color: '#38bdf8' }
+    ];
+
+    projects.forEach((proj, idx) => {
+      const y = 274 + idx * 38;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 12.5px "JetBrains Mono", monospace';
+      ctx.fillText('► ' + proj.name, 32, y);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '11.5px "JetBrains Mono", monospace';
+      ctx.fillText(proj.role, 175, y);
+
+      ctx.fillStyle = proj.color;
+      ctx.font = 'bold 11.5px "JetBrains Mono", monospace';
+      ctx.fillText(proj.status, 410, y);
+    });
+
+    // --- 5. LIVE LATENCY / FPS GRAPH (Pulsing Animated Waveform) ---
+    ctx.fillStyle = '#17253d';
+    ctx.fillRect(16, 412, canvas.width - 32, 118);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.strokeRect(16, 412, canvas.width - 32, 118);
+
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = 'bold 11.5px "JetBrains Mono", monospace';
+    ctx.fillText('DATABASE EDGE LATENCY (Supabase Direct)', 32, 438);
+
+    ctx.fillStyle = '#34d399';
+    ctx.fillText('11.4ms (Active)', 380, 438);
+
+    // Animated latency graph bars
+    const numBars = 18;
+    for (let i = 0; i < numBars; i++) {
+      const dynamicVal = 18 + Math.sin(anim.graphStep + i * 0.45) * 10 + Math.cos(i * 0.7) * 6;
+      ctx.fillStyle = i === numBars - 1 ? '#38bdf8' : '#10b981';
+      ctx.fillRect(32 + i * 25, 510 - dynamicVal * 1.6, 17, dynamicVal * 1.6);
+    }
+
+    // --- 6. TERMINAL OUTPUT STREAM (Actively Scrolling Logs) ---
+    const termBoxY = 548;
+    const termBoxH = 430;
+    ctx.fillStyle = '#0e1728';
+    ctx.fillRect(16, termBoxY, canvas.width - 32, termBoxH);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.strokeRect(16, termBoxY, canvas.width - 32, termBoxH);
+
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 13px "JetBrains Mono", monospace';
+    ctx.fillText('TERMINAL // LIVE LOGS • SYSTEM ACTIVE', 32, 578);
+
+    // Clip streaming logs
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(16, termBoxY + 38, canvas.width - 32, termBoxH - 74);
+    ctx.clip();
+
+    ctx.font = 'bold 12px "JetBrains Mono", Consolas, monospace';
+    terminalLogs.forEach((line, index) => {
+      let lineY = 612 + index * 26 - anim.logScroll;
+      if (lineY < 570) {
+        lineY += terminalLogs.length * 26;
+      }
+      ctx.fillStyle = line.color;
+      ctx.fillText(line.text, 32, lineY);
+    });
+
+    ctx.restore();
+
+    // Terminal command prompt line at bottom
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 12.5px "JetBrains Mono", monospace';
+    ctx.fillText('admin@dubai-station:~$', 32, canvas.height - 30);
+    if (anim.cursorBlink) {
+      ctx.fillStyle = '#34d399';
+      ctx.fillRect(215, canvas.height - 42, 8, 15);
+    }
+  };
+
+  // Create canvas and Three.js canvas texture with immediate initial draw
+  const texture = useMemo(() => {
+    // 512x1024 is true Power-of-Two (2^9 x 2^10), guaranteeing instant WebGL compatibility
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 1024;
+    canvasRef.current = canvas;
+
+    // Draw initial frame immediately so texture is NEVER black on mount
+    drawTerminal(canvas, animRef.current);
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.generateMipmaps = false; // Disable mipmaps for 2D canvas texture
+    tex.minFilter = THREE.LinearFilter;
+    tex.magFilter = THREE.LinearFilter;
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.needsUpdate = true;
+    textureRef.current = tex;
+    return tex;
+  }, []);
 
   useFrame((state) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
 
     const t = state.clock.getElapsedTime();
     const anim = animRef.current;
@@ -70,153 +225,11 @@ function useSecondaryScreenTexture(lightsOn = true) {
     anim.lastUpdate = t;
 
     anim.cursorBlink = Math.sin(t * 6.5) > 0;
-    anim.logScroll = (anim.logScroll + 0.65) % (terminalLogs.length * 24);
+    anim.logScroll = (anim.logScroll + 0.65) % (terminalLogs.length * 26);
     anim.graphStep = t * 2.2;
 
-    // --- CANVAS RENDERING ---
-    // Deep obsidian background
-    ctx.fillStyle = '#070b13';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Top Header Bar
-    ctx.fillStyle = '#0d1424';
-    ctx.fillRect(0, 0, canvas.width, 48);
-    ctx.strokeStyle = '#1e293b';
-    ctx.strokeRect(0, 0, canvas.width, 48);
-
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = 'bold 14px "JetBrains Mono", monospace';
-    ctx.fillText('SYSTEM TELEMETRY // WORKSTATION', 24, 30);
-
-    // Flashing green power indicator
-    ctx.fillStyle = '#10b981';
-    ctx.beginPath();
-    ctx.arc(canvas.width - 32, 24, 5, 0, Math.PI * 2);
-    ctx.fill();
-
-    // --- TELEMETRY STATUS MATRIX (4 Vivid Cards) ---
-    const telemetryItems = [
-      { label: 'BUILD', status: 'PASSING', color: '#34d399' },
-      { label: 'WEBGL', status: 'ACTIVE', color: '#38bdf8' },
-      { label: 'DATABASE', status: 'READY', color: '#10b981' },
-      { label: 'NETWORK', status: 'ONLINE', color: '#38bdf8' }
-    ];
-
-    ctx.fillStyle = '#0b1120';
-    ctx.fillRect(20, 68, canvas.width - 40, 110);
-    ctx.strokeStyle = '#1e293b';
-    ctx.strokeRect(20, 68, canvas.width - 40, 110);
-
-    telemetryItems.forEach((item, idx) => {
-      const col = idx % 2;
-      const row = Math.floor(idx / 2);
-      const x = 40 + col * 270;
-      const y = 104 + row * 44;
-
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.fillText(item.label.padEnd(10, ' '), x, y);
-
-      ctx.fillStyle = item.color;
-      ctx.font = 'bold 13px "JetBrains Mono", monospace';
-      ctx.fillText(item.status, x + 110, y);
-
-      ctx.beginPath();
-      ctx.arc(x + 98, y - 4, 3.5, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    // --- PIPELINE / PROJECTS OVERVIEW ---
-    ctx.fillStyle = '#0b1120';
-    ctx.fillRect(20, 196, canvas.width - 40, 175);
-    ctx.strokeStyle = '#1e293b';
-    ctx.strokeRect(20, 196, canvas.width - 40, 175);
-
-    ctx.fillStyle = '#c084fc';
-    ctx.font = 'bold 12px "JetBrains Mono", monospace';
-    ctx.fillText('PROJECTS PIPELINE', 38, 226);
-
-    const projects = [
-      { name: 'VYBE', role: 'Flagship Web App', status: 'ONLINE', color: '#34d399' },
-      { name: 'LOST & FOUND', role: 'Community Network', status: 'BETA', color: '#f59e0b' },
-      { name: 'R&D LAB', role: '3D WebGL Workstation', status: 'ACTIVE', color: '#38bdf8' }
-    ];
-
-    projects.forEach((proj, idx) => {
-      const y = 260 + idx * 36;
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.fillText('► ' + proj.name, 38, y);
-
-      ctx.fillStyle = '#64748b';
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillText(proj.role, 195, y);
-
-      ctx.fillStyle = proj.color;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.fillText(proj.status, 480, y);
-    });
-
-    // --- LIVE LATENCY / FPS GRAPH (Pulsing Animated Waveform) ---
-    ctx.fillStyle = '#0b1120';
-    ctx.fillRect(20, 388, canvas.width - 40, 110);
-    ctx.strokeStyle = '#1e293b';
-    ctx.strokeRect(20, 388, canvas.width - 40, 110);
-
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '11px "JetBrains Mono", monospace';
-    ctx.fillText('DATABASE EDGE LATENCY (Supabase Direct)', 38, 414);
-
-    const currentPing = (11.2 + Math.sin(t * 1.5) * 0.8).toFixed(1);
-    ctx.fillStyle = '#34d399';
-    ctx.fillText(`${currentPing}ms (Active)`, 440, 414);
-
-    // Animated latency graph bars
-    const numBars = 19;
-    for (let i = 0; i < numBars; i++) {
-      const dynamicVal = 20 + Math.sin(anim.graphStep + i * 0.4) * 9 + Math.cos(i * 0.7) * 6;
-      ctx.fillStyle = i === numBars - 1 ? '#38bdf8' : '#10b981';
-      ctx.fillRect(38 + i * 27, 480 - dynamicVal * 1.6, 18, dynamicVal * 1.6);
-    }
-
-    // --- TERMINAL OUTPUT STREAM (Actively Scrolling Logs) ---
-    const termBoxY = 516;
-    const termBoxH = 420;
-    ctx.fillStyle = '#080d17';
-    ctx.fillRect(20, termBoxY, canvas.width - 40, termBoxH);
-    ctx.strokeStyle = '#1e293b';
-    ctx.strokeRect(20, termBoxY, canvas.width - 40, termBoxH);
-
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = 'bold 12px "JetBrains Mono", monospace';
-    ctx.fillText('TERMINAL // LIVE LOGS • SYSTEM ACTIVE', 38, 546);
-
-    // Clip streaming logs
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(20, termBoxY + 36, canvas.width - 40, termBoxH - 66);
-    ctx.clip();
-
-    ctx.font = '12px "JetBrains Mono", Consolas, monospace';
-    terminalLogs.forEach((line, index) => {
-      let lineY = 578 + index * 24 - anim.logScroll;
-      if (lineY < 540) {
-        lineY += terminalLogs.length * 24;
-      }
-      ctx.fillStyle = line.color;
-      ctx.fillText(line.text, 38, lineY);
-    });
-
-    ctx.restore();
-
-    // Terminal command prompt line at bottom
-    ctx.fillStyle = '#38bdf8';
-    ctx.font = 'bold 12px "JetBrains Mono", monospace';
-    ctx.fillText('admin@dubai-station:~$', 38, canvas.height - 30);
-    if (anim.cursorBlink) {
-      ctx.fillStyle = '#34d399';
-      ctx.fillRect(215, canvas.height - 42, 8, 15);
-    }
+    // Render active frame
+    drawTerminal(canvas, anim);
 
     if (textureRef.current) {
       textureRef.current.needsUpdate = true;
@@ -300,8 +313,8 @@ export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = t
           <pointLight
             position={[0, -0.12, 0.1]}
             color="#f8fafc"
-            intensity={lightsOn ? (activityState === 'coffee' ? 0.35 : 0.7) : 0.05}
-            distance={1.6}
+            intensity={lightsOn ? (activityState === 'coffee' ? 0.5 : 0.95) : 0.1}
+            distance={1.8}
           />
         </group>
 
@@ -309,8 +322,8 @@ export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = t
         <pointLight
           position={[0, 0, 0.38]}
           color="#38bdf8"
-          intensity={lightsOn ? (activityState === 'coffee' ? 0.55 : (isHovered ? 1.2 : 0.95)) : 0.3}
-          distance={2.4}
+          intensity={lightsOn ? (activityState === 'coffee' ? 0.8 : (isHovered ? 1.6 : 1.35)) : 0.45}
+          distance={2.6}
         />
       </group>
 
@@ -372,8 +385,8 @@ export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = t
         <pointLight
           position={[0, 0, 0.35]}
           color="#38bdf8"
-          intensity={lightsOn ? (isHovered ? 1.2 : 0.85) : 0.35}
-          distance={2.2}
+          intensity={lightsOn ? (isHovered ? 1.4 : 1.15) : 0.45}
+          distance={2.3}
         />
       </group>
 
