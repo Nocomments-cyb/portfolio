@@ -5,22 +5,28 @@ import * as THREE from 'three';
 export default function Peripherals({ onSelect, isHovered, setHovered }) {
   const fanRef = useRef();
   const steamRef = useRef();
+  const hddLedRef = useRef();
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (fanRef.current) {
-      fanRef.current.rotation.z = t * 4;
+      fanRef.current.rotation.z = t * 3.5;
     }
     if (steamRef.current) {
-      steamRef.current.position.y = 0.12 + (t % 1.5) * 0.08;
-      steamRef.current.scale.setScalar(0.8 + (t % 1.5) * 0.6);
-      steamRef.current.material.opacity = Math.max(0, 0.4 - (t % 1.5) * 0.25);
+      steamRef.current.position.y = 0.12 + (t % 1.6) * 0.07;
+      steamRef.current.scale.setScalar(0.75 + (t % 1.6) * 0.5);
+      steamRef.current.material.opacity = Math.max(0, 0.35 - (t % 1.6) * 0.22);
+    }
+    if (hddLedRef.current) {
+      // Intermittent hard drive activity blink
+      const blink = Math.sin(t * 12) > 0.6 ? 1 : 0.1;
+      hddLedRef.current.intensity = blink * 0.8;
     }
   });
 
   return (
     <group position={[0, 0, 0]}>
-      {/* --- CUSTOM MECHANICAL KEYBOARD --- */}
+      {/* --- CUSTOM 75% MECHANICAL KEYBOARD --- */}
       <group
         position={[-0.1, 0.075, -0.62]}
         onClick={(e) => {
@@ -36,15 +42,15 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
           setHovered(null);
         }}
       >
-        {/* Keyboard Case */}
+        {/* Keyboard Chassis */}
         <mesh castShadow receiveShadow>
           <boxGeometry args={[0.62, 0.024, 0.24]} />
           <meshStandardMaterial
             color="#0f172a"
-            roughness={0.4}
+            roughness={0.35}
             metalness={0.7}
             emissive={isHovered === 'keyboard' ? '#38bdf8' : '#000000'}
-            emissiveIntensity={isHovered === 'keyboard' ? 0.25 : 0}
+            emissiveIntensity={isHovered === 'keyboard' ? 0.3 : 0}
           />
         </mesh>
 
@@ -52,6 +58,12 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
         <mesh position={[0, 0.018, 0]}>
           <boxGeometry args={[0.58, 0.015, 0.2]} />
           <meshStandardMaterial color="#1e293b" roughness={0.6} />
+        </mesh>
+
+        {/* Braided USB Cable to Desk Grommet */}
+        <mesh position={[0, -0.005, -0.16]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.005, 0.005, 0.12, 8]} />
+          <meshStandardMaterial color="#334155" roughness={0.8} />
         </mesh>
 
         {/* RGB Underglow Light Strip */}
@@ -62,8 +74,8 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
         <pointLight
           position={[0, 0.03, 0]}
           color="#38bdf8"
-          intensity={0.35}
-          distance={0.6}
+          intensity={isHovered === 'keyboard' ? 0.6 : 0.35}
+          distance={0.7}
         />
       </group>
 
@@ -73,10 +85,47 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
           <boxGeometry args={[0.11, 0.028, 0.18]} />
           <meshStandardMaterial color="#090d16" roughness={0.3} metalness={0.7} />
         </mesh>
-        {/* Scroll wheel light */}
+        {/* Scroll Wheel Light */}
         <mesh position={[0, 0.016, -0.03]}>
           <boxGeometry args={[0.015, 0.01, 0.04]} />
           <meshBasicMaterial color="#a855f7" />
+        </mesh>
+      </group>
+
+      {/* --- SMARTPHONE LYING FLAT ON DESK --- */}
+      <group position={[-0.48, 0.074, -0.46]} rotation={[0, 0.12, 0]}>
+        {/* Phone Body */}
+        <mesh castShadow>
+          <boxGeometry args={[0.12, 0.01, 0.22]} />
+          <meshStandardMaterial color="#0b0f19" metalness={0.9} roughness={0.2} />
+        </mesh>
+        {/* Screen Glass */}
+        <mesh position={[0, 0.006, 0]}>
+          <planeGeometry args={[0.11, 0.21]} rotation={[-Math.PI / 2, 0, 0]} />
+          <meshPhysicalMaterial
+            color="#040711"
+            roughness={0.1}
+            metalness={0.1}
+          />
+        </mesh>
+        {/* Notification Status Dot */}
+        <mesh position={[0.04, 0.007, -0.09]}>
+          <sphereGeometry args={[0.003, 6, 6]} />
+          <meshBasicMaterial color="#10b981" />
+        </mesh>
+      </group>
+
+      {/* --- MINIMALIST LINEN NOTEBOOK & PEN --- */}
+      <group position={[-1.24, 0.072, -0.48]} rotation={[0, -0.08, 0]}>
+        {/* Notebook Cover */}
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[0.26, 0.018, 0.36]} />
+          <meshStandardMaterial color="#1e293b" roughness={0.7} />
+        </mesh>
+        {/* Metal Pen */}
+        <mesh position={[0.16, 0.01, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.004, 0.004, 0.28, 8]} />
+          <meshStandardMaterial color="#cbd5e1" metalness={0.9} roughness={0.2} />
         </mesh>
       </group>
 
@@ -106,21 +155,18 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
 
       {/* --- ARTISAN DESK SUCCULENT --- */}
       <group position={[-1.05, 0.065, -0.75]}>
-        {/* Geometric Pot */}
         <mesh position={[0, 0.05, 0]} castShadow>
           <cylinderGeometry args={[0.07, 0.05, 0.09, 6]} />
           <meshStandardMaterial color="#0f172a" roughness={0.6} />
         </mesh>
-        {/* Succulent Leaves */}
         <mesh position={[0, 0.11, 0]}>
           <coneGeometry args={[0.07, 0.07, 6]} />
           <meshStandardMaterial color="#059669" roughness={0.7} />
         </mesh>
       </group>
 
-      {/* --- LIQUID-COOLED PC CHASSIS (Gaming/Dev Rig) --- */}
+      {/* --- LIQUID-COOLED PC CHASSIS --- */}
       <group position={[1.45, 0.28, -0.75]} rotation={[0, -0.15, 0]}>
-        {/* Main Aluminum Chassis */}
         <mesh castShadow>
           <boxGeometry args={[0.3, 0.58, 0.58]} />
           <meshStandardMaterial color="#080c14" roughness={0.3} metalness={0.9} />
@@ -137,21 +183,37 @@ export default function Peripherals({ onSelect, isHovered, setHovered }) {
             opacity={0.35}
           />
         </mesh>
-        {/* Front Intake Fan RGB Ring (Rotating) */}
+        {/* Front Intake Fan 1 (Rotating) */}
         <group ref={fanRef} position={[0, 0.1, 0.291]}>
           <mesh>
             <ringGeometry args={[0.08, 0.095, 24]} />
             <meshBasicMaterial color="#38bdf8" />
           </mesh>
         </group>
-        {/* Lower Fan RGB Ring */}
+        {/* Front Intake Fan 2 */}
         <group position={[0, -0.12, 0.291]}>
           <mesh>
             <ringGeometry args={[0.08, 0.095, 24]} />
             <meshBasicMaterial color="#a855f7" />
           </mesh>
         </group>
-        {/* Internal Hardware Accent Light */}
+        {/* Power LED (White) & HDD Activity LED (Amber) */}
+        <mesh position={[0.1, 0.27, 0.292]}>
+          <sphereGeometry args={[0.006, 6, 6]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+        <mesh position={[0.06, 0.27, 0.292]}>
+          <sphereGeometry args={[0.005, 6, 6]} />
+          <meshBasicMaterial color="#f59e0b" />
+        </mesh>
+        <pointLight
+          ref={hddLedRef}
+          position={[0.06, 0.27, 0.32]}
+          color="#f59e0b"
+          distance={0.4}
+          intensity={0.5}
+        />
+        {/* Internal GPU / RAM Glow */}
         <pointLight
           position={[-0.08, 0.05, 0]}
           color="#818cf8"

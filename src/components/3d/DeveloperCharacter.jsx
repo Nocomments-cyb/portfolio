@@ -6,12 +6,12 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
   const characterGroupRef = useRef();
   const chestRef = useRef();
 
-  // Gentle breathing / idle micro-movement
+  // Extremely subtle, lifelike breathing idle animation
   useFrame((state) => {
     if (chestRef.current) {
       const t = state.clock.getElapsedTime();
-      chestRef.current.position.y = 0.55 + Math.sin(t * 1.8) * 0.005;
-      chestRef.current.rotation.x = -0.05 + Math.sin(t * 1.8) * 0.003;
+      chestRef.current.position.y = 0.55 + Math.sin(t * 1.4) * 0.003;
+      chestRef.current.rotation.x = -0.05 + Math.sin(t * 1.4) * 0.002;
     }
   });
 
@@ -52,40 +52,39 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
                 rotation={[0, -angle, 0]}
               >
                 <boxGeometry args={[0.32, 0.03, 0.04]} />
-                <meshStandardMaterial color="#090d16" metalness={0.8} roughness={0.3} />
+                <meshStandardMaterial color="#080c14" metalness={0.8} roughness={0.3} />
               </mesh>
             );
           })}
-          {/* Hydraulic Cylinder */}
           <mesh position={[0, 0.2, 0]}>
             <cylinderGeometry args={[0.025, 0.025, 0.4, 16]} />
-            <meshStandardMaterial color="#cbd5e1" metalness={0.9} roughness={0.2} />
+            <meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.2} />
           </mesh>
         </group>
 
         {/* Seat Cushion */}
         <mesh position={[0, 0.12, 0]} castShadow>
           <boxGeometry args={[0.62, 0.09, 0.58]} />
-          <meshStandardMaterial color="#0f172a" roughness={0.7} />
+          <meshStandardMaterial color="#0d1424" roughness={0.7} />
         </mesh>
 
-        {/* Spine Support Column */}
+        {/* Ergonomic Spine Support Ribs */}
         <mesh position={[0, 0.55, 0.28]} castShadow>
           <boxGeometry args={[0.08, 0.75, 0.06]} />
-          <meshStandardMaterial color="#090d16" metalness={0.7} roughness={0.3} />
+          <meshStandardMaterial color="#080c14" metalness={0.7} roughness={0.3} />
         </mesh>
 
         {/* High-Back Contoured Mesh Backrest */}
         <mesh position={[0, 0.65, 0.26]} rotation={[-0.08, 0, 0]} castShadow>
           <boxGeometry args={[0.56, 0.72, 0.05]} />
-          <meshStandardMaterial color="#111827" roughness={0.6} />
+          <meshStandardMaterial color="#0f172a" roughness={0.6} />
         </mesh>
 
         {/* Left Armrest */}
         <group position={[-0.34, 0.28, 0.02]}>
           <mesh position={[0, -0.08, 0]}>
             <cylinderGeometry args={[0.015, 0.015, 0.2, 8]} />
-            <meshStandardMaterial color="#090d16" metalness={0.7} />
+            <meshStandardMaterial color="#080c14" metalness={0.7} />
           </mesh>
           <mesh position={[0, 0.02, 0]}>
             <boxGeometry args={[0.07, 0.03, 0.26]} />
@@ -97,7 +96,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
         <group position={[0.34, 0.28, 0.02]}>
           <mesh position={[0, -0.08, 0]}>
             <cylinderGeometry args={[0.015, 0.015, 0.2, 8]} />
-            <meshStandardMaterial color="#090d16" metalness={0.7} />
+            <meshStandardMaterial color="#080c14" metalness={0.7} />
           </mesh>
           <mesh position={[0, 0.02, 0]}>
             <boxGeometry args={[0.07, 0.03, 0.26]} />
@@ -107,89 +106,85 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
       </group>
 
       {/* --- DEVELOPER CHARACTER SCULPTURE --- */}
-      {/* Lower Body / Pants */}
+      {/* Lower Body */}
       <group position={[0, 0.16, -0.04]}>
         <mesh position={[-0.14, -0.15, -0.18]} rotation={[0.4, 0, 0]}>
           <cylinderGeometry args={[0.085, 0.075, 0.45, 12]} />
-          <meshStandardMaterial color="#0b0f19" roughness={0.8} />
+          <meshStandardMaterial color="#090d16" roughness={0.8} />
         </mesh>
         <mesh position={[0.14, -0.15, -0.18]} rotation={[0.4, 0, 0]}>
           <cylinderGeometry args={[0.085, 0.075, 0.45, 12]} />
-          <meshStandardMaterial color="#0b0f19" roughness={0.8} />
+          <meshStandardMaterial color="#090d16" roughness={0.8} />
         </mesh>
       </group>
 
-      {/* Torso / Upper Body (with breathing oscillation) */}
+      {/* Torso & Upper Body (Subtle breathing oscillation) */}
       <group ref={chestRef} position={[0, 0.55, 0]}>
-        {/* Core Torso / Hoodie */}
+        {/* Core Hoodie Torso */}
         <mesh castShadow>
           <boxGeometry args={[0.5, 0.54, 0.32]} />
           <meshStandardMaterial
-            color={isHovered ? '#1e293b' : '#0f172a'}
+            color={isHovered === 'developer' ? '#1e293b' : '#0d1322'}
             roughness={0.7}
-            emissive={isHovered ? '#38bdf8' : '#000000'}
-            emissiveIntensity={isHovered ? 0.12 : 0}
+            emissive={isHovered === 'developer' ? '#38bdf8' : '#000000'}
+            emissiveIntensity={isHovered === 'developer' ? 0.12 : 0}
           />
         </mesh>
 
-        {/* Left Shoulder & Arm (reaching forward to keyboard) */}
+        {/* Left Arm & Hand (Reaching to mechanical keyboard) */}
         <group position={[-0.28, 0.18, 0]}>
           <mesh position={[-0.04, -0.15, -0.12]} rotation={[0.65, 0.2, -0.15]} castShadow>
             <cylinderGeometry args={[0.065, 0.055, 0.38, 12]} />
-            <meshStandardMaterial color="#0f172a" roughness={0.7} />
+            <meshStandardMaterial color="#0d1322" roughness={0.7} />
           </mesh>
-          {/* Forearm on desk */}
           <mesh position={[-0.08, -0.26, -0.32]} rotation={[1.3, 0.2, -0.1]} castShadow>
             <cylinderGeometry args={[0.05, 0.045, 0.34, 12]} />
-            <meshStandardMaterial color="#0f172a" roughness={0.7} />
+            <meshStandardMaterial color="#0d1322" roughness={0.7} />
           </mesh>
-          {/* Left Hand (resting on keyboard) */}
           <mesh position={[-0.1, -0.27, -0.52]}>
             <boxGeometry args={[0.08, 0.03, 0.09]} />
-            <meshStandardMaterial color="#2d1f18" roughness={0.6} />
+            <meshStandardMaterial color="#251812" roughness={0.6} />
           </mesh>
         </group>
 
-        {/* Right Shoulder & Arm (reaching forward to mouse) */}
+        {/* Right Arm & Hand (Resting on mouse) */}
         <group position={[0.28, 0.18, 0]}>
           <mesh position={[0.04, -0.15, -0.12]} rotation={[0.65, -0.2, 0.15]} castShadow>
             <cylinderGeometry args={[0.065, 0.055, 0.38, 12]} />
-            <meshStandardMaterial color="#0f172a" roughness={0.7} />
+            <meshStandardMaterial color="#0d1322" roughness={0.7} />
           </mesh>
-          {/* Forearm on desk */}
           <mesh position={[0.08, -0.26, -0.32]} rotation={[1.3, -0.2, 0.1]} castShadow>
             <cylinderGeometry args={[0.05, 0.045, 0.34, 12]} />
-            <meshStandardMaterial color="#0f172a" roughness={0.7} />
+            <meshStandardMaterial color="#0d1322" roughness={0.7} />
           </mesh>
-          {/* Right Hand (resting on mouse) */}
           <mesh position={[0.22, -0.27, -0.5]}>
             <boxGeometry args={[0.08, 0.03, 0.09]} />
-            <meshStandardMaterial color="#2d1f18" roughness={0.6} />
+            <meshStandardMaterial color="#251812" roughness={0.6} />
           </mesh>
         </group>
 
         {/* Neck */}
         <mesh position={[0, 0.32, -0.02]}>
           <cylinderGeometry args={[0.075, 0.085, 0.12, 12]} />
-          <meshStandardMaterial color="#2d1f18" roughness={0.6} />
+          <meshStandardMaterial color="#251812" roughness={0.6} />
         </mesh>
 
-        {/* Head (Stylized Young Black Male Developer) */}
+        {/* Head & Fade Haircut (Young Black Male Developer) */}
         <group position={[0, 0.46, -0.04]}>
-          {/* Face / Cranium Structure */}
+          {/* Cranium */}
           <mesh castShadow>
             <sphereGeometry args={[0.13, 16, 16]} />
-            <meshStandardMaterial color="#2d1f18" roughness={0.55} />
+            <meshStandardMaterial color="#251812" roughness={0.55} />
           </mesh>
           {/* Jaw / Chin */}
           <mesh position={[0, -0.06, -0.04]} castShadow>
             <boxGeometry args={[0.14, 0.12, 0.14]} />
-            <meshStandardMaterial color="#2d1f18" roughness={0.55} />
+            <meshStandardMaterial color="#251812" roughness={0.55} />
           </mesh>
-          {/* Fresh Fade Haircut (Dark stylized crown) */}
+          {/* Clean Fade Haircut */}
           <mesh position={[0, 0.06, 0.01]}>
             <sphereGeometry args={[0.136, 16, 16]} />
-            <meshStandardMaterial color="#090a0f" roughness={0.9} />
+            <meshStandardMaterial color="#08090d" roughness={0.9} />
           </mesh>
 
           {/* STUDIO OVER-EAR HEADPHONES */}
@@ -219,7 +214,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
                 <cylinderGeometry args={[0.05, 0.05, 0.04, 16]} />
                 <meshStandardMaterial color="#0f172a" roughness={0.4} />
               </mesh>
-              {/* Cyan LED Ring on Earcup */}
+              {/* Cyan LED Ring */}
               <mesh position={[0, 0.021, 0]}>
                 <ringGeometry args={[0.032, 0.042, 16]} />
                 <meshBasicMaterial color="#38bdf8" />
@@ -232,7 +227,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
                 <cylinderGeometry args={[0.05, 0.05, 0.04, 16]} />
                 <meshStandardMaterial color="#0f172a" roughness={0.4} />
               </mesh>
-              {/* Purple LED Ring on Earcup */}
+              {/* Purple LED Ring */}
               <mesh position={[0, 0.021, 0]}>
                 <ringGeometry args={[0.032, 0.042, 16]} />
                 <meshBasicMaterial color="#a855f7" />

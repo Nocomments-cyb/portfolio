@@ -3,14 +3,14 @@ import React from 'react';
 export default function Lighting() {
   return (
     <group>
-      {/* Base Atmospheric Ambient Light (Prevents crushed blacks) */}
-      <ambientLight color="#0b1122" intensity={0.9} />
+      {/* Base Deep Night Atmospheric Fill (Controlled shadows without pure black) */}
+      <ambientLight color="#080e1e" intensity={0.72} />
 
-      {/* Main Studio Key Light (Overhead directional) */}
+      {/* Main Studio Key Light (Gentle overhead directional) */}
       <directionalLight
-        position={[2.5, 4.5, 2.5]}
-        intensity={1.1}
-        color="#e0e7ff"
+        position={[2.4, 4.2, 2.2]}
+        intensity={0.95}
+        color="#e2e8f0"
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -19,34 +19,34 @@ export default function Lighting() {
         shadow-bias={-0.001}
       />
 
-      {/* Subtle Rim / Edge Light (Outlines character and chair) */}
+      {/* Subtle Purple Rim / Hair Light (Articulates developer silhouette) */}
       <directionalLight
-        position={[-3.0, 2.5, -2.5]}
-        intensity={1.3}
-        color="#818cf8"
+        position={[-2.8, 2.2, -2.2]}
+        intensity={1.05}
+        color="#7c3aed"
       />
 
-      {/* Exterior Dubai Sky Fill (Cool midnight incoming through window) */}
+      {/* Exterior Dubai Nocturnal Window Fill (Cool sky illumination through glass) */}
       <directionalLight
-        position={[3.5, 2.0, -3.5]}
-        intensity={0.9}
+        position={[3.2, 1.8, -3.2]}
+        intensity={0.65}
         color="#38bdf8"
       />
 
-      {/* Soft Purple Ambient Fill */}
+      {/* Subtle Wall Slat Glow */}
       <pointLight
-        position={[-1.5, 1.8, -1.5]}
-        color="#9333ea"
-        intensity={0.8}
-        distance={4.5}
+        position={[-1.8, 1.6, -1.8]}
+        color="#8b5cf6"
+        intensity={0.45}
+        distance={3.2}
       />
 
-      {/* Soft Cyan Workspace Accent */}
+      {/* Soft Desk Surface Fill */}
       <pointLight
-        position={[1.8, 1.5, -0.5]}
-        color="#06b6d4"
-        intensity={0.7}
-        distance={4.0}
+        position={[0.2, 0.9, -0.6]}
+        color="#38bdf8"
+        intensity={0.35}
+        distance={2.0}
       />
     </group>
   );
