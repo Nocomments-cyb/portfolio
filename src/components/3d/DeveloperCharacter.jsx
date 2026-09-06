@@ -7,6 +7,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
   const {
     activityState,
     coffeeProgress,
+    phoneProgress,
     phoneActive,
     headphonesActive,
     triggerHeadphones,
@@ -16,6 +17,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
   const characterGroupRef = useRef();
   const chestRef = useRef();
   const headRef = useRef();
+  const leftArmGroupRef = useRef();
   const leftHandRef = useRef();
   const rightArmGroupRef = useRef();
   const rightHandRef = useRef();
@@ -27,7 +29,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
     if (chestRef.current) {
       // In active coding, character leans slightly forward into work (-0.08)
       // When standby, leans back gently (0.04)
-      const baseLean = lightsOn ? (activityState === 'coffee' ? -0.03 : -0.08) : 0.04;
+      const baseLean = lightsOn ? (activityState === 'coffee' ? -0.03 : (phoneProgress > 0 ? -0.04 : -0.08)) : 0.04;
       const breathing = Math.sin(t * (lightsOn ? 1.6 : 1.1)) * (lightsOn ? 0.003 : 0.002);
       chestRef.current.position.y = 0.55 + breathing;
       chestRef.current.rotation.x = THREE.MathUtils.lerp(
@@ -47,10 +49,37 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
         const sipP = Math.sin(((coffeeProgress - 0.35) / 0.35) * Math.PI);
         targetHeadX = -0.14 * sipP;
         targetHeadY = 0.06 * sipP;
+      } else if (phoneProgress > 0) {
+        if (phoneProgress <= 0.18) {
+          // Turn head toward desk phone dock on left
+          const p = phoneProgress / 0.18;
+          targetHeadX = THREE.MathUtils.lerp(0, 0.18, p);
+          targetHeadY = THREE.MathUtils.lerp(0, -0.32, p);
+        } else if (phoneProgress <= 0.42) {
+          // Follow phone up toward chest/chin
+          const p = (phoneProgress - 0.18) / 0.24;
+          targetHeadX = THREE.MathUtils.lerp(0.18, 0.26, p);
+          targetHeadY = THREE.MathUtils.lerp(-0.32, -0.22, p);
+        } else if (phoneProgress <= 0.70) {
+          // Direct gaze down at phone screen while reading notifications
+          const readingSway = Math.sin(t * 3.5) * 0.008;
+          targetHeadX = 0.26 + readingSway;
+          targetHeadY = -0.22;
+        } else if (phoneProgress <= 0.88) {
+          // Follow phone back down to dock
+          const p = (phoneProgress - 0.70) / 0.18;
+          targetHeadX = THREE.MathUtils.lerp(0.26, 0.18, p);
+          targetHeadY = THREE.MathUtils.lerp(-0.22, -0.32, p);
+        } else {
+          // Return gaze back to central ultrawide coding monitor
+          const p = (phoneProgress - 0.88) / 0.12;
+          targetHeadX = THREE.MathUtils.lerp(0.18, 0, p);
+          targetHeadY = THREE.MathUtils.lerp(-0.32, 0, p);
+        }
       } else if (phoneActive) {
         // Glance down-left toward desk smartphone
-        targetHeadX = 0.12;
-        targetHeadY = -0.26;
+        targetHeadX = 0.16;
+        targetHeadY = -0.30;
       } else if (activityState === 'paused') {
         // Glancing over to secondary vertical terminal monitor on the right
         targetHeadX = 0.02 + Math.sin(t * 1.5) * 0.01;
@@ -65,17 +94,78 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
       headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetHeadY, 0.08);
     }
 
-    // --- 3. LEFT HAND TYPING CADENCE ---
-    if (leftHandRef.current && lightsOn) {
-      if (activityState === 'typing' || activityState === 'boost') {
+    // --- 3. LEFT ARM & HAND COORDINATION (PHONE PICK-UP, CHECK & TYPING) ---
+    if (leftArmGroupRef.current && leftHandRef.current && lightsOn) {
+      if (phoneProgress > 0) {
+        let armRotX = 0;
+        let armRotY = 0;
+        let handX = -0.1;
+        let handY = -0.27;
+        let handZ = -0.52;
+
+        if (phoneProgress <= 0.18) {
+          // Phase 1: Reach toward phone dock stand at [-0.52, 0.105, -0.46]
+          const p = phoneProgress / 0.18;
+          armRotX = THREE.MathUtils.lerp(0, 0.22, p);
+          armRotY = THREE.MathUtils.lerp(0, -0.36, p);
+          handX = THREE.MathUtils.lerp(-0.1, -0.24, p);
+          handY = THREE.MathUtils.lerp(-0.27, -0.06, p);
+          handZ = THREE.MathUtils.lerp(-0.52, -0.46, p);
+        } else if (phoneProgress <= 0.42) {
+          // Phase 2: Lift phone smoothly up toward chest/chin
+          const p = (phoneProgress - 0.18) / 0.24;
+          const easeP = THREE.MathUtils.smoothstep(p, 0, 1);
+          armRotX = THREE.MathUtils.lerp(0.22, -0.42, easeP);
+          armRotY = THREE.MathUtils.lerp(-0.36, 0.14, easeP);
+          handX = THREE.MathUtils.lerp(-0.24, -0.15, easeP);
+          handY = THREE.MathUtils.lerp(-0.06, 0.16, easeP);
+          handZ = THREE.MathUtils.lerp(-0.46, -0.22, easeP);
+        } else if (phoneProgress <= 0.70) {
+          // Phase 3: Hold phone and check notifications with thumb micro-movement
+          const p = (phoneProgress - 0.42) / 0.28;
+          armRotX = -0.42;
+          armRotY = 0.14;
+          handX = -0.15;
+          handY = 0.16 + Math.sin(p * Math.PI * 4) * 0.002;
+          handZ = -0.22;
+        } else if (phoneProgress <= 0.88) {
+          // Phase 4: Lower phone smoothly back down toward dock stand
+          const p = (phoneProgress - 0.70) / 0.18;
+          const easeP = THREE.MathUtils.smoothstep(p, 0, 1);
+          armRotX = THREE.MathUtils.lerp(-0.42, 0.22, easeP);
+          armRotY = THREE.MathUtils.lerp(0.14, -0.36, easeP);
+          handX = THREE.MathUtils.lerp(-0.15, -0.24, easeP);
+          handY = THREE.MathUtils.lerp(0.16, -0.06, easeP);
+          handZ = THREE.MathUtils.lerp(-0.22, -0.46, easeP);
+        } else {
+          // Phase 5: Hand releases phone and returns from dock to keyboard
+          const p = (phoneProgress - 0.88) / 0.12;
+          armRotX = THREE.MathUtils.lerp(0.22, 0, p);
+          armRotY = THREE.MathUtils.lerp(-0.36, 0, p);
+          handX = THREE.MathUtils.lerp(-0.24, -0.1, p);
+          handY = THREE.MathUtils.lerp(-0.06, -0.27, p);
+          handZ = THREE.MathUtils.lerp(-0.46, -0.52, p);
+        }
+
+        leftArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(leftArmGroupRef.current.rotation.x, armRotX, 0.14);
+        leftArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(leftArmGroupRef.current.rotation.y, armRotY, 0.14);
+        leftHandRef.current.position.x = THREE.MathUtils.lerp(leftHandRef.current.position.x, handX, 0.14);
+        leftHandRef.current.position.y = THREE.MathUtils.lerp(leftHandRef.current.position.y, handY, 0.14);
+        leftHandRef.current.position.z = THREE.MathUtils.lerp(leftHandRef.current.position.z, handZ, 0.14);
+      } else if (activityState === 'typing' || activityState === 'boost') {
+        leftArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(leftArmGroupRef.current.rotation.x, 0, 0.1);
+        leftArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(leftArmGroupRef.current.rotation.y, 0, 0.1);
+
         const speed = activityState === 'boost' ? 18.0 : 13.0;
-        // Nuanced finger / wrist keystroke micro-movements
         const keyTapY = Math.sin(t * speed + 0.4) * 0.0035;
         const keyTapZ = Math.cos(t * (speed * 0.8)) * 0.002;
+        leftHandRef.current.position.x = THREE.MathUtils.lerp(leftHandRef.current.position.x, -0.1, 0.1);
         leftHandRef.current.position.y = -0.27 + keyTapY;
         leftHandRef.current.position.z = -0.52 + keyTapZ;
       } else {
-        // Rest gently on left keys
+        leftArmGroupRef.current.rotation.x = THREE.MathUtils.lerp(leftArmGroupRef.current.rotation.x, 0, 0.1);
+        leftArmGroupRef.current.rotation.y = THREE.MathUtils.lerp(leftArmGroupRef.current.rotation.y, 0, 0.1);
+        leftHandRef.current.position.x = THREE.MathUtils.lerp(leftHandRef.current.position.x, -0.1, 0.1);
         leftHandRef.current.position.y = THREE.MathUtils.lerp(leftHandRef.current.position.y, -0.27, 0.1);
         leftHandRef.current.position.z = THREE.MathUtils.lerp(leftHandRef.current.position.z, -0.52, 0.1);
       }
@@ -286,8 +376,8 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered, li
           <meshStandardMaterial color="#27344a" roughness={0.7} />
         </mesh>
 
-        {/* Left Arm & Hand (Keyboard typing) */}
-        <group position={[-0.28, 0.18, 0]}>
+        {/* Left Arm & Hand (Keyboard typing & Smartphone pickup) */}
+        <group ref={leftArmGroupRef} position={[-0.28, 0.18, 0]}>
           <mesh position={[-0.04, -0.15, -0.12]} rotation={[0.65, 0.2, -0.15]} castShadow>
             <cylinderGeometry args={[0.065, 0.055, 0.38, 12]} />
             <meshStandardMaterial color="#2e3d55" roughness={0.65} />

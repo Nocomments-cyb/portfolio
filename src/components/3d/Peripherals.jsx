@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { useDeveloperInteraction } from './DeveloperInteractionController';
 
 export default function Peripherals({ onSelect, isHovered, setHovered, lightsOn = true }) {
-  const { phoneActive, triggerPhone, triggerKeyboard, activityState } = useDeveloperInteraction();
+  const { triggerKeyboard, activityState } = useDeveloperInteraction();
   const fan1Ref = useRef();
   const fan2Ref = useRef();
   const rearFanRef = useRef();
@@ -93,60 +93,6 @@ export default function Peripherals({ onSelect, isHovered, setHovered, lightsOn 
         </mesh>
       </group>
 
-      {/* --- SMARTPHONE LYING FLAT ON DESK (Clickable Notification) --- */}
-      <group
-        position={[-0.48, 0.074, -0.46]}
-        rotation={[0, 0.12, 0]}
-        onClick={(e) => {
-          e.stopPropagation();
-          triggerPhone();
-          onSelect && onSelect('phone');
-        }}
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          setHovered && setHovered('phone');
-        }}
-        onPointerOut={(e) => {
-          e.stopPropagation();
-          setHovered && setHovered(null);
-        }}
-      >
-        {/* Phone Body */}
-        <mesh castShadow>
-          <boxGeometry args={[0.12, 0.01, 0.22]} />
-          <meshStandardMaterial
-            color="#1e293b"
-            metalness={0.9}
-            roughness={0.2}
-            emissive={isHovered === 'phone' ? '#10b981' : '#000000'}
-            emissiveIntensity={isHovered === 'phone' ? 0.2 : 0}
-          />
-        </mesh>
-        {/* Screen Glass (Wakes with vivid notification when active) */}
-        <mesh position={[0, 0.006, 0]}>
-          <planeGeometry args={[0.11, 0.21]} rotation={[-Math.PI / 2, 0, 0]} />
-          <meshPhysicalMaterial
-            color={phoneActive ? '#0284c7' : '#040711'}
-            emissive={phoneActive ? '#38bdf8' : '#000000'}
-            emissiveIntensity={phoneActive ? 0.7 : 0}
-            roughness={0.1}
-            metalness={0.1}
-          />
-        </mesh>
-        {/* Notification Status Indicator */}
-        <mesh position={[0.04, 0.007, -0.09]}>
-          <sphereGeometry args={[0.003, 6, 6]} />
-          <meshBasicMaterial color={phoneActive ? '#38bdf8' : '#10b981'} />
-        </mesh>
-        {phoneActive && (
-          <pointLight
-            position={[0, 0.06, 0]}
-            color="#38bdf8"
-            intensity={0.7}
-            distance={0.9}
-          />
-        )}
-      </group>
 
       {/* --- MINIMALIST LINEN NOTEBOOK & PEN --- */}
       <group position={[-1.24, 0.072, -0.48]} rotation={[0, -0.08, 0]}>

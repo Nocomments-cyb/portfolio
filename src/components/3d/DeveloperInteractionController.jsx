@@ -6,11 +6,14 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
   // Activity state: 'typing' | 'paused' | 'coffee' | 'headphones' | 'phone' | 'boost'
   const [activityState, setActivityState] = useState('typing');
   const [coffeeProgress, setCoffeeProgress] = useState(0); // 0 -> 1 during sip
+  const [phoneProgress, setPhoneProgress] = useState(0); // 0 -> 1 during pick up, check & return
   const [phoneActive, setPhoneActive] = useState(false);
   const [headphonesActive, setHeadphonesActive] = useState(false);
+  const [keystrokeCount, setKeystrokeCount] = useState(0);
   const [hudEvent, setHudEvent] = useState(null);
 
   const isCoffeeRunningRef = useRef(false);
+  const isPhoneRunningRef = useRef(false);
   const idleTimerRef = useRef(null);
   const hudTimerRef = useRef(null);
 
@@ -32,27 +35,27 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
     }
 
     // Don't interrupt manual interactive sequences
-    if (isCoffeeRunningRef.current || phoneActive || headphonesActive) {
+    if (isCoffeeRunningRef.current || isPhoneRunningRef.current || headphonesActive) {
       return;
     }
 
     let isMounted = true;
 
     const scheduleNextCycle = () => {
-      if (!isMounted || isCoffeeRunningRef.current || phoneActive || headphonesActive) return;
+      if (!isMounted || isCoffeeRunningRef.current || isPhoneRunningRef.current || headphonesActive) return;
 
       if (activityState === 'typing' || activityState === 'boost') {
         // Typing session duration: 4.5s - 7.5s
         const typeDuration = 4500 + Math.random() * 3000;
         idleTimerRef.current = setTimeout(() => {
-          if (!isMounted || isCoffeeRunningRef.current) return;
+          if (!isMounted || isCoffeeRunningRef.current || isPhoneRunningRef.current) return;
           setActivityState('paused');
         }, typeDuration);
       } else if (activityState === 'paused') {
         // Natural reading / thinking pause: 1.6s - 2.8s
         const pauseDuration = 1600 + Math.random() * 1200;
         idleTimerRef.current = setTimeout(() => {
-          if (!isMounted || isCoffeeRunningRef.current) return;
+          if (!isMounted || isCoffeeRunningRef.current || isPhoneRunningRef.current) return;
           setActivityState('typing');
         }, pauseDuration);
       }
@@ -64,11 +67,11 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
       isMounted = false;
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
-  }, [activityState, lightsOn, phoneActive, headphonesActive]);
+  }, [activityState, lightsOn, headphonesActive]);
 
   // --- COFFEE INTERACTION ---
   const triggerCoffee = useCallback(() => {
-    if (isCoffeeRunningRef.current) return; // Prevent overlapping triggers
+    if (isCoffeeRunningRef.current || isPhoneRunningRef.current) return;
     isCoffeeRunningRef.current = true;
 
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
@@ -76,7 +79,7 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
     showHudEvent('☕ COFFEE BREAK // FLOW STATE +1');
 
     const startTime = performance.now();
-    const duration = 4800; // 4.8 seconds for the complete reach, sip, and replace sequence
+    const duration = 4800; // 4.8s complete reach, sip, replace
 
     const animate = (now) => {
       const elapsed = now - startTime;
@@ -86,7 +89,6 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
-        // Finished: reset progress, return to typing
         setCoffeeProgress(0);
         isCoffeeRunningRef.current = false;
         setActivityState('typing');
@@ -98,7 +100,7 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
 
   // --- HEADPHONES INTERACTION ---
   const triggerHeadphones = useCallback(() => {
-    if (isCoffeeRunningRef.current) return;
+    if (isCoffeeRunningRef.current || isPhoneRunningRef.current) return;
     setHeadphonesActive(true);
     setActivityState('headphones');
     showHudEvent('🎧 FLOW STATE // AUDIO ACTIVE');
@@ -109,29 +111,72 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
     }, 2500);
   }, [showHudEvent]);
 
-  // --- PHONE INTERACTION ---
+  // --- SMARTPHONE PICK-UP, CHECK & RETURN INTERACTION ---
   const triggerPhone = useCallback(() => {
-    if (isCoffeeRunningRef.current) return;
+    if (isPhoneRunningRef.current || isCoffeeRunningRef.current) return;
+    isPhoneRunningRef.current = true;
+
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     setPhoneActive(true);
     setActivityState('phone');
-    showHudEvent('📱 QUICK CHECK // NOTIFICATION READ');
+    showHudEvent('📱 SMARTPHONE // NOTIFICATIONS CHECKED');
 
-    setTimeout(() => {
-      setPhoneActive(false);
-      setActivityState('typing');
-    }, 2400);
+    const startTime = performance.now();
+    const duration = 4800; // 4.8 seconds for reach, lift, inspect, lower, and replace
+
+    const animate = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      setPhoneProgress(progress);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setPhoneProgress(0);
+        setPhoneActive(false);
+        isPhoneRunningRef.current = false;
+        setActivityState('typing');
+      }
+    };
+
+    requestAnimationFrame(animate);
   }, [showHudEvent]);
 
-  // --- KEYBOARD CLICK (BOOST) ---
+  // --- KEYBOARD CLICK & PHYSICAL KEY TYPING BOOST ---
   const triggerKeyboard = useCallback(() => {
-    if (isCoffeeRunningRef.current) return;
+    if (isCoffeeRunningRef.current || isPhoneRunningRef.current) return;
     setActivityState('boost');
-    showHudEvent('⌨ CODE SESSION // ACTIVE');
+    setKeystrokeCount((prev) => prev + 1);
+    showHudEvent('⌨ LIVE CODING // ACCELERATING AST COMPILE', 2400);
 
-    setTimeout(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => {
       setActivityState('typing');
-    }, 3200);
+    }, 3600);
   }, [showHudEvent]);
+
+  // --- GLOBAL KEYBOARD LISTENER (TYPING ON PHYSICAL KEYS TRIGGERS REAL CODING) ---
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Don't intercept if typing in standard HTML inputs or textareas
+      const tag = e.target?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || e.target?.isContentEditable) {
+        return;
+      }
+      // Increment keystroke and set boost mode
+      setKeystrokeCount((prev) => prev + 1);
+      if (!isCoffeeRunningRef.current && !isPhoneRunningRef.current) {
+        setActivityState('boost');
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        idleTimerRef.current = setTimeout(() => {
+          setActivityState('typing');
+        }, 3200);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <InteractionContext.Provider
@@ -139,8 +184,11 @@ export function DeveloperInteractionProvider({ children, lightsOn = true }) {
         activityState,
         coffeeProgress,
         isCoffeeRunning: isCoffeeRunningRef.current,
+        phoneProgress,
+        isPhoneRunning: isPhoneRunningRef.current,
         phoneActive,
         headphonesActive,
+        keystrokeCount,
         hudEvent,
         showHudEvent,
         triggerCoffee,

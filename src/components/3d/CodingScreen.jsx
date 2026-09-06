@@ -12,7 +12,7 @@ import { useDeveloperInteraction } from './DeveloperInteractionController';
  * Synchronized with the developer character's typing, pausing, and coffee breaks.
  */
 export function useCodingScreenTexture(lightsOn = true) {
-  const { activityState } = useDeveloperInteraction();
+  const { activityState, keystrokeCount } = useDeveloperInteraction();
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export function useCodingScreenTexture(lightsOn = true) {
   const canvasRef = useRef(null);
   const textureRef = useRef(null);
 
-  // Fictional, authentic developer workspace code lines (50+ lines of real, elegant full-stack code)
+  // Fictional, authentic developer workspace code lines (60+ lines of real, elegant full-stack code)
   const codeLines = useMemo(() => [
     { num: '01', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' React, { useState, useEffect, useRef } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "react";', color: '#fcd34d' }] },
     { num: '02', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' { Canvas, useFrame } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "@react-three/fiber";', color: '#fcd34d' }] },
@@ -77,15 +77,30 @@ export function useCodingScreenTexture(lightsOn = true) {
     { num: '47', tokens: [{ text: '  const res = await fetch("/api/deploy", { method: "POST" });', color: '#f8fafc' }] },
     { num: '48', tokens: [{ text: '  return await res.json();', color: '#34d399' }] },
     { num: '49', tokens: [{ text: '}', color: '#f8fafc' }] },
+    { num: '50', tokens: [] },
+    { num: '51', tokens: [{ text: '// Real-Time State Ingestion', color: '#475569' }] },
+    { num: '52', tokens: [{ text: 'export const', color: '#c084fc' }, { text: ' streamKeystrokeEvent = (key) => {', color: '#38bdf8' }] },
+    { num: '53', tokens: [{ text: '  const buffer = new Uint8Array([key.charCodeAt(0), Date.now()]);', color: '#f8fafc' }] },
+    { num: '54', tokens: [{ text: '  return WebSocketClient.send(buffer, { compression: true });', color: '#34d399' }] },
+    { num: '55', tokens: [{ text: '};', color: '#f8fafc' }] },
+    { num: '56', tokens: [] },
+    { num: '57', tokens: [{ text: '// High-Performance Shader Uniform Pipeline', color: '#475569' }] },
+    { num: '58', tokens: [{ text: 'export const', color: '#c084fc' }, { text: ' glowUniforms = {', color: '#38bdf8' }] },
+    { num: '59', tokens: [{ text: '  uTime: { value: 0.0 },', color: '#fb923c' }] },
+    { num: '60', tokens: [{ text: '  uScreenLuminance: { value: 1.65 },', color: '#fb923c' }] },
+    { num: '61', tokens: [{ text: '  uPaletteCyan: { value: new THREE.Color("#38bdf8") },', color: '#34d399' }] },
+    { num: '62', tokens: [{ text: '};', color: '#f8fafc' }] },
   ], []);
 
   // Internal animation clock
   const animStateRef = useRef({
     charCount: 18,
-    maxChars: 36,
+    maxChars: 42,
     scrollPos: 0,
     lastUpdate: 0,
     cursorBlink: true,
+    lastKeystrokeCount: 0,
+    logIndex: 0,
   });
 
   // Reusable screen draw function (renders both initially and on dynamic ticks)
@@ -282,23 +297,34 @@ export function useCodingScreenTexture(lightsOn = true) {
     // Terminal Header
     ctx.fillStyle = '#38bdf8';
     ctx.font = 'bold 9.5px "JetBrains Mono", monospace';
-    ctx.fillText('TERMINAL // ZSH • PORTFOLIO-DEV', editorX + 12, termY + 14);
+    ctx.fillText('TERMINAL // ZSH • PORTFOLIO-DEV [NONSTOP STREAM]', editorX + 12, termY + 14);
 
-    // Terminal Stream Log
+    // Dynamic Terminal Logs
+    const terminalLogs = [
+      { text: '$ vite build --watch [continuous stream active]', color: '#34d399' },
+      { text: '[vite] hmr update /src/components/WorkspaceEngine.jsx (0.8ms)', color: '#e2e8f0' },
+      { text: '[ast] parsed 62 component nodes • bundle size 42.1kb', color: '#94a3b8' },
+      { text: '[telemetry] ping: 11ms • edge: Dubai (GST UTC+4)', color: '#38bdf8' },
+      { text: '[keys] continuous flow buffer active • live typing sync', color: '#f59e0b' },
+      { text: '✓ 0 errors • compiling AST delta in memory', color: '#34d399' }
+    ];
+
+    const currentLogIdx = (anim.logIndex || 0) % terminalLogs.length;
+    const log1 = terminalLogs[currentLogIdx];
+    const log2 = terminalLogs[(currentLogIdx + 1) % terminalLogs.length];
+
     ctx.font = 'bold 11px "JetBrains Mono", monospace';
-    ctx.fillStyle = '#34d399';
-    ctx.fillText('$ vite build --watch', editorX + 12, termY + 32);
+    ctx.fillStyle = log1.color;
+    ctx.fillText(log1.text, editorX + 12, termY + 32);
 
-    ctx.fillStyle = '#e2e8f0';
-    ctx.fillText('[vite] hmr update /src/components/WorkspaceEngine.jsx (1.1ms)', editorX + 12, termY + 48);
+    ctx.fillStyle = log2.color;
+    ctx.fillText(log2.text, editorX + 12, termY + 48);
 
     const termStatus = activityState === 'coffee'
-      ? 'status: pause event [coffee break]'
+      ? 'status: pause event [coffee sip] • stream continues'
       : activityState === 'boost'
-      ? 'status: high-frequency code session active [240 WPM]'
-      : isTyping
-      ? 'status: compiling AST delta in memory...'
-      : 'status: watching for file changes...';
+      ? 'status: high-frequency code session active [260 WPM // BOOST]'
+      : 'status: nonstop compilation active • live keystroke sync';
 
     ctx.fillStyle = activityState === 'coffee' ? '#f59e0b' : '#38bdf8';
     ctx.fillText(`✓ ${termStatus}`, editorX + 12, termY + 64);
@@ -308,8 +334,8 @@ export function useCodingScreenTexture(lightsOn = true) {
     ctx.fillRect(0, canvas.height - 22, canvas.width, 22);
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 10px "JetBrains Mono", monospace';
-    ctx.fillText('WORKSPACE: READY', 14, canvas.height - 7);
-    ctx.fillText(`Ln ${visibleActiveLineIndex + 1}, Col ${anim.charCount} • UTF-8 • React 19`, 220, canvas.height - 7);
+    ctx.fillText('WORKSPACE: LIVE STREAM', 14, canvas.height - 7);
+    ctx.fillText(`Ln ${visibleActiveLineIndex + 1}, Col ${anim.charCount} • UTF-8 • React 19 • Nonstop`, 220, canvas.height - 7);
     ctx.fillText('Git: main ✓', canvas.width - 100, canvas.height - 7);
   };
 
@@ -334,7 +360,7 @@ export function useCodingScreenTexture(lightsOn = true) {
     return tex;
   }, []);
 
-  // Draw loop throttled to ~20 FPS for silky, lightweight screen life
+  // Draw loop throttled to ~30 FPS for silky, lightweight screen life
   useFrame((state) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -342,33 +368,52 @@ export function useCodingScreenTexture(lightsOn = true) {
     const t = state.clock.getElapsedTime();
     const anim = animStateRef.current;
 
-    // Update screen at ~18 updates/sec to conserve GPU/CPU
-    if (t - anim.lastUpdate < 0.052) return;
+    // Update screen at ~30 updates/sec for ultra-smooth fluid scrolling
+    if (t - anim.lastUpdate < 0.033) return;
     anim.lastUpdate = t;
 
     // Blinking cursor
     anim.cursorBlink = Math.sin(t * 7.0) > 0;
-
-    // Coding activity & dynamic screen scrolling
-    const isTyping = (activityState === 'typing' || activityState === 'boost') && lightsOn;
-    const scrollIncrement = activityState === 'boost' ? 1.6 : 0.95;
 
     const codeAreaHeight = canvas.height - 130;
     const lineH = 22;
     const totalHeight = codeLines.length * lineH;
     const maxScroll = Math.max(0, totalHeight - (codeAreaHeight - 40));
 
-    if (isTyping && !reducedMotion) {
-      // Actively and continuously scroll upward while typing!
-      anim.scrollPos += scrollIncrement;
+    // Handle physical or clicked keystroke boosts
+    const keyDelta = (keystrokeCount || 0) - (anim.lastKeystrokeCount || 0);
+    if (keyDelta > 0) {
+      anim.lastKeystrokeCount = keystrokeCount;
+      anim.scrollPos += 3.5 * Math.min(keyDelta, 4);
+      anim.charCount += 4;
+      anim.logIndex = ((anim.logIndex || 0) + 1) % 6;
+    }
+
+    if (!reducedMotion) {
+      // NONSTOP CONTINUOUS SCROLLING: Code NEVER stops running!
+      let scrollSpeed = 0.9; // Constant smooth nonstop cruising speed
+      if (activityState === 'boost') {
+        scrollSpeed = 3.6; // Hyper-drive typing speed when user clicks keys
+      } else if (activityState === 'typing') {
+        scrollSpeed = 1.7; // Active typing speed
+      }
+
+      anim.scrollPos += scrollSpeed;
       if (anim.scrollPos > maxScroll + 60) {
-        anim.scrollPos = 0; // Smooth infinite loop through code
+        anim.scrollPos = 0; // Infinite continuous loop through codebase
       }
 
       // Progressively advance character count
-      anim.charCount += activityState === 'boost' ? 2 : 1;
+      const charIncrement = activityState === 'boost' ? 3 : (activityState === 'typing' ? 1 : 0);
+      anim.charCount += charIncrement;
       if (anim.charCount > anim.maxChars) {
         anim.charCount = 4;
+      }
+
+      // Cycle terminal logs periodically
+      if (Math.floor(t * 0.8) !== anim.lastLogTick) {
+        anim.lastLogTick = Math.floor(t * 0.8);
+        anim.logIndex = ((anim.logIndex || 0) + 1) % 6;
       }
     }
 

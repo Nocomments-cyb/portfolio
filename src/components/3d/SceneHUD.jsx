@@ -21,7 +21,8 @@ export default function SceneHUD({
     triggerHeadphones,
     triggerPhone,
     triggerKeyboard,
-    isCoffeeRunning
+    isCoffeeRunning,
+    isPhoneRunning
   } = useDeveloperInteraction();
 
   const activeNotice = hudEvent || hudNotification;
@@ -215,10 +216,11 @@ export default function SceneHUD({
                       triggerPhone();
                       setSelectedObject(null);
                     }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-md transition-all cursor-pointer"
+                    disabled={isPhoneRunning}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-md transition-all cursor-pointer disabled:opacity-50"
                   >
                     <Smartphone className="w-3.5 h-3.5" />
-                    <span>[ CHECK NOTIFICATION ]</span>
+                    <span>[ PICK UP & CHECK PHONE ]</span>
                   </button>
                 </div>
               </div>
@@ -230,11 +232,11 @@ export default function SceneHUD({
                   75% MECHANICAL KEYBOARD
                 </h4>
                 <p className="text-xs text-cyan-300">
-                  SPEED & FLOW CADENCE
+                  SPEED & FLOW CADENCE • LIVE PHYSICAL KEYBOARD SYNC
                 </p>
                 <div className="text-slate-600 text-[10px] select-none">──────────────────────────────────</div>
                 <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
-                  Custom lubricated tactile switches for rapid coding, full-stack state design, and responsive frontend architecture.
+                  The coding screen runs nonstop. Press any physical key on your keyboard or click below to accelerate typing cadence and stream code in real time!
                 </p>
                 <div className="pt-3 border-t border-slate-800/80 flex justify-end">
                   <button
@@ -245,7 +247,7 @@ export default function SceneHUD({
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 shadow-md transition-all cursor-pointer"
                   >
                     <Terminal className="w-3.5 h-3.5" />
-                    <span>[ BOOST CODING SPEED ]</span>
+                    <span>[ STREAM LIVE CODE ]</span>
                   </button>
                 </div>
               </div>
@@ -398,10 +400,11 @@ export default function SceneHUD({
               triggerPhone();
               setSelectedObject('phone');
             }}
+            disabled={isPhoneRunning}
             className={`px-2 py-1 rounded transition-colors ${
               selectedObject === 'phone'
                 ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-bold'
-                : 'hover:bg-slate-800 text-slate-300 hover:text-emerald-300'
+                : 'hover:bg-slate-800 text-slate-300 hover:text-emerald-300 disabled:opacity-50'
             }`}
           >
             [📱 Phone]

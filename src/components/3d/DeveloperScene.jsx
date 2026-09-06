@@ -8,6 +8,7 @@ import Desk from './Desk';
 import Monitors from './Monitors';
 import DeveloperCharacter from './DeveloperCharacter';
 import CoffeeInteraction from './CoffeeInteraction';
+import PhoneInteraction from './PhoneInteraction';
 import Peripherals from './Peripherals';
 import SceneHUD from './SceneHUD';
 import { DeveloperInteractionProvider } from './DeveloperInteractionController';
@@ -163,6 +164,12 @@ export default function DeveloperScene() {
               onSelect={setSelectedObject}
               isHovered={hoveredObject === 'coffee'}
               setHovered={setHoveredObject}
+            />
+            <PhoneInteraction
+              onSelect={setSelectedObject}
+              isHovered={hoveredObject === 'phone'}
+              setHovered={setHoveredObject}
+              lightsOn={lightsOn}
             />
             <Monitors
               onSelect={setSelectedObject}
