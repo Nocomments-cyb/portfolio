@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ArrowDown, MapPin, Monitor, Terminal, Headphones, User, ArrowRight } from 'lucide-react';
+import { X, ArrowDown, MapPin, Monitor, Terminal, Headphones, User, ArrowRight, Sun, Moon, Sparkles } from 'lucide-react';
 
 export default function SceneHUD({
   selectedObject,
@@ -7,26 +7,91 @@ export default function SceneHUD({
   hoveredObject,
   onNavigateToProjects,
   onNavigateToAbout,
-  onNavigateToContact
+  onNavigateToContact,
+  lightsOn = true,
+  onToggleLights,
+  lightMode = 'studio',
+  onSelectLightMode,
+  hudNotification
 }) {
   return (
     <div className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-3 sm:p-4 font-mono select-none">
-      {/* --- TOP HUD STATUS BAR --- */}
-      <div className="flex items-center justify-between gap-2 text-[11px] text-slate-400">
+      {/* --- TOP HUD STATUS BAR & LIGHT CONTROLS --- */}
+      <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
         <div className="flex items-center gap-2 bg-[#080d19]/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 shadow-md">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className={`w-2 h-2 rounded-full ${lightsOn ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
           <span className="text-slate-200 font-semibold tracking-wider">NO COMMENT // 3D WORKSPACE</span>
           <span className="text-slate-600 hidden sm:inline">|</span>
-          <span className="text-cyan-400 hidden sm:inline">SYSTEM ONLINE</span>
+          <span className={lightsOn ? 'text-cyan-400 hidden sm:inline' : 'text-amber-400 hidden sm:inline'}>
+            {lightsOn ? 'SYSTEM ONLINE' : 'STANDBY MODE'}
+          </span>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#080d19]/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 text-[10px] sm:text-[11px] text-slate-300">
-          <span className="text-slate-500">LOC:</span>
-          <span className="text-cyan-300">DUBAI / UAE</span>
-          <span className="text-slate-600 hidden md:inline">•</span>
-          <span className="text-slate-400 hidden md:inline">25.2048° N, 55.2708° E</span>
+        {/* Dynamic Interactive Light Switch & Ambience Controller */}
+        <div className="pointer-events-auto flex items-center gap-1.5 bg-[#080d19]/85 backdrop-blur-md px-2 py-1 rounded-lg border border-slate-800 text-[10px]">
+          <button
+            onClick={onToggleLights}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-all font-semibold ${
+              lightsOn
+                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-500/20'
+                : 'bg-slate-800/80 text-slate-400 hover:text-white border border-slate-700'
+            }`}
+            title="Toggle workspace room lighting"
+            aria-label="Toggle workspace room lighting"
+          >
+            {lightsOn ? <Sun className="w-3 h-3 text-amber-400" /> : <Moon className="w-3 h-3 text-slate-400" />}
+            <span>{lightsOn ? 'LIGHTS: ON' : 'LIGHTS: OFF'}</span>
+          </button>
+
+          {lightsOn && onSelectLightMode && (
+            <div className="hidden sm:flex items-center gap-1 pl-1 border-l border-slate-800">
+              <button
+                onClick={() => onSelectLightMode('studio')}
+                className={`px-2 py-1 rounded text-[10px] transition-colors ${
+                  lightMode === 'studio'
+                    ? 'bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Studio White Key Light"
+              >
+                Studio
+              </button>
+              <button
+                onClick={() => onSelectLightMode('cyberpunk')}
+                className={`px-2 py-1 rounded text-[10px] transition-colors ${
+                  lightMode === 'cyberpunk'
+                    ? 'bg-purple-950 text-purple-300 border border-purple-500/40 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Cyberpunk Neon Mode"
+              >
+                Neon
+              </button>
+              <button
+                onClick={() => onSelectLightMode('focus')}
+                className={`px-2 py-1 rounded text-[10px] transition-colors ${
+                  lightMode === 'focus'
+                    ? 'bg-indigo-950 text-indigo-300 border border-indigo-500/40 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Deep Coding Focus"
+              >
+                Focus
+              </button>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Dynamic Scroll / Power-on Notification Toast */}
+      {hudNotification && (
+        <div className="pointer-events-none mx-auto mb-auto pt-2 transform animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="px-4 py-1.5 rounded-full bg-[#080d19]/95 border border-cyan-500/60 text-cyan-300 text-[11px] font-mono shadow-xl shadow-cyan-950/60 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span className="tracking-wide font-semibold">{hudNotification}</span>
+          </div>
+        </div>
+      )}
 
       {/* --- CENTER / INTERACTIVE OBJECT HUD MODAL --- */}
       {selectedObject && (
@@ -181,7 +246,7 @@ export default function SceneHUD({
             {selectedObject === 'developer' && (
               <div className="py-3 space-y-2 text-xs">
                 <div className="text-base font-bold text-white">NO COMMENT</div>
-                <div className="text-xs text-purple-300 font-semibold">CREATIVE PRODUCT ENGINEER</div>
+                <div className="text-xs text-purple-300 font-semibold uppercase tracking-wider">FULL-STACK DEVELOPER & PRODUCT BUILDER</div>
                 <div className="text-slate-600 text-[10px] select-none">──────────────────────────────────</div>
                 <p className="text-xs text-slate-300 font-sans italic">
                   "I build ideas into products."

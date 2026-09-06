@@ -1,7 +1,7 @@
 import React from 'react';
 import * as THREE from 'three';
 
-export default function Room() {
+export default function Room({ lightsOn = true, lightMode = 'studio' }) {
   return (
     <group position={[0, 0, 0]}>
       {/* Studio Floor (Polished Slate with Subtle Reflections) */}
@@ -35,12 +35,12 @@ export default function Room() {
         {/* Vertical Neon Accent Recess Light Strip */}
         <mesh position={[0.045, 0, 0]}>
           <boxGeometry args={[0.02, 3.8, 0.04]} />
-          <meshBasicMaterial color="#38bdf8" />
+          <meshBasicMaterial color={lightsOn ? (lightMode === 'cyberpunk' ? '#06b6d4' : '#38bdf8') : '#0c2338'} />
         </mesh>
         <pointLight
           position={[0.2, 0, 0]}
-          color="#38bdf8"
-          intensity={0.6}
+          color={lightMode === 'cyberpunk' ? '#06b6d4' : '#38bdf8'}
+          intensity={lightsOn ? (lightMode === 'cyberpunk' ? 0.9 : 0.6) : 0.05}
           distance={2.8}
         />
       </group>
@@ -77,12 +77,12 @@ export default function Room() {
         {/* Under-Shelf Ambient LED Strip (Purple Glow) */}
         <mesh position={[0, -0.022, 0]}>
           <boxGeometry args={[2.1, 0.008, 0.02]} />
-          <meshBasicMaterial color="#a855f7" />
+          <meshBasicMaterial color={lightsOn ? (lightMode === 'cyberpunk' ? '#c084fc' : '#a855f7') : '#281745'} />
         </mesh>
         <pointLight
           position={[0, -0.06, 0]}
-          color="#a855f7"
-          intensity={0.6}
+          color={lightMode === 'cyberpunk' ? '#c084fc' : '#a855f7'}
+          intensity={lightsOn ? (lightMode === 'cyberpunk' ? 0.8 : 0.5) : 0.05}
           distance={2.0}
         />
       </group>

@@ -8,7 +8,7 @@ export const profileData = {
   alias: 'No Comment',
   headline: "Hi, I'm No Comment",
   tagline: 'I build ideas into products.',
-  roleDescriptor: 'Frontend developer focused on building modern, interactive web experiences.',
+  roleDescriptor: 'Full-stack developer & product builder engineering complete web applications from database architecture to polished user interfaces.',
   status: 'Available for Opportunities',
   location: 'Dubai, United Arab Emirates',
   locationDetail: 'Open to Global Remote & High-Impact Contracts',
@@ -24,29 +24,29 @@ export const profileData = {
 
   whatIBuild: [
     {
-      title: 'Interactive Web Applications',
-      description: 'Dynamic single-page interfaces built with React and modular component state.',
+      title: 'Full-Stack Web Applications',
+      description: 'End-to-end architectures connecting robust backend systems with responsive, high-performance interfaces.',
       icon: 'Layers'
     },
     {
-      title: 'Responsive Interfaces',
-      description: 'Mobile-first fluid layouts engineered to adapt seamlessly across any viewport.',
+      title: 'Database & API Architecture',
+      description: 'Relational data modeling, secure authentication, and real-time APIs powered by Supabase & PostgreSQL.',
+      icon: 'Database'
+    },
+    {
+      title: 'Interactive Frontend Systems',
+      description: 'Dynamic single-page interfaces built with React, modular custom hooks, and reliable state management.',
       icon: 'Monitor'
     },
     {
-      title: 'Product Prototypes',
-      description: 'Rapid functional prototypes designed to test hypotheses and validate core user flows.',
+      title: 'Product MVPs & Prototypes',
+      description: 'Rapid functional prototypes engineered to validate core product hypotheses and real user workflows.',
       icon: 'Rocket'
     },
     {
-      title: 'Modern Frontend Experiences',
-      description: 'Aesthetic, cinematic UI with dark-mode styling, micro-interactions, and 3D accents.',
+      title: '3D & Immersive Web Experiences',
+      description: 'Aesthetic, cinematic web environments with Three.js, WebGL shaders, and smooth micro-interactions.',
       icon: 'Sparkles'
-    },
-    {
-      title: 'Database-Backed Applications',
-      description: 'Relational data models and real-time backend integrations powered by Supabase & PostgreSQL.',
-      icon: 'Database'
     }
   ]
 };

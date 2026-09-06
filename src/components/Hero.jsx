@@ -40,7 +40,7 @@ export default function Hero() {
 
           {/* Supporting Narrative */}
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl mx-auto">
-            Welcome to my digital workspace. I design and engineer modern web interfaces—translating product concepts into responsive, functional, and visually engaging software.
+            Welcome to my digital workspace. I architect and engineer end-to-end web applications—bridging solid backend data architecture with responsive, cinematic, and functional user interfaces.
           </p>
 
           {/* Action Buttons */}

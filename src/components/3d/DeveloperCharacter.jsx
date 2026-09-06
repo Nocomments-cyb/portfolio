@@ -2,16 +2,46 @@ import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) {
+export default function DeveloperCharacter({ onSelect, isHovered, setHovered, lightsOn = true }) {
   const characterGroupRef = useRef();
   const chestRef = useRef();
+  const headRef = useRef();
+  const leftHandRef = useRef();
+  const rightHandRef = useRef();
 
-  // Extremely subtle, lifelike breathing idle animation
+  // Lifelike breathing, posture adjustment, typing, and music head nod
   useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+
+    // Posture and breathing transition
     if (chestRef.current) {
-      const t = state.clock.getElapsedTime();
-      chestRef.current.position.y = 0.55 + Math.sin(t * 1.4) * 0.003;
-      chestRef.current.rotation.x = -0.05 + Math.sin(t * 1.4) * 0.002;
+      // When lights are on, character leans slightly forward in focused coding posture
+      const targetPosture = lightsOn ? -0.07 : 0.03;
+      const breathing = Math.sin(t * (lightsOn ? 1.6 : 1.1)) * (lightsOn ? 0.003 : 0.002);
+      chestRef.current.position.y = 0.55 + breathing;
+      chestRef.current.rotation.x = THREE.MathUtils.lerp(
+        chestRef.current.rotation.x,
+        targetPosture + breathing,
+        0.05
+      );
+    }
+
+    // Subtle head nod to music / focus rhythm when lights on
+    if (headRef.current && lightsOn) {
+      headRef.current.rotation.x = Math.sin(t * 2.2) * 0.012;
+      headRef.current.rotation.y = Math.sin(t * 0.9) * 0.015;
+    }
+
+    // Active mechanical keyboard typing micro-movements on left hand
+    if (leftHandRef.current && lightsOn) {
+      leftHandRef.current.position.y = -0.27 + Math.sin(t * 12.0) * 0.003;
+      leftHandRef.current.position.z = -0.52 + Math.cos(t * 9.0) * 0.002;
+    }
+
+    // Subtle mouse micro-movement on right hand
+    if (rightHandRef.current && lightsOn) {
+      rightHandRef.current.position.x = 0.22 + Math.sin(t * 1.8) * 0.004;
+      rightHandRef.current.position.z = -0.5 + Math.cos(t * 1.5) * 0.003;
     }
   });
 
@@ -141,7 +171,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
             <cylinderGeometry args={[0.05, 0.045, 0.34, 12]} />
             <meshStandardMaterial color="#0d1322" roughness={0.7} />
           </mesh>
-          <mesh position={[-0.1, -0.27, -0.52]}>
+          <mesh ref={leftHandRef} position={[-0.1, -0.27, -0.52]}>
             <boxGeometry args={[0.08, 0.03, 0.09]} />
             <meshStandardMaterial color="#251812" roughness={0.6} />
           </mesh>
@@ -157,7 +187,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
             <cylinderGeometry args={[0.05, 0.045, 0.34, 12]} />
             <meshStandardMaterial color="#0d1322" roughness={0.7} />
           </mesh>
-          <mesh position={[0.22, -0.27, -0.5]}>
+          <mesh ref={rightHandRef} position={[0.22, -0.27, -0.5]}>
             <boxGeometry args={[0.08, 0.03, 0.09]} />
             <meshStandardMaterial color="#251812" roughness={0.6} />
           </mesh>
@@ -170,7 +200,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
         </mesh>
 
         {/* Head & Fade Haircut (Young Black Male Developer) */}
-        <group position={[0, 0.46, -0.04]}>
+        <group ref={headRef} position={[0, 0.46, -0.04]}>
           {/* Cranium */}
           <mesh castShadow>
             <sphereGeometry args={[0.13, 16, 16]} />
@@ -217,7 +247,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
               {/* Cyan LED Ring */}
               <mesh position={[0, 0.021, 0]}>
                 <ringGeometry args={[0.032, 0.042, 16]} />
-                <meshBasicMaterial color="#38bdf8" />
+                <meshBasicMaterial color={lightsOn ? '#38bdf8' : '#0e3a52'} />
               </mesh>
             </group>
 
@@ -230,7 +260,7 @@ export default function DeveloperCharacter({ onSelect, isHovered, setHovered }) 
               {/* Purple LED Ring */}
               <mesh position={[0, 0.021, 0]}>
                 <ringGeometry args={[0.032, 0.042, 16]} />
-                <meshBasicMaterial color="#a855f7" />
+                <meshBasicMaterial color={lightsOn ? '#a855f7' : '#3b1763'} />
               </mesh>
             </group>
           </group>

@@ -1,7 +1,31 @@
 export const skillsData = [
   {
-    category: 'FRONTEND',
-    description: 'Crafting responsive, high-performance interfaces with modern JavaScript and component systems.',
+    category: 'FULL-STACK & BACKEND',
+    description: 'Structuring reliable relational databases, secure authentication, real-time data flows, and APIs.',
+    skills: [
+      {
+        name: 'Supabase',
+        role: 'Backend Platform',
+        focus: 'User authentication, real-time subscriptions, edge storage, RESTful API integration',
+        accent: 'emerald'
+      },
+      {
+        name: 'PostgreSQL',
+        role: 'Relational Database',
+        focus: 'Relational schema modeling, foreign key constraints, indexes, SQL query optimization',
+        accent: 'blue'
+      },
+      {
+        name: 'API & Data Architecture',
+        role: 'System Design',
+        focus: 'Client-server contracts, optimistic UI updates, data validation, error resilience',
+        accent: 'cyan'
+      }
+    ]
+  },
+  {
+    category: 'FRONTEND & INTERACTIVE',
+    description: 'Crafting responsive, high-performance user interfaces with modern JavaScript and component systems.',
     skills: [
       {
         name: 'React',
@@ -30,8 +54,8 @@ export const skillsData = [
     ]
   },
   {
-    category: 'TOOLS',
-    description: 'Fast developer tooling, version control, and continuous integration workflows.',
+    category: 'TOOLING & DEPLOYMENT',
+    description: 'Fast developer tooling, version control, build chunking, and continuous delivery workflows.',
     skills: [
       {
         name: 'Vite',
@@ -42,32 +66,14 @@ export const skillsData = [
       {
         name: 'Git',
         role: 'Version Control',
-        focus: 'Atomic commit hygiene, branching workflows, change history',
+        focus: 'Atomic commit hygiene, branching workflows, change history, conflict resolution',
         accent: 'rose'
       },
       {
         name: 'GitHub',
         role: 'Code Collaboration',
-        focus: 'Repository hosting, pull requests, issue tracking, CI deployment',
+        focus: 'Repository hosting, pull requests, issue tracking, continuous integration',
         accent: 'indigo'
-      }
-    ]
-  },
-  {
-    category: 'BACKEND / DATA',
-    description: 'Structuring reliable relational databases, secure authentication, and real-time APIs.',
-    skills: [
-      {
-        name: 'Supabase',
-        role: 'Backend Platform',
-        focus: 'User authentication, real-time subscriptions, edge storage, API integration',
-        accent: 'emerald'
-      },
-      {
-        name: 'PostgreSQL',
-        role: 'Relational Database',
-        focus: 'Relational schema modeling, foreign key constraints, indexes, SQL querying',
-        accent: 'blue'
       }
     ]
   }

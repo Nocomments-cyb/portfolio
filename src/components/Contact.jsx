@@ -75,7 +75,7 @@ export default function Contact() {
             Let's build something.
           </h2>
           <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            Inviting inquiries from employers, clients, and technical teams looking for a dedicated frontend and product engineer.
+            Inviting inquiries from employers, clients, and technical teams looking for a dedicated full-stack developer and product builder.
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export default function Contact() {
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Whether you are hiring for a frontend engineering role, building an interactive web application, or need a developer who turns ideas into working software—feel free to reach out.
+                Whether you are hiring for a full-stack engineering role, building an end-to-end web application, or need a developer who turns ideas into working software—feel free to reach out.
               </p>
 
               {/* Location & Timezone */}

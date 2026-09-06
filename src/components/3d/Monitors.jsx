@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import * as THREE from 'three';
 import { createIDETexture, createTerminalTexture } from './screenTextures';
 
-export default function Monitors({ onSelect, isHovered, setHovered }) {
+export default function Monitors({ onSelect, isHovered, setHovered, lightsOn = true }) {
   const ideTexture = useMemo(() => createIDETexture(), []);
   const terminalTexture = useMemo(() => createTerminalTexture(), []);
 
@@ -70,13 +70,13 @@ export default function Monitors({ onSelect, isHovered, setHovered }) {
           </mesh>
           <mesh position={[0, -0.01, 0]}>
             <boxGeometry args={[0.9, 0.008, 0.02]} />
-            <meshBasicMaterial color="#f8fafc" />
+            <meshBasicMaterial color={lightsOn ? '#f8fafc' : '#334155'} />
           </mesh>
           <pointLight
             position={[0, -0.12, 0.1]}
             color="#f8fafc"
-            intensity={0.4}
-            distance={1.3}
+            intensity={lightsOn ? 0.5 : 0.02}
+            distance={1.4}
           />
         </group>
 
@@ -84,8 +84,8 @@ export default function Monitors({ onSelect, isHovered, setHovered }) {
         <pointLight
           position={[0, 0, 0.38]}
           color="#38bdf8"
-          intensity={isHovered ? 0.8 : 0.55}
-          distance={1.9}
+          intensity={lightsOn ? (isHovered ? 0.9 : 0.65) : 0.2}
+          distance={2.0}
         />
       </group>
 
@@ -147,7 +147,7 @@ export default function Monitors({ onSelect, isHovered, setHovered }) {
         <pointLight
           position={[0, 0, 0.35]}
           color="#818cf8"
-          intensity={isHovered ? 0.6 : 0.42}
+          intensity={lightsOn ? (isHovered ? 0.75 : 0.45) : 0.15}
           distance={1.6}
         />
       </group>
