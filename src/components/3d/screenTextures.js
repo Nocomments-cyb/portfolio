@@ -364,7 +364,7 @@ export function createTerminalTexture() {
     { text: '✓ built in 1m 15s', color: '#34d399' },
     { text: '----------------------------------------', color: '#334155' },
     { text: '[OK] Host: WORKSTATION-ALPHA', color: '#34d399' },
-    { text: '[OK] Dubai Geo-Sync: 25.2048° N, 55.2708° E', color: '#38bdf8' },
+    { text: '[OK] Location: Dubai, United Arab Emirates', color: '#38bdf8' },
     { text: '[OK] Timezone: GST (UTC+4)', color: '#94a3b8' },
     { text: '[OK] Ambient Flow: ANC Active', color: '#a855f7' },
     { text: '$ listening on http://localhost:5173...', color: '#38bdf8' },

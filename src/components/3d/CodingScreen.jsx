@@ -26,46 +26,67 @@ export function useCodingScreenTexture(lightsOn = true) {
   const canvasRef = useRef(null);
   const textureRef = useRef(null);
 
-  // Fictional, authentic developer workspace code lines
+  // Fictional, authentic developer workspace code lines (50+ lines of real, elegant full-stack code)
   const codeLines = useMemo(() => [
-    { num: '01', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' React, { useState, useEffect } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "react";', color: '#fcd34d' }] },
-    { num: '02', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' { createClient } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "@supabase/supabase-js";', color: '#fcd34d' }] },
-    { num: '03', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' { Canvas } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "@react-three/fiber";', color: '#fcd34d' }] },
-    { num: '04', tokens: [] },
-    { num: '05', tokens: [{ text: '// End-to-end product architecture and state engine', color: '#475569' }] },
-    { num: '06', tokens: [{ text: 'export default function', color: '#38bdf8' }, { text: ' WorkspaceEngine() {', color: '#f8fafc' }] },
-    { num: '07', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' [connected, setConnected] = ', color: '#f8fafc' }, { text: 'useState', color: '#38bdf8' }, { text: '(true);', color: '#f8fafc' }] },
-    { num: '08', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' [latency, setLatency] = ', color: '#f8fafc' }, { text: 'useState', color: '#38bdf8' }, { text: '(1.2);', color: '#fb923c' }] },
-    { num: '09', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' [telemetry, setTelemetry] = ', color: '#f8fafc' }, { text: 'useState', color: '#38bdf8' }, { text: '({ fps: 60, status: "online" });', color: '#fcd34d' }] },
-    { num: '10', tokens: [] },
-    { num: '11', tokens: [{ text: '  useEffect', color: '#38bdf8' }, { text: '(() => {', color: '#f8fafc' }] },
-    { num: '12', tokens: [{ text: '    const', color: '#c084fc' }, { text: ' channel = supabase.', color: '#f8fafc' }, { text: 'channel', color: '#38bdf8' }, { text: '("realtime:workspace");', color: '#fcd34d' }] },
-    { num: '13', tokens: [{ text: '    channel.', color: '#f8fafc' }, { text: 'on', color: '#38bdf8' }, { text: '("broadcast", { event: "ping" }, (payload) => {', color: '#f8fafc' }] },
-    { num: '14', tokens: [{ text: '      setLatency(payload.delta);', color: '#34d399' }] },
-    { num: '15', tokens: [{ text: '    }).', color: '#f8fafc' }, { text: 'subscribe', color: '#38bdf8' }, { text: '();', color: '#f8fafc' }] },
-    { num: '16', tokens: [{ text: '    return () => { channel.', color: '#f8fafc' }, { text: 'unsubscribe', color: '#38bdf8' }, { text: '(); };', color: '#f8fafc' }] },
-    { num: '17', tokens: [{ text: '  }, []);', color: '#f8fafc' }] },
-    { num: '18', tokens: [] },
-    { num: '19', tokens: [{ text: '  return (', color: '#f8fafc' }] },
-    { num: '20', tokens: [{ text: '    <section className="living-workspace-viewport">', color: '#38bdf8' }] },
-    { num: '21', tokens: [{ text: '      <Canvas camera={{ position: [0, 1, 2.5] }}>', color: '#a855f7' }] },
-    { num: '22', tokens: [{ text: '        <ambientLight intensity={0.8} />', color: '#38bdf8' }] },
-    { num: '23', tokens: [{ text: '        <DeveloperModel status={connected} />', color: '#34d399' }] },
-    { num: '24', tokens: [{ text: '      </Canvas>', color: '#a855f7' }] },
-    { num: '25', tokens: [{ text: '    </section>', color: '#38bdf8' }] },
-    { num: '26', tokens: [{ text: '  );', color: '#f8fafc' }] },
-    { num: '27', tokens: [{ text: '}', color: '#f8fafc' }] },
+    { num: '01', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' React, { useState, useEffect, useRef } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "react";', color: '#fcd34d' }] },
+    { num: '02', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' { Canvas, useFrame } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "@react-three/fiber";', color: '#fcd34d' }] },
+    { num: '03', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' { createClient } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "@supabase/supabase-js";', color: '#fcd34d' }] },
+    { num: '04', tokens: [{ text: 'import', color: '#c084fc' }, { text: ' { useMotionValue, animate } ', color: '#f8fafc' }, { text: 'from', color: '#c084fc' }, { text: ' "framer-motion";', color: '#fcd34d' }] },
+    { num: '05', tokens: [] },
+    { num: '06', tokens: [{ text: '// Autonomous Creative Developer & Product Engine', color: '#475569' }] },
+    { num: '07', tokens: [{ text: '// Location: Dubai, United Arab Emirates (GST UTC+4)', color: '#475569' }] },
+    { num: '08', tokens: [{ text: 'const', color: '#c084fc' }, { text: ' supabase = createClient(ENV.SUPABASE_URL, ENV.ANON_KEY);', color: '#f8fafc' }] },
+    { num: '09', tokens: [] },
+    { num: '10', tokens: [{ text: 'export default function', color: '#38bdf8' }, { text: ' WorkspaceEngine() {', color: '#f8fafc' }] },
+    { num: '11', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' [systemReady, setSystemReady] = ', color: '#f8fafc' }, { text: 'useState', color: '#38bdf8' }, { text: '(true);', color: '#f8fafc' }] },
+    { num: '12', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' [activePipeline, setActivePipeline] = ', color: '#f8fafc' }, { text: 'useState', color: '#38bdf8' }, { text: '("PRODUCTION");', color: '#fcd34d' }] },
+    { num: '13', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' [telemetry, setTelemetry] = ', color: '#f8fafc' }, { text: 'useState', color: '#38bdf8' }, { text: '({ fps: 60, latency: 12 });', color: '#fb923c' }] },
+    { num: '14', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' viewportRef = ', color: '#f8fafc' }, { text: 'useRef', color: '#38bdf8' }, { text: '(null);', color: '#f8fafc' }] },
+    { num: '15', tokens: [] },
+    { num: '16', tokens: [{ text: '  // Real-time bidirectional telemetry channel', color: '#475569' }] },
+    { num: '17', tokens: [{ text: '  useEffect', color: '#38bdf8' }, { text: '(() => {', color: '#f8fafc' }] },
+    { num: '18', tokens: [{ text: '    const', color: '#c084fc' }, { text: ' channel = supabase.channel("live:telemetry");', color: '#f8fafc' }] },
+    { num: '19', tokens: [{ text: '    channel.on("broadcast", { event: "ping" }, (payload) => {', color: '#38bdf8' }] },
+    { num: '20', tokens: [{ text: '      setTelemetry((prev) => ({ ...prev, latency: payload.ms }));', color: '#34d399' }] },
+    { num: '21', tokens: [{ text: '    }).subscribe();', color: '#f8fafc' }] },
+    { num: '22', tokens: [{ text: '    return () => { channel.unsubscribe(); };', color: '#f8fafc' }] },
+    { num: '23', tokens: [{ text: '  }, []);', color: '#f8fafc' }] },
+    { num: '24', tokens: [] },
+    { num: '25', tokens: [{ text: '  // High-performance 3D Scene Pipeline', color: '#475569' }] },
+    { num: '26', tokens: [{ text: '  const', color: '#c084fc' }, { text: ' handleSceneRender = (gl, scene, camera) => {', color: '#f8fafc' }] },
+    { num: '27', tokens: [{ text: '    gl.toneMapping = THREE.ACESFilmicToneMapping;', color: '#38bdf8' }] },
+    { num: '28', tokens: [{ text: '    gl.toneMappingExposure = 1.25;', color: '#fb923c' }] },
+    { num: '29', tokens: [{ text: '    gl.render(scene, camera);', color: '#f8fafc' }] },
+    { num: '30', tokens: [{ text: '  };', color: '#f8fafc' }] },
+    { num: '31', tokens: [] },
+    { num: '32', tokens: [{ text: '  return (', color: '#f8fafc' }] },
+    { num: '33', tokens: [{ text: '    <section className="cinematic-developer-workspace">', color: '#38bdf8' }] },
+    { num: '34', tokens: [{ text: '      <Canvas shadows dpr={[1, 2]} onCreated={handleSceneRender}>', color: '#a855f7' }] },
+    { num: '35', tokens: [{ text: '        <StudioCeilingLight lumens={3200} warmKelvin={3800} />', color: '#fcd34d' }] },
+    { num: '36', tokens: [{ text: '        <DeveloperModel clothes="slate-navy" status={activePipeline} />', color: '#34d399' }] },
+    { num: '37', tokens: [{ text: '        <UltrawideWorkspaceDisplay refreshRate={144} />', color: '#38bdf8' }] },
+    { num: '38', tokens: [{ text: '        <DubaiSkylineBackdrop illuminated={true} />', color: '#a855f7' }] },
+    { num: '39', tokens: [{ text: '      </Canvas>', color: '#a855f7' }] },
+    { num: '40', tokens: [{ text: '      <TelemetryHUD fps={telemetry.fps} ping={telemetry.latency} />', color: '#38bdf8' }] },
+    { num: '41', tokens: [{ text: '    </section>', color: '#38bdf8' }] },
+    { num: '42', tokens: [{ text: '  );', color: '#f8fafc' }] },
+    { num: '43', tokens: [{ text: '}', color: '#f8fafc' }] },
+    { num: '44', tokens: [] },
+    { num: '45', tokens: [{ text: '// Autonomous Build Hook', color: '#475569' }] },
+    { num: '46', tokens: [{ text: 'export async function', color: '#c084fc' }, { text: ' triggerOptimizedDeploy() {', color: '#38bdf8' }] },
+    { num: '47', tokens: [{ text: '  const res = await fetch("/api/deploy", { method: "POST" });', color: '#f8fafc' }] },
+    { num: '48', tokens: [{ text: '  return await res.json();', color: '#34d399' }] },
+    { num: '49', tokens: [{ text: '}', color: '#f8fafc' }] },
   ], []);
 
   // Internal animation clock
   const animStateRef = useRef({
     charCount: 18,
     maxChars: 36,
-    activeLineIndex: 14,
-    scrollOffset: 0,
+    scrollPos: 0,
     lastUpdate: 0,
     cursorBlink: true,
-    terminalIndex: 0,
+    terminalLogOffset: 0,
   });
 
   // Create canvas and Three.js canvas texture once
@@ -94,25 +115,34 @@ export function useCodingScreenTexture(lightsOn = true) {
     const t = state.clock.getElapsedTime();
     const anim = animStateRef.current;
 
-    // Update screen at ~16-20 updates/sec to conserve GPU/CPU
-    if (t - anim.lastUpdate < 0.055) return;
+    // Update screen at ~18 updates/sec to conserve GPU/CPU
+    if (t - anim.lastUpdate < 0.052) return;
     anim.lastUpdate = t;
 
     // Blinking cursor
-    anim.cursorBlink = Math.sin(t * 6.0) > 0;
+    anim.cursorBlink = Math.sin(t * 7.0) > 0;
 
-    // Coding activity logic
+    // Coding activity & dynamic screen scrolling
     const isTyping = (activityState === 'typing' || activityState === 'boost') && lightsOn;
-    const typingSpeed = activityState === 'boost' ? 2 : 1;
+    const scrollIncrement = activityState === 'boost' ? 1.6 : 0.95;
+
+    const codeAreaHeight = canvas.height - 170;
+    const lineH = 22;
+    const totalHeight = codeLines.length * lineH;
+    const maxScroll = Math.max(0, totalHeight - (codeAreaHeight - 50));
 
     if (isTyping && !reducedMotion) {
-      anim.charCount += typingSpeed;
+      // Actively and continuously scroll upward while typing!
+      anim.scrollPos += scrollIncrement;
+      if (anim.scrollPos > maxScroll + 60) {
+        anim.scrollPos = 0; // Smooth infinite loop through code
+      }
+
+      // Progressively advance character count
+      anim.charCount += activityState === 'boost' ? 2 : 1;
       if (anim.charCount > anim.maxChars) {
         anim.charCount = 4;
-        anim.activeLineIndex = (anim.activeLineIndex + 1) % 4; // Cycle through active editing lines
       }
-      // Extremely gentle vertical editor scroll (smooth continuous loop)
-      anim.scrollOffset = (anim.scrollOffset + 0.15) % 180;
     }
 
     // --- RENDER IDE CANVAS UI ---
@@ -217,32 +247,44 @@ export function useCodingScreenTexture(lightsOn = true) {
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.fillText('Vite v6 • HMR: 0.9ms', 24, canvas.height - 62);
 
-    // --- CODE EDITOR AREA ---
+    // --- CODE EDITOR AREA (Actively Scrolling While Typing) ---
     const editorX = 241;
     const editorWidth = canvas.width - editorX;
-    const codeAreaHeight = canvas.height - 170;
 
     // Line Numbers Bar
     ctx.fillStyle = '#090d18';
     ctx.fillRect(editorX, 42, 42, codeAreaHeight);
 
-    // Render Code Lines with subtle vertical drift
+    // Clip Code Lines Area
     ctx.save();
     ctx.beginPath();
     ctx.rect(editorX, 42, editorWidth, codeAreaHeight);
     ctx.clip();
 
-    const lineH = 21;
-    const scrollY = reducedMotion ? 0 : (anim.scrollOffset * 0.4);
+    const scrollY = reducedMotion ? 0 : anim.scrollPos;
+
+    // Determine current active line near lower-middle of visible viewport
+    const visibleActiveLineIndex = Math.min(
+      codeLines.length - 1,
+      Math.max(0, Math.floor((scrollY + codeAreaHeight * 0.55) / lineH))
+    );
 
     codeLines.forEach((line, idx) => {
       const y = 68 + idx * lineH - scrollY;
       if (y < 40 || y > codeAreaHeight + 60) return;
 
-      // Line number
-      ctx.fillStyle = idx === 13 ? '#38bdf8' : '#334155';
-      ctx.font = '11px "JetBrains Mono", monospace';
+      const isCurrentActiveLine = idx === visibleActiveLineIndex;
+
+      // Line number with active highlight
+      ctx.fillStyle = isCurrentActiveLine ? '#38bdf8' : '#334155';
+      ctx.font = isCurrentActiveLine ? 'bold 11px "JetBrains Mono", monospace' : '11px "JetBrains Mono", monospace';
       ctx.fillText(line.num, editorX + 10, y);
+
+      // Active line subtle highlight background band
+      if (isCurrentActiveLine && isTyping) {
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.08)';
+        ctx.fillRect(editorX + 44, y - 16, editorWidth - 56, lineH);
+      }
 
       // Code tokens
       let tokenX = editorX + 54;
@@ -253,14 +295,24 @@ export function useCodingScreenTexture(lightsOn = true) {
         tokenX += ctx.measureText(tok.text).width;
       });
 
-      // Active typing cursor on line 14
-      if (idx === 13 && lightsOn) {
+      // Active typing cursor on current active line
+      if (isCurrentActiveLine && lightsOn) {
         if (anim.cursorBlink) {
           ctx.fillStyle = '#38bdf8';
-          ctx.fillRect(tokenX + 2, y - 12, 7, 14);
+          ctx.fillRect(tokenX + 4, y - 13, 8, 16);
         }
       }
     });
+
+    // Scrollbar Track & Thumb on right side of code editor
+    const scrollbarX = canvas.width - 8;
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(scrollbarX, 44, 6, codeAreaHeight);
+
+    const thumbH = Math.max(30, (codeAreaHeight / totalHeight) * codeAreaHeight);
+    const thumbY = 44 + (scrollY / Math.max(1, maxScroll)) * (codeAreaHeight - thumbH);
+    ctx.fillStyle = isTyping ? '#38bdf8' : '#334155';
+    ctx.fillRect(scrollbarX, thumbY, 6, thumbH);
 
     ctx.restore();
 
@@ -285,12 +337,15 @@ export function useCodingScreenTexture(lightsOn = true) {
     ctx.fillText('$ vite build --watch', editorX + 16, termY + 36);
 
     ctx.fillStyle = '#94a3b8';
-    ctx.fillText('[vite] hmr update /src/components/WorkspaceEngine.jsx (4ms)', editorX + 16, termY + 54);
+    const hmrMs = (1.2 + (Math.sin(t * 2) * 0.4)).toFixed(1);
+    ctx.fillText(`[vite] hmr update /src/components/WorkspaceEngine.jsx (${hmrMs}ms)`, editorX + 16, termY + 54);
 
     const termStatus = activityState === 'coffee'
       ? 'status: pause event triggered [coffee break]'
       : activityState === 'boost'
-      ? 'status: high-frequency code session active'
+      ? 'status: high-frequency code session active [240 WPM]'
+      : isTyping
+      ? 'status: compiling AST delta in memory...'
       : 'status: watching for file changes...';
 
     ctx.fillStyle = activityState === 'coffee' ? '#f59e0b' : '#38bdf8';
@@ -302,7 +357,7 @@ export function useCodingScreenTexture(lightsOn = true) {
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 10px "JetBrains Mono", monospace';
     ctx.fillText('WORKSPACE: READY', 16, canvas.height - 8);
-    ctx.fillText('UTF-8 • JavaScript React • Tab Size: 2', 260, canvas.height - 8);
+    ctx.fillText(`Ln ${visibleActiveLineIndex + 1}, Col ${anim.charCount} • UTF-8 • React 19`, 260, canvas.height - 8);
     ctx.fillText('Git: main ✓', canvas.width - 120, canvas.height - 8);
 
     // Flag Three.js texture for GPU upload

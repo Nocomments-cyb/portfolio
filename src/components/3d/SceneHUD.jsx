@@ -251,6 +251,34 @@ export default function SceneHUD({
               </div>
             )}
 
+            {selectedObject === 'pc' && (
+              <div className="py-3 space-y-2 text-xs font-mono">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-300">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>LIQUID-COOLED PC TOWER // POWERED ON</span>
+                </div>
+                <div className="text-slate-600 text-[10px] select-none">──────────────────────────────────</div>
+                <div className="space-y-1 text-slate-300 text-[11px] font-mono">
+                  <div className="text-white font-semibold">● AMD Ryzen 9 7950X (16-Core / 32-Thread)</div>
+                  <div className="text-cyan-300">● NVIDIA GeForce RTX 4090 24GB GDDR6X</div>
+                  <div className="text-purple-300">● 64GB DDR5-6000 Corsair Dominator RGB</div>
+                  <div className="text-emerald-300">● 4TB NVMe Gen4 SSD • Custom AIO Loop</div>
+                </div>
+                <div className="pt-3 border-t border-slate-800/80 flex justify-end">
+                  <button
+                    onClick={() => {
+                      triggerKeyboard();
+                      setSelectedObject(null);
+                    }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 shadow-md transition-all cursor-pointer"
+                  >
+                    <Terminal className="w-3.5 h-3.5" />
+                    <span>[ OVERCLOCK WORKSTATION ]</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {selectedObject === 'headphones' && (
               <div className="py-3 space-y-2 text-xs">
                 <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-300">
@@ -282,8 +310,8 @@ export default function SceneHUD({
                 <div className="text-xs text-cyan-300 font-semibold">UNITED ARAB EMIRATES</div>
                 <div className="text-slate-600 text-[10px] select-none">──────────────────────────────────</div>
                 <div className="space-y-1 text-slate-300 text-[11px] pt-1">
-                  <div>25.2048° N, 55.2708° E</div>
-                  <div className="text-indigo-300">GST • UTC +4</div>
+                  <div className="text-white font-medium">Dubai, United Arab Emirates</div>
+                  <div className="text-indigo-300">Gulf Standard Time • UTC+4</div>
                 </div>
                 <div className="pt-3 border-t border-slate-800/80 flex justify-end">
                   <button

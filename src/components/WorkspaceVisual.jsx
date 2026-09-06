@@ -199,8 +199,8 @@ export default function WorkspaceVisual() {
             </div>
 
             <div className="pt-4 text-[11px] text-slate-500 flex items-center justify-between border-t border-slate-800/80">
-              <span>Geo: 25.2048° N, 55.2708° E (Dubai, UAE)</span>
-              <span>Stage 2 Complete • Clean Component Architecture</span>
+              <span>Location: Dubai, United Arab Emirates (GST • UTC+4)</span>
+              <span>Workspace Active • Clean Component Architecture</span>
             </div>
           </div>
         )}

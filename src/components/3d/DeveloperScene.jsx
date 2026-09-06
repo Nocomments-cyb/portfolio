@@ -33,11 +33,11 @@ export default function DeveloperScene() {
   const [webglSupported, setWebglSupported] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Reactive Workspace & Light State
-  const [lightsOn, setLightsOn] = useState(false);
+  // Reactive Workspace & Light State — Default to true for full room illumination on load
+  const [lightsOn, setLightsOn] = useState(true);
   const [lightMode, setLightMode] = useState('studio'); // 'studio' | 'cyberpunk' | 'focus'
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [hasAutoTurnedOn, setHasAutoTurnedOn] = useState(false);
+  const [hasAutoTurnedOn, setHasAutoTurnedOn] = useState(true);
   const [hudNotification, setHudNotification] = useState(null);
 
   useEffect(() => {
