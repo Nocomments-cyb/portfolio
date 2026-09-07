@@ -1,22 +1,59 @@
-# No Comment — Developer Portfolio
+# Interactive 3D Developer Portfolio
 
-A dark, premium, futuristic developer portfolio website featuring a **real-time 3D cinematic developer environment** built with **React 19**, **Vite 6**, **Three.js**, and **React Three Fiber**.
+[![Live Portfolio](https://img.shields.io/badge/Live-portfolio--peach--seven--89.vercel.app-06b6d4?style=flat-square)](https://portfolio-peach-seven-89.vercel.app/)
+[![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-19.x-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Three.js](https://img.shields.io/badge/Three.js-r182-black?style=flat-square&logo=three.js)](https://threejs.org/)
+
+An interactive 3D developer portfolio showcasing full-stack web products, interactive WebGL experiences, and engineering case studies. Built with **React 19**, **Vite 6**, **Three.js**, **React Three Fiber**, and **Tailwind CSS**.
+
+🌐 **Live Deployment:** [https://portfolio-peach-seven-89.vercel.app/](https://portfolio-peach-seven-89.vercel.app/)
 
 ---
 
-## 🌌 Visual Concept & Stage 2 3D Architecture
+## 🌌 Overview & Highlights
 
-The hero section transports the visitor directly into a private developer sanctuary:
-- **Atmosphere:** Deep indigo/midnight room with cinematic purple/cyan/blue neon ambient lighting.
-- **Architectural Panorama:** Floor-to-ceiling glass window overlooking the illuminated Dubai night skyline, featuring a stepped, glowing silhouette of the **Burj Khalifa** with an active aviation hazard beacon, high-rise skyscrapers, and Sheikh Zayed highway light streaks.
-- **3D Workstation:**
-  - **Monitors:** Dual-display array—an ultrawide 38" monitor displaying active React IDE code with realistic syntax highlighting and an overhead light bar, paired with a vertical 27" monitor showing live terminal logs and database telemetry.
-  - **Developer Character:** Tasteful stylized silhouette/figure of a young Black male developer in deep focus with a styled fade haircut and over-ear studio headphones.
-  - **Peripherals:** Custom 75% mechanical keyboard with RGB underglow, precision mouse on a leatherette desk mat, ceramic coffee mug with rising steam, artisan succulent, and liquid-cooled PC chassis with spinning RGB fans.
-  - **Room:** Acoustic dark wood slat wall with vertical neon channels and floating display shelf.
-- **Interactive Objects:** Click or hover on the Monitors, Window, Developer, Keyboard, or Headphones to trigger focused HUD telemetry dossiers or navigate directly to projects.
-- **Cinematic Camera:** Smooth mouse parallax with gentle damping, automatically reduced on mobile devices and respecting `prefers-reduced-motion`.
-- **Graceful Fallback:** Automatic WebGL detection fallback to high-fidelity reference render if WebGL is unavailable.
+The portfolio is structured around a real-time, interactive 3D developer workspace overlooking an illuminated Dubai skyline, complemented by deep technical project case studies and verified capability dossiers.
+
+### Key Capabilities
+- **Interactive 3D Workspace:** Real-time WebGL scene featuring a developer workstation, procedural Dubai skyline, dynamic lighting, and interactive HUD telemetry overlays.
+- **Full-Stack Engineering Proof:** In-depth case study of flagship product [VYBE](https://github.com/Nocomments-cyb/vybe) detailing PostgreSQL schema architecture, Supabase integration, and real-time WebSocket messaging.
+- **Evidence-Based Technical Skills:** Transparent skill mapping directly linked to production codebases and architectural implementations.
+- **Disciplined Engineering Workflow:** Documented 5-step methodology from problem discovery to production deployment (`DISCOVER → BUILD → INTEGRATE → REFINE → SHIP`).
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Framework & Build** | React 19, Vite 6, JavaScript (ES modules) |
+| **3D & Graphics** | Three.js, React Three Fiber (`@react-three/fiber`), Drei (`@react-three/drei`) |
+| **Styling & UI** | Tailwind CSS, Lucide React icons, Glassmorphism design tokens |
+| **Deployment** | Vercel (CI/CD automated production builds) |
+
+---
+
+## ⚙️ Architecture & Engineering Considerations
+
+### 1. Interactive 3D Scene Architecture
+- **Camera & Parallax:** Damped mouse and touch parallax camera rig with bounded rotation angles to prevent disorienting camera flips.
+- **Procedural Screen Textures:** Dynamic HTML5 canvas textures simulating live terminal compilation logs and syntax-highlighted IDE code.
+- **Interactive Telemetry HUD:** Interactive objects (monitors, desk items) trigger responsive modal dossiers providing technical specifications.
+
+### 2. Performance & Asset Optimization
+- **Vite Manual Chunking:** Configured `manualChunks` in `vite.config.js` to isolate `three` and vendor dependencies into a standalone cacheable chunk, maintaining fast initial page loads.
+- **Procedural Geometry:** The Dubai skyline, architectural window, desk, and lighting rigs are rendered procedurally to minimize external binary 3D asset overhead.
+- **Hardware Acceleration & WebGL Fallback:** Automatic WebGL capability detection with a graceful fallback to a high-resolution reference render on unsupported devices or constrained browsers.
+
+### 3. Responsive Design & Mobile Usability
+- Full viewport responsiveness tested across mobile devices (360px–430px) and wide desktop displays.
+- Touch-optimized interaction targets with bottom-sheet drawer patterns for mobile telemetry overlays.
+- Safe-area inset handling ensuring HUD elements remain visible above mobile browser navigation bars.
+
+### 4. Accessibility & User Preferences
+- Respects `prefers-reduced-motion` media queries by disabling camera parallax and ambient floating animations.
+- Accessible semantic headings (`h1`–`h4`), ARIA labels on interactive canvas controls, and high-contrast color palettes.
 
 ---
 
@@ -24,64 +61,82 @@ The hero section transports the visitor directly into a private developer sanctu
 
 ```
 portfolio/
-├── index.html                  # HTML entry point with custom font stack
-├── package.json                # Project dependencies (React 19, Three.js, R3F, etc.)
-├── vite.config.js              # Vite config with manual chunking for Three.js
-├── public/                     # Static public assets
-│   └── developer_workspace.jpg # Visual fallback & reference asset
+├── public/                 # Static assets and WebGL fallback graphics
 ├── src/
-│   ├── assets/                 # Image assets
+│   ├── assets/             # Optimized image assets
 │   ├── components/
-│   │   ├── 3d/                 # Real 3D Cinematic Workspace Architecture
-│   │   │   ├── DeveloperScene.jsx     # Master 3D Canvas, WebGL detector & error boundary
-│   │   │   ├── CameraRig.jsx          # Damped mouse parallax camera controller
-│   │   │   ├── Lighting.jsx           # Key, rim, ambient, and neon bounce lights
-│   │   │   ├── DubaiWindow.jsx        # Procedural Burj Khalifa, towers, and starfield
-│   │   │   ├── Desk.jsx               # Sit-stand desk, steel legs, desk mat, LED strip
-│   │   │   ├── Monitors.jsx           # Dual monitors with custom canvas textures
-│   │   │   ├── DeveloperCharacter.jsx # Stylized developer silhouette & executive chair
-│   │   │   ├── Peripherals.jsx        # Mechanical keyboard, mouse, mug, PC rig
-│   │   │   ├── Room.jsx               # Acoustic slat wall, floor, floating shelf
-│   │   │   ├── SceneHUD.jsx           # Futuristic interactive telemetry overlay & modals
-│   │   │   └── screenTextures.js      # Procedural IDE & Terminal canvas texture generators
-│   │   ├── Navbar.jsx          # Sticky glassmorphism header & mobile navigation
-│   │   ├── Hero.jsx            # Hero section with exact copy & CTA buttons
-│   │   ├── WorkspaceVisual.jsx # Master workspace container (3D, Photo, Telemetry modes)
-│   │   ├── Projects.jsx        # Flagship showcase (VYBE), Lost & Found, and Future R&D
-│   │   ├── About.jsx           # Developer bio, product ethos, and interactive terminal
-│   │   ├── Skills.jsx          # Categorized technical capabilities
-│   │   ├── Contact.jsx         # Transmission hub & availability status
-│   │   ├── Icons.jsx           # Clean SVG brand icons
-│   │   └── Footer.jsx          # Footer with quick navigation
+│   │   ├── 3d/             # Three.js / React Three Fiber components
+│   │   │   ├── DeveloperScene.jsx     # Master 3D canvas, error boundary & fallback
+│   │   │   ├── CameraRig.jsx          # Damped mouse parallax controller
+│   │   │   ├── Lighting.jsx           # Ambient, key, rim, and neon bounce lights
+│   │   │   ├── DubaiWindow.jsx        # Procedural skyline & Burj Khalifa silhouette
+│   │   │   ├── Monitors.jsx           # Dual displays with dynamic canvas textures
+│   │   │   ├── DeveloperCharacter.jsx # Developer silhouette and workstation chair
+│   │   │   ├── SceneHUD.jsx           # Interactive telemetry modals & mobile drawers
+│   │   │   └── screenTextures.js      # Procedural IDE & terminal canvas generators
+│   │   ├── projects/       # Case study modals & modular project cards
+│   │   │   ├── ProjectCard.jsx        # Card with problem/solution blocks
+│   │   │   └── ProjectDetails.jsx     # Full engineering case study modal
+│   │   ├── Navbar.jsx      # Glassmorphism header with navigation links
+│   │   ├── Hero.jsx        # Hero presentation with primary CTAs
+│   │   ├── Projects.jsx    # Flagship VYBE showcase & engineering breakdown
+│   │   ├── About.jsx       # Developer story & 5-step engineering workflow
+│   │   ├── Skills.jsx      # Evidence-based skill matrix
+│   │   ├── Contact.jsx     # Direct channels, role fits & communication form
+│   │   └── Footer.jsx      # Navigation footer
 │   ├── data/
-│   │   ├── projectsData.js      # Structured project metadata
-│   │   └── skillsData.js        # Skill categorization
-│   ├── App.jsx                 # Main application layout orchestrator
-│   ├── index.css               # Styling, cyber grid, and custom scrollbar
-│   └── main.jsx                # React root mount point
+│   │   ├── profileData.js  # Personal bio, contact, and capability data
+│   │   ├── projectsData.js # Architectural decisions & project metadata
+│   │   └── skillsData.js   # Technical skills with verified project evidence
+│   ├── App.jsx             # Main layout orchestrator
+│   ├── index.css           # Tailwind CSS directives & custom styling
+│   └── main.jsx            # Application root entry point
+├── vite.config.js          # Vite build configuration & chunking
+└── package.json            # Dependencies and scripts
 ```
 
 ---
 
-## 🚀 How to Run Locally
+## 🚀 Getting Started Locally
 
-1. **Navigate to the directory:**
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+1. Clone the repository:
    ```bash
-   cd /home/shhhh/portfolio
+   git clone https://github.com/Nocomments-cyb/portfolio.git
+   cd portfolio
    ```
 
-2. **Start the development server:**
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the local development server:
    ```bash
    npm run dev
    ```
    Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-3. **Create a production build:**
+4. Build for production:
    ```bash
    npm run build
    ```
 
-4. **Preview the production build:**
+5. Preview the production build:
    ```bash
    npm run preview
    ```
+
+---
+
+## 👨‍💻 Developer & Contact
+
+- **Developer:** No Comment ([@Nocomments-cyb](https://github.com/Nocomments-cyb))
+- **Role:** Software Developer & Product Builder
+- **Portfolio:** [https://portfolio-peach-seven-89.vercel.app/](https://portfolio-peach-seven-89.vercel.app/)
+- **Email:** [guzzy3443@gmail.com](mailto:guzzy3443@gmail.com)
+- **GitHub:** [github.com/Nocomments-cyb](https://github.com/Nocomments-cyb)
