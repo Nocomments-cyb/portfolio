@@ -101,7 +101,7 @@ export default function WorkspaceVisual() {
         )}
 
         {activeTab === 'photo' && (
-          <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden group">
+          <div className="relative min-h-[420px] xs:min-h-[460px] sm:min-h-0 aspect-[4/3] xs:aspect-[1/1] sm:aspect-[16/9] w-full overflow-hidden group">
             <img
               src={workspaceImg}
               alt="Young Black male developer working at dual monitors in a futuristic workspace with Dubai skyline at night"

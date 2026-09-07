@@ -108,7 +108,7 @@ export default function DeveloperScene() {
   // Fallback for browsers or devices without WebGL
   if (!webglSupported || hasError) {
     return (
-      <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-slate-800 bg-[#070a12]">
+      <div className="relative min-h-[420px] xs:min-h-[460px] sm:min-h-0 aspect-[4/3] xs:aspect-[1/1] sm:aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-slate-800 bg-[#070a12]">
         <img
           src={fallbackImage}
           alt="Developer Workspace in Dubai"
@@ -125,7 +125,7 @@ export default function DeveloperScene() {
     <DeveloperInteractionProvider lightsOn={lightsOn}>
       <div
         ref={containerRef}
-        className={`relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-slate-700/80 bg-[#070a12] shadow-2xl ${
+        className={`relative min-h-[420px] xs:min-h-[460px] sm:min-h-0 aspect-[4/3] xs:aspect-[1/1] sm:aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-slate-700/80 bg-[#070a12] shadow-2xl ${
           hoveredObject ? 'cursor-pointer' : 'cursor-default'
         }`}
       >

@@ -21,12 +21,11 @@ export const profileData = {
   locationDetail: 'Open to Global Remote & High-Impact Contracts',
   timezone: 'Gulf Standard Time (UTC+4)',
   
-  // Real URLs/handles can be configured here by the developer.
-  // When null or empty, the UI displays a clean pending state without fabricating links.
+  // Real URLs/handles configured for direct inquiries.
   socials: {
-    github: null, // e.g. 'https://github.com/username'
-    linkedin: null, // e.g. 'https://linkedin.com/in/username'
-    email: null, // e.g. 'developer@domain.com'
+    github: 'https://github.com/Nocomments-cyb',
+    linkedin: null,
+    email: 'guzzy3443@gmail.com',
   },
 
   whatIBuild: [
