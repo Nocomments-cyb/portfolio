@@ -135,7 +135,7 @@ export default function Projects() {
                         href={vybeProject.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-xs text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:text-white transition-all"
+                        className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-xs text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:text-white transition-all cursor-pointer"
                       >
                         <ExternalLink className="w-4 h-4" />
                         <span>Live Demo</span>
@@ -147,11 +147,17 @@ export default function Projects() {
                         href={vybeProject.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-xs text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:text-white transition-all"
+                        className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-xs text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:text-white transition-all cursor-pointer"
                       >
                         <GithubIcon className="w-4 h-4" />
                         <span>Repository</span>
                       </a>
+                    )}
+
+                    {!vybeProject.demoUrl && !vybeProject.githubUrl && (
+                      <span className="text-xs font-mono text-slate-400 bg-slate-900/90 px-3.5 py-2.5 rounded-xl border border-slate-800/80">
+                        Private codebase // Walkthrough on request
+                      </span>
                     )}
                   </div>
                 </div>

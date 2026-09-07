@@ -55,6 +55,12 @@ export default function ProjectDetails({ project, onClose }) {
             <p className="text-base sm:text-lg text-cyan-400/90 font-medium mt-2 leading-relaxed">
               {project.tagline}
             </p>
+            {project.whatItIs && (
+              <p className="text-sm text-slate-300 mt-2.5 leading-relaxed bg-slate-900/40 p-3.5 rounded-xl border border-slate-800/80">
+                <span className="text-xs font-mono uppercase text-slate-400 font-semibold block mb-1">Overview</span>
+                {project.whatItIs}
+              </p>
+            )}
           </div>
 
           {/* Dedicated Visual Preview */}
@@ -83,19 +89,40 @@ export default function ProjectDetails({ project, onClose }) {
             </div>
           </div>
 
-          {/* Core Features List */}
+          {/* What I Personally Built & Architecture */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4" /> What I Personally Built
+              </span>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                {project.whatIBuilt}
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold flex items-center gap-1.5">
+                <Layers className="w-4 h-4" /> Architecture & Data Flow
+              </span>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                {project.architecture}
+              </p>
+            </div>
+          </div>
+
+          {/* Core Highlights List */}
           <div className="space-y-3">
             <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
-              Verified Implemented Features
+              Key Highlights & Verified Features
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {project.features.map((feature, idx) => (
+              {project.highlights.map((highlight, idx) => (
                 <div
                   key={idx}
                   className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-900/40 border border-slate-800/80 text-xs text-slate-300"
                 >
                   <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                  <span>{feature}</span>
+                  <span>{highlight}</span>
                 </div>
               ))}
             </div>
@@ -120,46 +147,54 @@ export default function ProjectDetails({ project, onClose }) {
 
           {/* Relevant Action Links */}
           <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {project.demoUrl ? (
                 <a
                   href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 transition-all shadow-md"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 transition-all shadow-md cursor-pointer"
                 >
                   <ExternalLink className="w-4 h-4" />
                   <span>Live Demo</span>
                 </a>
-              ) : (
-                <span className="px-3.5 py-2 rounded-xl text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800">
-                  Demo Deployment In Progress
-                </span>
-              )}
+              ) : null}
 
               {project.githubUrl ? (
                 <a
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:text-white transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:text-white transition-all cursor-pointer"
                 >
                   <GithubIcon className="w-4 h-4" />
                   <span>Source Repository</span>
                 </a>
-              ) : (
-                <span className="px-3.5 py-2 rounded-xl text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800">
-                  Source Code: Private Repository
+              ) : null}
+
+              {!project.demoUrl && !project.githubUrl && (
+                <span className="px-3.5 py-2 rounded-xl text-xs font-mono text-slate-300 bg-slate-900 border border-slate-800 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  {project.statusExplanation || 'Code & walkthrough available upon request'}
                 </span>
               )}
             </div>
 
-            <button
-              onClick={onClose}
-              className="text-xs font-mono text-slate-400 hover:text-white transition-colors cursor-pointer"
-            >
-              Close Case Study &rarr;
-            </button>
+            <div className="flex items-center gap-4">
+              <a
+                href="#contact"
+                onClick={onClose}
+                className="text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                Inquire about this project &rarr;
+              </a>
+              <button
+                onClick={onClose}
+                className="text-xs font-mono text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                Close &times;
+              </button>
+            </div>
           </div>
         </div>
       </div>

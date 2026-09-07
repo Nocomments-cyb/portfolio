@@ -99,7 +99,7 @@ export default function Contact() {
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Whether you are hiring for a full-stack engineering role, building an end-to-end web application, or need a developer who turns ideas into working software—feel free to reach out.
+                Actively seeking frontend engineering roles, product-focused teams, and high-impact web application collaborations. Based in Dubai and open to global remote opportunities.
               </p>
 
               {/* Location & Timezone */}
@@ -205,6 +205,16 @@ export default function Contact() {
                       {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                       <span>{copied ? 'Copied Again' : 'Copy Message'}</span>
                     </button>
+
+                    {profileData.socials.email && (
+                      <a
+                        href={`mailto:${profileData.socials.email}?subject=${encodeURIComponent(formData.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(formData.message)}`}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 transition-all shadow-md cursor-pointer"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>Open in Mail Client</span>
+                      </a>
+                    )}
 
                     <button
                       onClick={() => {

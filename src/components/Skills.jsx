@@ -5,13 +5,10 @@ import { skillsData } from '../data/skillsData';
 export default function Skills() {
   const getCategoryIcon = (category) => {
     switch (category) {
-      case 'FULL-STACK & BACKEND':
-      case 'BACKEND / DATA':
-        return <Database className="w-4 h-4 text-emerald-400" />;
-      case 'FRONTEND & INTERACTIVE':
       case 'FRONTEND':
         return <Code2 className="w-4 h-4 text-cyan-400" />;
-      case 'TOOLING & DEPLOYMENT':
+      case 'BACKEND / DATA':
+        return <Database className="w-4 h-4 text-emerald-400" />;
       case 'TOOLS':
         return <Wrench className="w-4 h-4 text-purple-400" />;
       default:
@@ -29,13 +26,13 @@ export default function Skills() {
         <div className="mb-16">
           <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-widest mb-2">
             <Cpu className="w-3.5 h-3.5" />
-            <span>03 // Full-Stack Capabilities</span>
+            <span>03 // Technical Skills & Stack</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
             Skills & Capabilities
           </h2>
           <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            A practical, verified toolset applied across the full stack—from relational database schemas to high-performance, responsive user interfaces.
+            A practical, verified toolset applied across modern web applications—from relational schemas to responsive, high-performance user interfaces.
           </p>
         </div>
 

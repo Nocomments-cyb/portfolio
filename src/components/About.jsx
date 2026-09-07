@@ -24,13 +24,13 @@ export default function About() {
         <div className="mb-16">
           <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-widest mb-2">
             <User className="w-3.5 h-3.5" />
-            <span>02 // Full-Stack Engineering & Product Mindset</span>
+            <span>02 // Background & Engineering Philosophy</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
             About Me
           </h2>
           <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            Engineering complete products from database architecture to responsive, cinematic user interfaces.
+            Turning concepts into working software through frontend discipline, product intuition, and hands-on execution.
           </p>
         </div>
 
@@ -40,16 +40,19 @@ export default function About() {
           <div className="lg:col-span-7 space-y-6">
             <div className="prose prose-invert max-w-none text-slate-300 space-y-4 text-base leading-relaxed">
               <p className="text-lg font-medium text-slate-200">
-                I'm <span className="text-cyan-400 font-semibold">{profileData.alias}</span>, a full-stack developer and product builder based in Dubai.
+                I'm <span className="text-cyan-400 font-semibold">{profileData.alias}</span>, a <span className="text-white font-semibold">Frontend Developer & Product Builder</span> based in Dubai.
               </p>
               <p>
-                My approach to software engineering is comprehensive: <span className="text-white font-medium">I build complete products from the ground up</span>. Rather than confining myself to just the visual surface or getting stuck in theoretical tutorials, I engineer applications end-to-end—architecting relational databases, structuring real-time authentication and APIs, and crafting fluid, accessible user interfaces.
+                What drives me is simple: <span className="text-white font-medium">turning ideas into working products</span>. Rather than getting lost in passive tutorials, my journey has been entirely hands-on and self-directed—building real applications from scratch, testing them in demanding scenarios, and refining them until every interaction feels fluid and intentional.
               </p>
               <p>
-                I bridge the gap between <span className="text-cyan-300 font-medium">backend architecture and frontend craft</span>. A great product requires both rock-solid engineering under the hood (relational schemas, clean data flow, resilient state) and world-class polish on top (cinematic aesthetics, responsive layouts, micro-interactions).
+                I specialize in crafting <span className="text-cyan-300 font-medium">responsive, interactive web experiences</span> with React, modern JavaScript, and 3D graphics. While my primary focus is delivering top-tier frontend engineering, I think holistically about the entire product—from intuitive UX and state architecture to backend integration with tools like Supabase and PostgreSQL.
               </p>
               <p>
-                Whether designing PostgreSQL schemas, integrating real-time backends with Supabase, or engineering modular React components, my philosophy centers on active shipping: <span className="text-white font-medium">architect &rarr; build &rarr; test &rarr; iterate &rarr; ship</span>.
+                What I bring to an engineering team is <span className="text-white font-medium">fast learning, disciplined end-to-end execution, and attention to detail</span>. I care deeply about edge cases, smooth layout transitions, accessible markup, and atomic Git workflows.
+              </p>
+              <p className="text-sm sm:text-base text-slate-400 pt-1">
+                I'm actively seeking <span className="text-cyan-400 font-medium">frontend engineering roles</span>, opportunities with <span className="text-slate-200 font-medium">product-focused teams</span>, and collaborations on ambitious MVPs where craftsmanship and shipping speed matter.
               </p>
             </div>
 
@@ -100,10 +103,10 @@ export default function About() {
                   <span className="text-cyan-400">"alias"</span>: <span className="text-amber-300">"{profileData.alias}"</span>,
                 </div>
                 <div className="pl-4">
-                  <span className="text-cyan-400">"role"</span>: <span className="text-amber-300">"{profileData.roleDescriptor}"</span>,
+                  <span className="text-cyan-400">"role"</span>: <span className="text-amber-300">"{profileData.roleTitle}"</span>,
                 </div>
                 <div className="pl-4">
-                  <span className="text-cyan-400">"architecture"</span>: <span className="text-amber-300">"Full-Stack • End-to-End Product Engineering"</span>,
+                  <span className="text-cyan-400">"focus"</span>: <span className="text-amber-300">"Frontend Engineering • Interactive UX • Product Architecture"</span>,
                 </div>
                 <div className="pl-4">
                   <span className="text-cyan-400">"location"</span>: <span className="text-amber-300">"{profileData.location}"</span>,
@@ -117,7 +120,7 @@ export default function About() {
                 <div className="pl-4">
                   <span className="text-cyan-400">"core_stack"</span>: <span className="text-slate-500">[</span>
                   <div className="pl-4 text-emerald-300">
-                    "React", "JavaScript", "Supabase", "PostgreSQL", "Three.js", "Tailwind CSS", "Vite"
+                    "React", "JavaScript", "Three.js", "Tailwind CSS", "Vite", "Supabase", "PostgreSQL"
                   </div>
                   <span className="text-slate-500">]</span>,
                 </div>

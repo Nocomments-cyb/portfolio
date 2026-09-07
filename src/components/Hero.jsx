@@ -34,20 +34,31 @@ export default function Hero() {
           </div>
 
           {/* Concise Professional Descriptor */}
-          <p className="text-base sm:text-lg text-cyan-300/90 font-medium max-w-xl mx-auto">
-            {profileData.roleDescriptor}
-          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 max-w-2xl mx-auto">
+            {profileData.coreTags.map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 rounded-full text-xs font-mono font-medium text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 backdrop-blur-sm"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
 
           {/* Supporting Narrative */}
-          <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl mx-auto">
-            Welcome to my digital workspace. I architect and engineer end-to-end web applications—bridging solid backend data architecture with responsive, cinematic, and functional user interfaces.
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            I engineer interactive modern web applications—combining responsive frontend craft, solid component state, and real-time backend integrations into polished digital products.
           </p>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <a
               href="#projects"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all duration-200"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all duration-200 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
             >
               <span>View My Projects</span>
               <ArrowRight className="w-4 h-4" />
@@ -55,7 +66,11 @@ export default function Hero() {
 
             <a
               href="#contact"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-slate-200 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 hover:text-white transition-all duration-200 shadow-md"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm text-slate-200 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 hover:text-white transition-all duration-200 shadow-md focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
             >
               <Mail className="w-4 h-4 text-cyan-400" />
               <span>Get In Touch</span>

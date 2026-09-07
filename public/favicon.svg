@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#070a12"/>
+  <rect x="1" y="1" width="30" height="30" rx="7" stroke="#06b6d4" stroke-opacity="0.3" stroke-width="1.5"/>
+  <path d="M7 23V9h3.2l5.6 8.2V9H19v14h-3.2L10.2 14.8V23H7z" fill="url(#cyanGrad)"/>
+  <circle cx="24" cy="21" r="2.2" fill="#38bdf8"/>
+  <defs>
+    <linearGradient id="cyanGrad" x1="7" y1="9" x2="22" y2="23" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#818cf8"/>
+    </linearGradient>
+  </defs>
+</svg>

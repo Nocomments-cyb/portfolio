@@ -34,12 +34,12 @@ export default function DeveloperScene() {
   const [webglSupported, setWebglSupported] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Reactive Workspace & Light State — Default to true for full room illumination on load
   const [lightsOn, setLightsOn] = useState(true);
   const [lightMode, setLightMode] = useState('studio'); // 'studio' | 'cyberpunk' | 'focus'
   const [scrollProgress, setScrollProgress] = useState(0);
   const [hasAutoTurnedOn, setHasAutoTurnedOn] = useState(true);
   const [hudNotification, setHudNotification] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setWebglSupported(isWebGLAvailable());
@@ -144,6 +144,7 @@ export default function DeveloperScene() {
             near: 0.1,
             far: 30,
           }}
+          onCreated={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
         >
           <Suspense fallback={null}>
@@ -193,6 +194,16 @@ export default function DeveloperScene() {
             />
           </Suspense>
         </Canvas>
+
+        {/* Initializing Workspace Indicator (Fades out smoothly once Canvas is created) */}
+        {!isLoaded && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#070a12] pointer-events-none transition-opacity duration-500">
+            <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono text-slate-300 shadow-xl">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              <span className="tracking-widest font-semibold text-cyan-300">INITIALIZING WORKSPACE...</span>
+            </div>
+          </div>
+        )}
 
         {/* Futuristic HUD Overlay with Light Controls, Event Banners, and Object Controls */}
         <SceneHUD

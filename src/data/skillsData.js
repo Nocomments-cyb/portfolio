@@ -1,79 +1,109 @@
 export const skillsData = [
   {
-    category: 'FULL-STACK & BACKEND',
-    description: 'Structuring reliable relational databases, secure authentication, real-time data flows, and APIs.',
+    category: 'FRONTEND',
+    description: 'Crafting responsive, high-performance user interfaces with modern JavaScript, component design systems, and 3D graphics.',
+    skills: [
+      {
+        name: 'React',
+        role: 'Component Architecture',
+        focus: 'Modular component design, custom hooks, reactive state workflows, and rendering performance',
+        accent: 'cyan'
+      },
+      {
+        name: 'JavaScript',
+        role: 'Modern Language Core',
+        focus: 'ES6+ standards, asynchronous promises, DOM APIs, event-driven state, and functional patterns',
+        accent: 'amber'
+      },
+      {
+        name: 'HTML & CSS',
+        role: 'Layout & Styling',
+        focus: 'Semantic HTML5 structure, modern Tailwind CSS, flexbox, grid, and CSS custom properties',
+        accent: 'orange'
+      },
+      {
+        name: 'Responsive Design',
+        role: 'Viewport Engineering',
+        focus: 'Mobile-first layout strategies, touch interactions, fluid breakpoints, and cross-device testing',
+        accent: 'emerald'
+      },
+      {
+        name: 'Three.js / React Three Fiber',
+        role: '3D & Graphics',
+        focus: 'WebGL canvas integration, procedural lighting, materials, camera rigs, and performance optimization',
+        accent: 'purple'
+      },
+      {
+        name: 'UI Components',
+        role: 'Design Systems',
+        focus: 'Reusable, accessible UI components, design tokens, micro-interactions, and state transitions',
+        accent: 'blue'
+      }
+    ]
+  },
+  {
+    category: 'BACKEND / DATA',
+    description: 'Structuring secure relational databases, real-time subscriptions, and resilient client-server data flows.',
     skills: [
       {
         name: 'Supabase',
         role: 'Backend Platform',
-        focus: 'User authentication, real-time subscriptions, edge storage, RESTful API integration',
+        focus: 'PostgreSQL database hosting, user authentication flows, real-time WebSocket subscriptions, and storage buckets',
         accent: 'emerald'
       },
       {
         name: 'PostgreSQL',
         role: 'Relational Database',
-        focus: 'Relational schema modeling, foreign key constraints, indexes, SQL query optimization',
+        focus: 'Relational schema modeling, foreign key constraints, indexes, joins, and SQL query design',
         accent: 'blue'
       },
       {
-        name: 'API & Data Architecture',
+        name: 'APIs & Data Architecture',
         role: 'System Design',
-        focus: 'Client-server contracts, optimistic UI updates, data validation, error resilience',
+        focus: 'RESTful client-server contracts, optimistic UI updates, error handling, and structured data caching',
         accent: 'cyan'
+      },
+      {
+        name: 'Authentication & Security Rules',
+        role: 'Access & Integrity',
+        focus: 'Row Level Security (RLS) policies, session persistence, input validation, and bidirectional privacy controls',
+        accent: 'rose'
       }
     ]
   },
   {
-    category: 'FRONTEND & INTERACTIVE',
-    description: 'Crafting responsive, high-performance user interfaces with modern JavaScript and component systems.',
-    skills: [
-      {
-        name: 'React',
-        role: 'Primary UI Library',
-        focus: 'Component architecture, custom hooks, state management, modular composition',
-        accent: 'cyan'
-      },
-      {
-        name: 'JavaScript',
-        role: 'Language Core',
-        focus: 'ES6+ standards, asynchronous promises, DOM APIs, functional patterns',
-        accent: 'amber'
-      },
-      {
-        name: 'HTML & CSS',
-        role: 'Semantic Foundation',
-        focus: 'HTML5 semantic markup, CSS Grid, Flexbox, custom design systems',
-        accent: 'orange'
-      },
-      {
-        name: 'Responsive Design',
-        role: 'User Experience',
-        focus: 'Mobile-first strategy, fluid viewports, touch-friendly layouts, accessibility',
-        accent: 'emerald'
-      }
-    ]
-  },
-  {
-    category: 'TOOLING & DEPLOYMENT',
-    description: 'Fast developer tooling, version control, build chunking, and continuous delivery workflows.',
+    category: 'TOOLS',
+    description: 'Fast developer tooling, version control hygiene, build performance, and continuous integration workflows.',
     skills: [
       {
         name: 'Vite',
-        role: 'Build Tool & Bundler',
-        focus: 'Instant Hot Module Replacement (HMR), build chunking, environment config',
+        role: 'Bundler & Dev Server',
+        focus: 'Instant Hot Module Replacement (HMR), code chunking, build optimization, and environment management',
         accent: 'purple'
       },
       {
         name: 'Git',
         role: 'Version Control',
-        focus: 'Atomic commit hygiene, branching workflows, change history, conflict resolution',
+        focus: 'Atomic commit hygiene, branching strategies, rebase workflows, and clean version history',
         accent: 'rose'
       },
       {
         name: 'GitHub',
         role: 'Code Collaboration',
-        focus: 'Repository hosting, pull requests, issue tracking, continuous integration',
+        focus: 'Repository management, pull request reviews, issue tracking, and automated deployment pipelines',
         accent: 'indigo'
+      },
+      {
+        name: 'Modern Dev Tooling',
+        role: 'Workflow Efficiency',
+        focus: 'ESLint, PostCSS, automated formatters, package management, and terminal tooling',
+        accent: 'amber'
+      },
+      {
+        name: 'Performance Optimization',
+        role: 'Speed & UX',
+        focus: 'Asset compression, lazy loading, DPR clamping, render cycle audits, and Core Web Vitals awareness',
+        accent: 'cyan'
       }
     ]
   }
