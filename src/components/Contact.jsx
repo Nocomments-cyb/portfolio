@@ -75,7 +75,7 @@ export default function Contact() {
             Let's build something.
           </h2>
           <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            Inviting inquiries from employers, clients, and technical teams looking for a dedicated full-stack developer and product builder.
+            Inviting inquiries from employers, clients, and technical teams looking for a dedicated software developer and product builder.
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export default function Contact() {
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Actively seeking frontend engineering roles, product-focused teams, and high-impact web application collaborations. Based in Dubai and open to global remote opportunities.
+                Actively seeking software development roles, product-focused teams, and high-impact web product collaborations. Based in Dubai and open to global remote opportunities.
               </p>
 
               {/* Location & Timezone */}

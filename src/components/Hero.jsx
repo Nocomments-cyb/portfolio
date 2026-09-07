@@ -22,6 +22,9 @@ export default function Hero() {
 
           {/* Primary Headline & Catchphrase */}
           <div className="space-y-3">
+            <div className="text-xs sm:text-sm font-mono uppercase tracking-widest text-cyan-400 font-semibold">
+              {profileData.roleTitle}
+            </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white">
               Hi, I'm{' '}
               <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent glow-text-cyan">
@@ -47,7 +50,7 @@ export default function Hero() {
 
           {/* Supporting Narrative */}
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
-            I engineer interactive modern web applications—combining responsive frontend craft, solid component state, and real-time backend integrations into polished digital products.
+            I work across frontend interfaces, backend and data integration, product logic, and interactive web experiences—turning ideas into complete, reliable products.
           </p>
 
           {/* Action Buttons */}

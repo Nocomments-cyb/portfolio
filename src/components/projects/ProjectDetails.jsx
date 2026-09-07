@@ -89,6 +89,18 @@ export default function ProjectDetails({ project, onClose }) {
             </div>
           </div>
 
+          {/* Built Across the Stack Callout */}
+          {project.builtAcrossTheStack && (
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-indigo-950/30 to-slate-900/60 border border-cyan-500/30 space-y-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-cyan-300 font-semibold flex items-center gap-1.5">
+                <Layers className="w-4 h-4 text-cyan-400" /> Built Across the Stack
+              </span>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                {project.builtAcrossTheStack}
+              </p>
+            </div>
+          )}
+
           {/* What I Personally Built & Architecture */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
@@ -100,13 +112,35 @@ export default function ProjectDetails({ project, onClose }) {
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
+            <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
               <span className="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold flex items-center gap-1.5">
                 <Layers className="w-4 h-4" /> Architecture & Data Flow
               </span>
               <p className="text-sm text-slate-300 leading-relaxed">
                 {project.architecture}
               </p>
+              {project.architectureFlow && (
+                <div className="pt-2 border-t border-slate-800/80 space-y-1.5">
+                  <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
+                    System Pipeline & Connection
+                  </span>
+                  <div className="space-y-1 font-mono text-xs">
+                    {project.architectureFlow.map((step, idx) => (
+                      <React.Fragment key={idx}>
+                        <div className="px-3 py-1.5 rounded-lg bg-slate-950/90 border border-slate-800/90 text-slate-200 flex items-center justify-between">
+                          <span className="text-cyan-400 font-semibold text-[11px]">0{idx + 1}.</span>
+                          <span className="text-right text-slate-300 font-medium text-[11px]">{step}</span>
+                        </div>
+                        {idx < project.architectureFlow.length - 1 && (
+                          <div className="text-center text-cyan-400/60 text-xs py-0.5 select-none">
+                            ↓
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

@@ -91,6 +91,21 @@ export default function Projects() {
                     </div>
                   </div>
 
+                  {/* Built Across the Stack Callout */}
+                  {vybeProject.builtAcrossTheStack && (
+                    <div className="p-3.5 rounded-xl bg-gradient-to-r from-cyan-950/40 via-indigo-950/30 to-slate-900/60 border border-cyan-500/30 space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <Layers className="w-4 h-4 text-cyan-400" />
+                        <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-cyan-300">
+                          Built Across the Stack
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed">
+                        {vybeProject.builtAcrossTheStack}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Key Features */}
                   <div className="space-y-2 pt-1">
                     <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">

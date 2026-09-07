@@ -478,11 +478,11 @@ export default function SceneHUD({
                 <div className="py-2.5 sm:py-3 space-y-2 text-xs">
                   <div className="text-sm sm:text-base font-bold text-white">NO COMMENT</div>
                   <div className="text-[10px] sm:text-xs text-purple-300 font-semibold uppercase tracking-wider">
-                    FULL-STACK DEVELOPER & PRODUCT BUILDER
+                    SOFTWARE DEVELOPER & PRODUCT BUILDER
                   </div>
                   <div className="text-slate-600 text-[10px] select-none">──────────────────────────────────</div>
                   <p className="text-xs text-slate-300 font-sans italic">
-                    "I build ideas into products."
+                    "I build full-stack web products and interactive experiences."
                   </p>
                   <div className="text-[11px] text-slate-400 font-mono">
                     Dubai, UAE • Available for high-impact projects

@@ -28,16 +28,16 @@ export const skillsData = [
         accent: 'emerald'
       },
       {
-        name: 'Three.js / React Three Fiber',
-        role: '3D & Graphics',
-        focus: 'WebGL canvas integration, procedural lighting, materials, camera rigs, and performance optimization',
-        accent: 'purple'
-      },
-      {
         name: 'UI Components',
         role: 'Design Systems',
         focus: 'Reusable, accessible UI components, design tokens, micro-interactions, and state transitions',
         accent: 'blue'
+      },
+      {
+        name: 'Three.js / React Three Fiber',
+        role: '3D & Graphics',
+        focus: 'WebGL canvas integration, procedural lighting, materials, camera rigs, and performance optimization',
+        accent: 'purple'
       }
     ]
   },
@@ -59,15 +59,27 @@ export const skillsData = [
       },
       {
         name: 'APIs & Data Architecture',
-        role: 'System Design',
+        role: 'Data Flow & Contracts',
         focus: 'RESTful client-server contracts, optimistic UI updates, error handling, and structured data caching',
         accent: 'cyan'
       },
       {
-        name: 'Authentication & Security Rules',
-        role: 'Access & Integrity',
-        focus: 'Row Level Security (RLS) policies, session persistence, input validation, and bidirectional privacy controls',
+        name: 'Authentication',
+        role: 'Identity & Sessions',
+        focus: 'User registration, session persistence, secure token lifecycle, and authenticated user state',
         accent: 'rose'
+      },
+      {
+        name: 'Row Level Security',
+        role: 'Access & Integrity',
+        focus: 'Granular PostgreSQL RLS policies, defensive data access rules, and multi-tenant isolation',
+        accent: 'indigo'
+      },
+      {
+        name: 'Real-time functionality',
+        role: 'Live Subscriptions',
+        focus: 'Live database change listeners, instant messaging sync, presence state, and WebSocket events',
+        accent: 'amber'
       }
     ]
   },

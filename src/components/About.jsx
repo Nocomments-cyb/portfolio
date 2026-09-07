@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Terminal, Layers, Monitor, Rocket, Sparkles, Database, CheckCircle2 } from 'lucide-react';
+import { User, Terminal, Layers, Monitor, Rocket, Sparkles, Database, Radio, CheckCircle2 } from 'lucide-react';
 import { profileData } from '../data/profileData';
 
 export default function About() {
@@ -10,6 +10,7 @@ export default function About() {
       case 'Rocket': return <Rocket className="w-5 h-5 text-amber-400" />;
       case 'Sparkles': return <Sparkles className="w-5 h-5 text-purple-400" />;
       case 'Database': return <Database className="w-5 h-5 text-emerald-400" />;
+      case 'Radio': return <Radio className="w-5 h-5 text-rose-400" />;
       default: return <Layers className="w-5 h-5 text-cyan-400" />;
     }
   };
@@ -30,7 +31,7 @@ export default function About() {
             About Me
           </h2>
           <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            Turning concepts into working software through frontend discipline, product intuition, and hands-on execution.
+            Turning concepts into working software through hands-on development, product intuition, and full-stack execution.
           </p>
         </div>
 
@@ -40,19 +41,19 @@ export default function About() {
           <div className="lg:col-span-7 space-y-6">
             <div className="prose prose-invert max-w-none text-slate-300 space-y-4 text-base leading-relaxed">
               <p className="text-lg font-medium text-slate-200">
-                I'm <span className="text-cyan-400 font-semibold">{profileData.alias}</span>, a <span className="text-white font-semibold">Frontend Developer & Product Builder</span> based in Dubai.
+                I'm <span className="text-cyan-400 font-semibold">{profileData.alias}</span>, a <span className="text-white font-semibold">{profileData.roleTitle}</span> based in Dubai.
               </p>
               <p>
-                What drives me is simple: <span className="text-white font-medium">turning ideas into working products</span>. Rather than getting lost in passive tutorials, my journey has been entirely hands-on and self-directed—building real applications from scratch, testing them in demanding scenarios, and refining them until every interaction feels fluid and intentional.
+                What drives me is simple: <span className="text-white font-medium">turning ideas into working products</span>. Rather than getting lost in passive tutorials, my journey has been hands-on and self-directed—building complete applications from scratch, connecting frontend interfaces to backend data layers, and refining them until every flow feels fluid and purposeful.
               </p>
               <p>
-                I specialize in crafting <span className="text-cyan-300 font-medium">responsive, interactive web experiences</span> with React, modern JavaScript, and 3D graphics. While my primary focus is delivering top-tier frontend engineering, I think holistically about the entire product—from intuitive UX and state architecture to backend integration with tools like Supabase and PostgreSQL.
+                As a software developer, I build across the stack—from <span className="text-cyan-300 font-medium">responsive frontend interfaces</span> and <span className="text-purple-300 font-medium">interactive 3D web experiences</span> to <span className="text-emerald-300 font-medium">backend data architecture</span> with Supabase and PostgreSQL. I care deeply about the user experience as well as the implementation: clean component state, resilient relational schemas, and defensive security rules.
               </p>
               <p>
-                What I bring to an engineering team is <span className="text-white font-medium">fast learning, disciplined end-to-end execution, and attention to detail</span>. I care deeply about edge cases, smooth layout transitions, accessible markup, and atomic Git workflows.
+                I am comfortable learning new tools and solving technical problems independently. I approach engineering with a product mindset—focusing on practical architecture, edge cases, smooth performance, and atomic Git workflows.
               </p>
               <p className="text-sm sm:text-base text-slate-400 pt-1">
-                I'm actively seeking <span className="text-cyan-400 font-medium">frontend engineering roles</span>, opportunities with <span className="text-slate-200 font-medium">product-focused teams</span>, and collaborations on ambitious MVPs where craftsmanship and shipping speed matter.
+                I'm actively seeking <span className="text-cyan-400 font-medium">software development roles</span>, opportunities with <span className="text-slate-200 font-medium">product-focused teams</span>, and collaborations on ambitious MVPs where craftsmanship and shipping speed matter.
               </p>
             </div>
 
@@ -106,7 +107,7 @@ export default function About() {
                   <span className="text-cyan-400">"role"</span>: <span className="text-amber-300">"{profileData.roleTitle}"</span>,
                 </div>
                 <div className="pl-4">
-                  <span className="text-cyan-400">"focus"</span>: <span className="text-amber-300">"Frontend Engineering • Interactive UX • Product Architecture"</span>,
+                  <span className="text-cyan-400">"focus"</span>: <span className="text-amber-300">"Full-Stack Web Products • Interactive UX • Systems Architecture"</span>,
                 </div>
                 <div className="pl-4">
                   <span className="text-cyan-400">"location"</span>: <span className="text-amber-300">"{profileData.location}"</span>,
@@ -120,7 +121,7 @@ export default function About() {
                 <div className="pl-4">
                   <span className="text-cyan-400">"core_stack"</span>: <span className="text-slate-500">[</span>
                   <div className="pl-4 text-emerald-300">
-                    "React", "JavaScript", "Three.js", "Tailwind CSS", "Vite", "Supabase", "PostgreSQL"
+                    "React", "JavaScript", "Supabase", "PostgreSQL", "Three.js", "Tailwind CSS", "Vite"
                   </div>
                   <span className="text-slate-500">]</span>,
                 </div>

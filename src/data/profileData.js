@@ -7,14 +7,14 @@
 export const profileData = {
   alias: 'No Comment',
   headline: "Hi, I'm No Comment",
-  tagline: 'I build ideas into products.',
-  roleTitle: 'Frontend Developer & Product Builder',
-  roleDescriptor: 'Frontend developer and product builder crafting interactive modern web experiences with React, JavaScript, and Three.js.',
+  tagline: 'I build full-stack web products and interactive experiences.',
+  roleTitle: 'Software Developer & Product Builder',
+  roleDescriptor: 'Software developer and product builder crafting full-stack web products and interactive modern experiences with React, Supabase, PostgreSQL, and Three.js.',
   coreTags: [
-    'Frontend Developer',
+    'Software Developer',
     'Product Builder',
-    'React / JavaScript',
-    'Interactive Web Experiences'
+    'Full-Stack Web Products',
+    'Interactive Experiences'
   ],
   status: 'Available for Opportunities',
   location: 'Dubai, United Arab Emirates',
@@ -30,24 +30,34 @@ export const profileData = {
 
   whatIBuild: [
     {
-      title: 'Interactive Frontend Systems',
-      description: 'Dynamic single-page interfaces built with React, modular custom hooks, and predictable state management.',
-      icon: 'Monitor'
+      title: 'Full-Stack Web Products',
+      description: 'End-to-end applications combining responsive React interfaces, Supabase backends, PostgreSQL schemas, and product business logic.',
+      icon: 'Layers'
     },
     {
-      title: 'Product MVPs & Working Prototypes',
-      description: 'Transforming ideas into functional, responsive web products with clean user flows and practical architecture.',
+      title: 'Product MVPs & Prototypes',
+      description: 'Transforming ideas into functional, working products with clean user flows, validated onboarding, and practical architecture.',
       icon: 'Rocket'
     },
     {
-      title: '3D & Immersive Web Experiences',
-      description: 'Cinematic, interactive web environments with Three.js, React Three Fiber, and responsive performance.',
-      icon: 'Sparkles'
+      title: 'Interactive Web Experiences',
+      description: 'Dynamic, fluid web interfaces with responsive layouts, gesture-friendly navigation, and polished micro-interactions.',
+      icon: 'Monitor'
     },
     {
-      title: 'Full-Stack Data Integration',
-      description: 'Connecting polished frontend interfaces with Supabase authentication, PostgreSQL databases, and real-time state.',
+      title: 'Real-Time Applications',
+      description: 'Live interactive systems featuring WebSocket subscriptions, instant messaging, presence, and optimistic UI updates.',
+      icon: 'Radio'
+    },
+    {
+      title: 'Data-Driven Applications',
+      description: 'Relational data modeling, secure Row Level Security policies, authenticated user sessions, and structured API contracts.',
       icon: 'Database'
+    },
+    {
+      title: '3D / Immersive Web Experiences',
+      description: 'Cinematic, interactive web environments with Three.js, React Three Fiber, procedural lighting, and optimized frame rates.',
+      icon: 'Sparkles'
     }
   ]
 };
