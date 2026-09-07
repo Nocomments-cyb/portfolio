@@ -106,20 +106,26 @@ export default function Projects() {
                     </div>
                   )}
 
-                  {/* Key Features */}
-                  <div className="space-y-2 pt-1">
-                    <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
-                      Key Capabilities
-                    </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
-                      {vybeProject.features.map((item, idx) => (
-                        <div key={idx} className="flex items-start gap-2 bg-slate-900/40 p-2.5 rounded-lg border border-slate-800/60">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
-                          <span>{item}</span>
-                        </div>
-                      ))}
+                  {/* What I Actually Built Breakdown */}
+                  {vybeProject.whatIActuallyBuilt && (
+                    <div className="space-y-2 pt-1">
+                      <h4 className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> What I Actually Built
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        {vybeProject.whatIActuallyBuilt.map((item, idx) => (
+                          <div key={idx} className="bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80 space-y-0.5">
+                            <span className="text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-wider block">
+                              {item.category}
+                            </span>
+                            <span className="text-slate-300 text-[11px] leading-snug block">
+                              {item.details}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Technologies */}
                   <div className="pt-1">
@@ -141,7 +147,7 @@ export default function Projects() {
                       onClick={() => setSelectedCaseStudy(vybeProject)}
                       className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 shadow-md shadow-cyan-500/25 transition-all cursor-pointer"
                     >
-                      <span>Inspect Full Case Study</span>
+                      <span>VIEW FULL CASE STUDY</span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
 
@@ -170,9 +176,17 @@ export default function Projects() {
                     )}
 
                     {!vybeProject.demoUrl && !vybeProject.githubUrl && (
-                      <span className="text-xs font-mono text-slate-400 bg-slate-900/90 px-3.5 py-2.5 rounded-xl border border-slate-800/80">
-                        Private codebase // Walkthrough on request
-                      </span>
+                      <a
+                        href="#contact"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="inline-flex items-center gap-2 px-4 py-3 rounded-xl font-mono text-xs text-cyan-300 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-500/40 transition-all cursor-pointer"
+                      >
+                        <span>DEMO ON REQUEST</span>
+                        <ChevronRight className="w-3.5 h-3.5 text-cyan-400" />
+                      </a>
                     )}
                   </div>
                 </div>

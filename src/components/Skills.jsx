@@ -79,11 +79,14 @@ export default function Skills() {
                       </p>
                     </div>
 
-                    {/* Verified In Projects indicator */}
-                    <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-500">
+                    {/* Verified In Projects indicator with project association */}
+                    <div className="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-1.5 text-[11px] font-mono">
                       <span className="flex items-center gap-1.5 text-slate-400 text-[10px]">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                        Applied In Portfolio Projects
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                        <span>Evidence:</span>
+                      </span>
+                      <span className="text-[10px] font-mono font-semibold text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/30">
+                        {skill.evidence}
                       </span>
                     </div>
                   </div>

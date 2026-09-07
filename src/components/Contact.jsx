@@ -72,10 +72,10 @@ export default function Contact() {
             <span>04 // Communications Hub</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Let's build something.
+            Looking to build something? Let's talk.
           </h2>
           <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            Inviting inquiries from employers, clients, and technical teams looking for a dedicated software developer and product builder.
+            Inviting inquiries from employers, engineering leads, and product teams looking for a dedicated software developer and product builder.
           </p>
         </div>
 
@@ -102,15 +102,40 @@ export default function Contact() {
                 Actively seeking software development roles, product-focused teams, and high-impact web product collaborations. Based in Dubai and open to global remote opportunities.
               </p>
 
+              {/* What's a Good Fit */}
+              <div className="pt-3 border-t border-slate-800/80 space-y-2">
+                <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider block">
+                  Best Project & Role Fits
+                </span>
+                <ul className="text-xs text-slate-300 space-y-2 list-none">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+                    <span>Full-stack / Frontend developer positions</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-1.5 shrink-0" />
+                    <span>Product MVP architecture & development (idea to launch)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 shrink-0" />
+                    <span>Interactive 3D web applications & dashboards</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+                    <span>Technical collaborations with fast shipping cycles</span>
+                  </li>
+                </ul>
+              </div>
+
               {/* Location & Timezone */}
-              <div className="pt-2 border-t border-slate-800/80 space-y-2 text-xs font-mono text-slate-400">
+              <div className="pt-3 border-t border-slate-800/80 space-y-2 text-xs font-mono text-slate-400">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 text-cyan-400" />
                   <span>{profileData.location} ({profileData.locationDetail})</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>{profileData.timezone}</span>
+                  <span>{profileData.timezone} • Typical response: &lt; 24 hrs</span>
                 </div>
               </div>
             </div>

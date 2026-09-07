@@ -31,32 +31,32 @@ export const profileData = {
   whatIBuild: [
     {
       title: 'Full-Stack Web Products',
-      description: 'End-to-end applications combining responsive React interfaces, Supabase backends, PostgreSQL schemas, and product business logic.',
+      description: 'Production-grade applications combining modular React frontend architecture, Supabase backend integration, relational PostgreSQL schemas, and real-time state synchronization.',
       icon: 'Layers'
     },
     {
       title: 'Product MVPs & Prototypes',
-      description: 'Transforming ideas into functional, working products with clean user flows, validated onboarding, and practical architecture.',
+      description: 'Rapid translation of product concepts into working web applications with verified onboarding flows, responsive layouts, and robust client-side validation.',
       icon: 'Rocket'
     },
     {
       title: 'Interactive Web Experiences',
-      description: 'Dynamic, fluid web interfaces with responsive layouts, gesture-friendly navigation, and polished micro-interactions.',
+      description: 'Fluid, high-performance interfaces built with responsive design systems, touch-friendly navigation, accessible HTML semantics, and smooth micro-interactions.',
       icon: 'Monitor'
     },
     {
       title: 'Real-Time Applications',
-      description: 'Live interactive systems featuring WebSocket subscriptions, instant messaging, presence, and optimistic UI updates.',
+      description: 'Live multi-user interfaces powered by WebSocket subscriptions, optimistic UI updates, typing indicators, and reliable event-driven state.',
       icon: 'Radio'
     },
     {
       title: 'Data-Driven Applications',
-      description: 'Relational data modeling, secure Row Level Security policies, authenticated user sessions, and structured API contracts.',
+      description: 'Secure relational data structures with PostgreSQL, granular Row Level Security (RLS) policies, session-based authentication, and RESTful API data contracts.',
       icon: 'Database'
     },
     {
       title: '3D / Immersive Web Experiences',
-      description: 'Cinematic, interactive web environments with Three.js, React Three Fiber, procedural lighting, and optimized frame rates.',
+      description: 'Interactive WebGL scenes built with Three.js and React Three Fiber, featuring capped DPR optimization, dynamic lighting, and reduced-motion compliance.',
       icon: 'Sparkles'
     }
   ]
