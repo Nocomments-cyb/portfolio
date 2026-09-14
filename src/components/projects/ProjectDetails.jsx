@@ -289,7 +289,7 @@ export default function ProjectDetails({ project, onClose }) {
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-slate-200 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:text-white transition-all cursor-pointer"
                 >
                   <GithubIcon className="w-4 h-4" />
-                  <span>Source Repository</span>
+                  <span>GitHub</span>
                 </a>
               ) : null}
 

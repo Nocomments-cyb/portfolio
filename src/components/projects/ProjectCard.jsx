@@ -65,7 +65,7 @@ export default function ProjectCard({ project, onInspect }) {
       </div>
 
       {/* Card Footer Actions */}
-      <div className="flex items-center justify-between pt-6 mt-6 border-t border-slate-800/80">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-6 mt-6 border-t border-slate-800/80">
         <button
           onClick={() => onInspect(project)}
           className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
@@ -74,7 +74,7 @@ export default function ProjectCard({ project, onInspect }) {
           <ChevronRight className="w-4 h-4" />
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {project.demoUrl && (
             <a
               href={project.demoUrl}

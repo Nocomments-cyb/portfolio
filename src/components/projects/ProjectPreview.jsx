@@ -15,7 +15,11 @@ export default function ProjectPreview({ project }) {
         </div>
         <div className="px-3 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-[11px] text-slate-400 flex items-center gap-1">
           <span className="text-emerald-400">https://</span>
-          <span>{project.id}.local</span>
+          <span>
+            {project.demoUrl
+              ? project.demoUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')
+              : `${project.id}.local`}
+          </span>
         </div>
         <div className="w-8"></div>
       </div>

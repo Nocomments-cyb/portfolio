@@ -102,12 +102,12 @@ export const projectsData = [
       'Clean backend integration connecting client mutations with database contracts'
     ],
     technologies: ['React', 'Vite', 'Supabase', 'PostgreSQL', 'Real-time', 'RLS'],
-    demoUrl: null, // Configured upon public deployment
-    githubUrl: null, // Configured upon public release
-    statusExplanation: 'Private repository // Walkthrough & demo available upon request',
+    demoUrl: 'https://lets-vybe.online',
+    githubUrl: 'https://github.com/Nocomments-cyb/vybe',
+    statusExplanation: 'Production MVP live and verified',
     previewTitle: 'VYBE Application Architecture',
     previewType: 'browser',
-    previewNote: 'Full-stack application architecture preview. Ready for production screenshots upon deployment.'
+    previewNote: 'Live full-stack social discovery application deployed on Netlify.'
   },
   {
     id: 'lost-and-found',
