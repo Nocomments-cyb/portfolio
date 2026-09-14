@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import WhatICanBuild from './components/WhatICanBuild';
 import Projects from './components/Projects';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -23,6 +24,7 @@ export default function App() {
       {/* Main Content Sections */}
       <main>
         <Hero />
+        <WhatICanBuild />
         <Projects />
         <About />
         <Skills />

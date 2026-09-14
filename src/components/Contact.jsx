@@ -72,10 +72,10 @@ export default function Contact() {
             <span>04 // Communications Hub</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Looking to build something? Let's talk.
+            Have a project in mind? Let's build it.
           </h2>
-          <p className="text-slate-400 mt-2 max-w-xl text-sm sm:text-base">
-            Inviting inquiries from employers, engineering leads, and product teams looking for a dedicated software developer and product builder.
+          <p className="text-slate-400 mt-2 max-w-2xl text-sm sm:text-base">
+            Whether you need a full-stack MVP built from scratch, real-time features added to an existing platform, or an independent developer to take ownership of your product—reach out directly.
           </p>
         </div>
 
@@ -95,11 +95,11 @@ export default function Contact() {
               </div>
 
               <h3 className="text-xl font-bold text-white">
-                Ready to contribute to your engineering goals.
+                Ready to build and ship your product.
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Actively seeking software development roles, product-focused teams, and high-impact web product collaborations. Based in Dubai and open to global remote opportunities.
+                Available for full-stack product builds, MVP engineering, and high-impact web development. Based in Dubai and collaborating with clients and engineering teams worldwide.
               </p>
 
               {/* What's a Good Fit */}
@@ -110,11 +110,11 @@ export default function Contact() {
                 <ul className="text-xs text-slate-300 space-y-2 list-none">
                   <li className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-                    <span>Full-stack / Frontend developer positions</span>
+                    <span>Full-stack web applications & SaaS MVPs</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-1.5 shrink-0" />
-                    <span>Product MVP architecture & development (idea to launch)</span>
+                    <span>Product MVP architecture & implementation (idea to launch)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 shrink-0" />
@@ -122,7 +122,7 @@ export default function Contact() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
-                    <span>Technical collaborations with fast shipping cycles</span>
+                    <span>Technical product development with rapid shipping cycles</span>
                   </li>
                 </ul>
               </div>
@@ -142,46 +142,55 @@ export default function Contact() {
 
             {/* Professional Channels Area */}
             <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 space-y-4">
-              <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
-                Direct Channels & Profiles
-              </h4>
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                  Direct Contact & Profiles
+                </h4>
+                <span className="text-[10px] font-mono text-cyan-400">&lt; 24hr direct reply</span>
+              </div>
 
               <div className="space-y-3">
                 {profileData.socials.email ? (
                   <a
                     href={`mailto:${profileData.socials.email}`}
-                    className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all group"
+                    className="flex items-center justify-between p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-white transition-all group"
                   >
                     <div className="flex items-center gap-3">
-                      <Mail className="w-4 h-4 text-cyan-400" />
-                      <span className="text-xs font-mono">{profileData.socials.email}</span>
+                      <div className="p-2 rounded-lg bg-cyan-950/60 border border-cyan-500/30 text-cyan-400 group-hover:text-cyan-300 transition-colors">
+                        <Mail className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">Direct Email</span>
+                        <span className="text-xs font-mono font-medium text-white group-hover:text-cyan-300 transition-colors">
+                          {profileData.socials.email}
+                        </span>
+                      </div>
                     </div>
+                    <span className="text-xs font-mono text-cyan-400 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                   </a>
-                ) : (
-                  <div className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 text-xs text-slate-400 font-mono flex items-center gap-2.5">
-                    <Mail className="w-4 h-4 text-cyan-400 shrink-0" />
-                    <span>Direct Inquiries: Use the transmission form</span>
-                  </div>
-                )}
+                ) : null}
 
                 {profileData.socials.github ? (
                   <a
                     href={profileData.socials.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-500/40 text-slate-300 hover:text-white transition-all group"
+                    className="flex items-center justify-between p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-white transition-all group"
                   >
                     <div className="flex items-center gap-3">
-                      <GithubIcon className="w-4 h-4 text-slate-400" />
-                      <span className="text-xs font-mono">GitHub Profile</span>
+                      <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 group-hover:text-white transition-colors">
+                        <GithubIcon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">GitHub Profile</span>
+                        <span className="text-xs font-mono font-medium text-slate-300 group-hover:text-white transition-colors">
+                          github.com/Nocomments-cyb
+                        </span>
+                      </div>
                     </div>
+                    <span className="text-xs font-mono text-slate-500 group-hover:text-white group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                   </a>
-                ) : (
-                  <div className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 text-xs text-slate-400 font-mono flex items-center gap-2.5">
-                    <GithubIcon className="w-4 h-4 text-slate-400 shrink-0" />
-                    <span>GitHub: Configured via profileData.js</span>
-                  </div>
-                )}
+                ) : null}
 
                 {profileData.socials.linkedin ? (
                   <a
@@ -345,7 +354,7 @@ export default function Contact() {
                     className="w-full inline-flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 shadow-lg shadow-cyan-500/25 transition-all duration-200 mt-2 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
-                    <span>Send Message</span>
+                    <span>Send Project Inquiry</span>
                   </button>
                 </form>
               )}
